@@ -1,5 +1,5 @@
-<<<<<<< HEAD
-Hola
-=======
-TTRISPO
->>>>>>> 6b813cf81605f7ff207ae6545c5453ff90ab2b6e
+Welcome to TTrispO Game
+
+You can visit our instagram to be aware of the evolution of this proyect. We will be uploading photos and more!
+
+ATT: G4.
