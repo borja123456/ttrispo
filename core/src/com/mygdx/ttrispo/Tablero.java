@@ -30,7 +30,7 @@ public class Tablero extends Actor {
         int x,y;
         for (int i = 0; i < this.tablero.length; i++) {
             for (int j = 0; j < this.tablero[i].length; j++) {
-                if(this.tablero[i][j] > 0){
+                if(this.tablero[i][j] == 0){
                     x = img.getWidth() * i;
                     y =  Gdx.graphics.getHeight()- img.getHeight() - img.getHeight()*j;
                     batch.draw(img,x,y);
