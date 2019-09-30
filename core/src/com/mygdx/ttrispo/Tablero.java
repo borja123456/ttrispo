@@ -12,8 +12,14 @@ public class Tablero extends Actor {
     private Pieza a;
     private int as = 0, asd[];
 
+    public static final int size = 25; //pieza
+    public static int TableroX = size * 10;
+    public static int TableroY = size * 20;
+
+
+
     public Tablero() {
-        this.tablero = new int[10][20];
+        this.tablero = new int[TableroX/size][TableroY/size];
         img = new Texture("badlogic.jpg");
         this.setWidth(img.getWidth());
         this.setHeight(img.getHeight());
@@ -31,7 +37,7 @@ public class Tablero extends Actor {
         for (int i = 0; i < this.tablero.length; i++) {
             for (int j = 0; j < this.tablero[i].length; j++) {
                 if(this.tablero[i][j] == 0){
-                    x = 128 * i;
+                    x = 128* i;
                     y =  Gdx.graphics.getHeight()- 128 - 123*j;
                     batch.draw(img,x,y,0,0,128,128);
                 }
