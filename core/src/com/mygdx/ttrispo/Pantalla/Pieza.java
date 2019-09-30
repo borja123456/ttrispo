@@ -1,13 +1,14 @@
 package com.mygdx.ttrispo.Pantalla;
 
 public class Pieza {
-    int centro[] = new int[2];
+    int centro[];
+    int giro = 0;
 
-    public Pieza() {
+    public Pieza(int x,int y) {
         this.centro = centro;
     }
 
-    public int [][] bajar(int x,int y){
+    public int [][] bajar(int x, int y){
         int [][] r = new int[4][2];
         for (int i = 0; i < r.length; i++) {
             switch (i){
@@ -27,4 +28,5 @@ public class Pieza {
         }
         return r;
     }
+
 }

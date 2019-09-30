@@ -27,18 +27,18 @@ public class Partida extends PantallaBase {
     @Override
     public void render(float delta) {
         super.render(delta);
-        Gdx.gl.glClearColor(0.4f, 0.8f,0.5f, 1f);
+        Gdx.gl.glClearColor(0.4f, 0.8f,0.3f, 1f);
         // Ciclo de vida
         switch (gEstado.getEstado(delta)){
             // Pieza en reposo
-            case (0):
+            case (GestorEstado.REPOSO):
                 if(!flag){
                     System.out.println("La pieza esta en reposo");
                     flag = true;
                 }
                 break;
             // La pieza intenta caer
-            case (1):
+            case (GestorEstado.CAER):
                 System.out.println("La pieza cae");
                 flag = false;
                 break;
