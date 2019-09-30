@@ -1,6 +1,9 @@
 package com.mygdx.ttrispo.Pantalla;
 
 public class GestorEstado {
+    static final int REPOSO = 0;
+    static final int CAER = 1;
+
     private final Partida partida;
     private int velocity = 2;
     private float contador = 0;
@@ -10,14 +13,14 @@ public class GestorEstado {
     }
 
     public int getEstado(float delta){
-        int estado = 0;
+        int estado = REPOSO;
         if(contador < velocity){
             contador += delta;
-            estado = 0;
+            estado = REPOSO;
 
         }else{
             contador = 0;
-            estado = 1;
+            estado = CAER;
         }
         return estado;
     }
