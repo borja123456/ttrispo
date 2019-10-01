@@ -44,7 +44,7 @@ public class Pieza {
         return r;
     }
 
-    public int [][] bajar(int x, int y){
+    public int [][] bajar(){
         int [][] r = new int[4][2];
         switch (giro){
             case(1):
@@ -69,6 +69,7 @@ public class Pieza {
                 //TODO
                 break;
         }
+        //TODO Preguntar si la pieza cae
         return r;
     }
 

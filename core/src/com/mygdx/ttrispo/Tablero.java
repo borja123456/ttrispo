@@ -56,4 +56,9 @@ public class Tablero extends Actor {
             tablero[bloques[i][1]][bloques[i][0]] = tipo;
         }
     }
+    public void borrarPieza(int bloques[][]) {
+        for (int i = 0; i < bloques.length; i++) {
+            tablero[bloques[i][1]][bloques[i][0]] = 0;
+        }
+    }
 }

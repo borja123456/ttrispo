@@ -49,8 +49,10 @@ public class Partida extends PantallaBase {
             // La pieza intenta caer
             case (GestorEstado.CAER):
                 System.out.println("La pieza cae");
-//                pieza = gPieza.getCurrentPieza();
-//                pieza.bajar()
+                pieza = gPieza.getCurrentPieza();
+                tablero.borrarPieza(pieza.getPosicionPieza());
+                tablero.insertarPieza(pieza.bajar(),pieza.getTipo());
+                pieza.setF(pieza.f + 1);
                 flag = false;
                 break;
         }
@@ -64,6 +66,6 @@ public class Partida extends PantallaBase {
     public boolean insertarNextPieza() {
         Pieza pieza = gPieza.getCurrentPieza();
         tablero.insertarPieza(pieza.getPosicionPieza(),pieza.getTipo());
-        return true;
+        return false;
     }
 }
