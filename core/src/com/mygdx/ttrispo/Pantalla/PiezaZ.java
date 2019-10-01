@@ -19,6 +19,7 @@ public class PiezaZ {
     protected int [][] getPosicionPiezaZ(){
         int [][] r = new int[numBlock][2];
         switch (giro){
+
             case(1):
                 r[0][0] = this.f; // Fila
                 r[0][1] = this.c - 1; // Columna
@@ -31,14 +32,19 @@ public class PiezaZ {
 
                 r[3][0] = this.f + 1;
                 r[3][1] = this.c;
+                break;
             case(2):
-                //TODO
-                break;
-            case(3):
-                //TODO
-                break;
-            case(4):
-                //TODO
+                r[0][0] = this.f + 1; // Fila
+                r[0][1] = this.c - 1; // Columna
+
+                r[1][0] = this.f;
+                r[1][1] = this.c;
+
+                r[2][0] = this.f + 1;
+                r[2][1] = this.c;
+
+                r[3][0] = this.f + 2;
+                r[3][1] = this.c - 1;
                 break;
         }
         return r;
@@ -59,14 +65,19 @@ public class PiezaZ {
 
                 r[3][0] = this.f + 2;
                 r[3][1] = this.c;
+                break;
             case(2):
-                //TODO
-                break;
-            case(3):
-                //TODO
-                break;
-            case(4):
-                //TODO
+                r[0][0] = this.f + 2; // Fila
+                r[0][1] = this.c - 1; // Columna
+
+                r[1][0] = this.f + 1;
+                r[1][1] = this.c;
+
+                r[2][0] = this.f + 2;
+                r[2][1] = this.c;
+
+                r[3][0] = this.f + 3;
+                r[3][1] = this.c - 1;
                 break;
         }
         //TODO Preguntar si la pieza cae
