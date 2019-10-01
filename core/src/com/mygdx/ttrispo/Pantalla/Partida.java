@@ -29,6 +29,12 @@ public class Partida extends PantallaBase {
         super.render(delta);
         Gdx.gl.glClearColor(0.4f, 0.8f,0.3f, 1f);
         // Ciclo de vida
+        cicloDeVida(delta);
+        stage.draw();
+    }
+
+    private void cicloDeVida(float delta) {
+        Pieza pieza;
         switch (gEstado.getEstado(delta)){
             // Pieza en reposo
             case (GestorEstado.REPOSO):
@@ -37,12 +43,27 @@ public class Partida extends PantallaBase {
                     flag = true;
                 }
                 break;
+            case (GestorEstado.SINPIEZA):
+                gEstado.setFlagSinFicha(this.insertarNextPieza());
+                break;
             // La pieza intenta caer
             case (GestorEstado.CAER):
                 System.out.println("La pieza cae");
+//                pieza = gPieza.getCurrentPieza();
+//                pieza.bajar()
                 flag = false;
                 break;
         }
-        stage.draw();
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+    }
+
+    public boolean insertarNextPieza() {
+        Pieza pieza = gPieza.getCurrentPieza();
+        tablero.insertarPieza(pieza.getPosicionPieza(),pieza.getTipo());
+        return true;
     }
 }

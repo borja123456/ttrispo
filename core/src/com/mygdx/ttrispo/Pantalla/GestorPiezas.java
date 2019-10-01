@@ -11,4 +11,11 @@ public class GestorPiezas {
     public GestorPiezas(Partida partida) {
         this.partida = partida;
     }
+
+    public Pieza getCurrentPieza() {
+        if(this.currentPieza == null){
+            this.currentPieza = new Pieza(0,5);
+        }
+        return currentPieza;
+    }
 }

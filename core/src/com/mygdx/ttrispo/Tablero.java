@@ -30,7 +30,7 @@ public class Tablero extends Actor {
         int x,y;
         for (int i = 0; i < this.tablero.length; i++) {
             for (int j = 0; j < this.tablero[i].length; j++) {
-                if(this.tablero[i][j] == 0){
+                if(this.tablero[i][j] == 1){
                     x = 128 * i;
                     y =  Gdx.graphics.getHeight()- 128 - 123*j;
                     batch.draw(img,x,y,0,0,128,128);
@@ -43,5 +43,11 @@ public class Tablero extends Actor {
     public void act(float delta) {
         super.act(delta);
 
+    }
+
+    public void insertarPieza(int bloques[][], int tipo) {
+        for (int i = 0; i < bloques.length; i++) {
+            tablero[bloques[i][1]][bloques[i][0]] = tipo;
+        }
     }
 }
