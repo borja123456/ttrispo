@@ -45,7 +45,7 @@ public class PiezaS {
                 r[3][0] = this.f + 2;
                 r[3][1] = this.c;
                 break;
-        }
+        } 
         return r;
     }
 
