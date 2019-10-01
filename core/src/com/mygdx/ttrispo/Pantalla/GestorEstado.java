@@ -6,7 +6,7 @@ public class GestorEstado {
     public static final int CAER = 1;
 
     private final Partida partida;
-    private int velocity = 1;
+    private float velocity = 0.05f;
     private float contador = 0;
     private boolean flagSinFicha = true;
 

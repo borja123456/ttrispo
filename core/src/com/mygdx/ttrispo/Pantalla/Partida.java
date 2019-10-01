@@ -1,16 +1,12 @@
 package com.mygdx.ttrispo.Pantalla;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.ttrispo.Tablero;
 
 public class Partida extends PantallaBase {
     private Tablero tablero;
     private GestorEstado gEstado;
     private GestorPiezas gPieza;
-    private boolean flag = false;
 
     public Partida(){
         gEstado = new GestorEstado(this);
@@ -34,26 +30,28 @@ public class Partida extends PantallaBase {
     }
 
     private void cicloDeVida(float delta) {
-        Pieza pieza;
+        Pieza currentPieza;
         switch (gEstado.getEstado(delta)){
             // Pieza en reposo
             case (GestorEstado.REPOSO):
-                if(!flag){
-                    System.out.println("La pieza esta en reposo");
-                    flag = true;
-                }
+
                 break;
             case (GestorEstado.SINPIEZA):
                 gEstado.setFlagSinFicha(this.insertarNextPieza());
                 break;
             // La pieza intenta caer
             case (GestorEstado.CAER):
-                System.out.println("La pieza cae");
-                pieza = gPieza.getCurrentPieza();
-                tablero.borrarPieza(pieza.getPosicionPieza());
-                tablero.insertarPieza(pieza.bajar(),pieza.getTipo());
-                pieza.setF(pieza.f + 1);
-                flag = false;
+                currentPieza = gPieza.getCurrentPieza();
+                int piezaAbajo [][] = currentPieza.getPosicionAbajo();
+                if(tablero.isColision(piezaAbajo,currentPieza.getPosicionPieza())){
+                    // La pieza no puede bajar
+                    gEstado.setFlagSinFicha(true);
+                }else{
+                    // La pieza puede baja
+                    tablero.cambiarBloque(currentPieza.getPosicionPieza(),Pieza.VACIA);
+                    tablero.cambiarBloque(piezaAbajo ,currentPieza.getTipo());
+                    currentPieza.setF(currentPieza.f + 1);
+                }
                 break;
         }
     }
@@ -64,8 +62,8 @@ public class Partida extends PantallaBase {
     }
 
     public boolean insertarNextPieza() {
-        Pieza pieza = gPieza.getCurrentPieza();
-        tablero.insertarPieza(pieza.getPosicionPieza(),pieza.getTipo());
+        Pieza pieza = gPieza.getNextPieza();
+        tablero.cambiarBloque(pieza.getPosicionPieza(),pieza.getTipo());
         return false;
     }
 }

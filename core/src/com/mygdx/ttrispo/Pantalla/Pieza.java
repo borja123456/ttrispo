@@ -4,6 +4,7 @@ public class Pieza {
 
     public static final int T = 1;
     public static final int I = 2;
+    public static final int VACIA = 0;
 
     protected int f,c, numBlock;
     private int giro = 1;
@@ -44,7 +45,7 @@ public class Pieza {
         return r;
     }
 
-    public int [][] bajar(){
+    public int [][] getPosicionAbajo(){
         int [][] r = new int[4][2];
         switch (giro){
             case(1):
