@@ -37,19 +37,24 @@ public class Partida extends PantallaBase {
 
                 break;
             case (GestorEstado.SINPIEZA):
-                gEstado.setFlagSinFicha(this.insertarNextPieza());
+                this.insertarNextPieza();
+                gEstado.setFlagSinFicha(false);
                 break;
             // La pieza intenta caer
             case (GestorEstado.CAER):
                 currentPieza = gPieza.getCurrentPieza();
-                int piezaAbajo [][] = currentPieza.getPosicionAbajo();
-                if(tablero.isColision(piezaAbajo,currentPieza.getPosicionPieza())){
+
+                int posicionPiezaAbajo [][] = currentPieza.getPosicionAbajo();
+                tablero.cambiarBloque(currentPieza.getPosicionPieza(),Pieza.VACIA);
+                if(tablero.isColision(posicionPiezaAbajo)){
                     // La pieza no puede bajar
+                    tablero.cambiarBloque(currentPieza.getPosicionPieza() ,currentPieza.getTipo());
                     gEstado.setFlagSinFicha(true);
+
                 }else{
                     // La pieza puede baja
                     tablero.cambiarBloque(currentPieza.getPosicionPieza(),Pieza.VACIA);
-                    tablero.cambiarBloque(piezaAbajo ,currentPieza.getTipo());
+                    tablero.cambiarBloque(posicionPiezaAbajo ,currentPieza.getTipo());
                     currentPieza.setF(currentPieza.f + 1);
                 }
                 break;

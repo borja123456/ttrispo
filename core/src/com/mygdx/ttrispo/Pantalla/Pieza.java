@@ -21,6 +21,7 @@ public class Pieza {
         int [][] r = new int[numBlock][2];
         switch (giro){
             case(1):
+                //Bloque 1
                 r[0][0] = this.f; // Fila
                 r[0][1] = this.c - 1; // Columna
 
