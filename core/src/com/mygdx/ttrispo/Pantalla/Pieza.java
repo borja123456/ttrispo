@@ -34,13 +34,43 @@ public class Pieza {
                 r[3][0] = this.f + 1;
                 r[3][1] = this.c;
             case(2):
-                //TODO
+                r[0][0] = this.f; // Fila
+                r[0][1] = this.c; // Columna
+
+                r[1][0] = this.f + 1;
+                r[1][1] = this.c;
+
+                r[2][0] = this.f + 1;
+                r[2][1] = this.c + 1;
+
+                r[3][0] = this.f + 2;
+                r[3][1] = this.c;
                 break;
             case(3):
-                //TODO
+                r[0][0] = this.f; // Fila
+                r[0][1] = this.c; // Columna
+
+                r[1][0] = this.f + 1;
+                r[1][1] = this.c - 1;
+
+                r[2][0] = this.f + 1;
+                r[2][1] = this.c;
+
+                r[3][0] = this.f + 1;
+                r[3][1] = this.c + 1;
                 break;
             case(4):
-                //TODO
+                r[0][0] = this.f; // Fila
+                r[0][1] = this.c; // Columna
+
+                r[1][0] = this.f + 1;
+                r[1][1] = this.c;
+
+                r[2][0] = this.f + 1;
+                r[2][1] = this.c - 1;
+
+                r[3][0] = this.f + 2;
+                r[3][1] = this.c;
                 break;
         }
         return r;
@@ -62,13 +92,43 @@ public class Pieza {
                 r[3][0] = this.f + 2;
                 r[3][1] = this.c;
             case(2):
-                //TODO
+                r[0][0] = this.f + 1; // Fila
+                r[0][1] = this.c; // Columna
+
+                r[1][0] = this.f + 2;
+                r[1][1] = this.c;
+
+                r[2][0] = this.f + 2;
+                r[2][1] = this.c + 1;
+
+                r[3][0] = this.f + 3;
+                r[3][1] = this.c;
                 break;
             case(3):
-                //TODO
+                r[0][0] = this.f + 1; // Fila
+                r[0][1] = this.c; // Columna
+
+                r[1][0] = this.f + 2;
+                r[1][1] = this.c - 1;
+
+                r[2][0] = this.f + 2;
+                r[2][1] = this.c;
+
+                r[3][0] = this.f + 2;
+                r[3][1] = this.c + 1;
                 break;
             case(4):
-                //TODO
+                r[0][0] = this.f + 1; // Fila
+                r[0][1] = this.c; // Columna
+
+                r[1][0] = this.f + 2;
+                r[1][1] = this.c;
+
+                r[2][0] = this.f + 2;
+                r[2][1] = this.c - 1;
+
+                r[3][0] = this.f + 3;
+                r[3][1] = this.c;
                 break;
         }
         //TODO Preguntar si la pieza cae
