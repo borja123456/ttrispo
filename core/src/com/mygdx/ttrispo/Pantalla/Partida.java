@@ -53,7 +53,6 @@ public class Partida extends PantallaBase {
 
                 }else{
                     // La pieza puede baja
-                    tablero.cambiarBloque(currentPieza.getPosicionPieza(),Pieza.VACIA);
                     tablero.cambiarBloque(posicionPiezaAbajo ,currentPieza.getTipo());
                     currentPieza.setF(currentPieza.f + 1);
                 }

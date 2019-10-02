@@ -23,11 +23,6 @@ public class Tablero extends Actor {
         img = new Texture("badlogic.jpg");
         this.setWidth(img.getWidth());
         this.setHeight(img.getHeight());
-        a = new Pieza(4,0);
-        asd = new int[2];
-        this.asd[0] = 2;
-        this.asd[1] = 0;
-
     }
 
     @Override
@@ -52,8 +47,14 @@ public class Tablero extends Actor {
     }
 
     public void cambiarBloque(int bloques[][], int tipo) {
+        int columnas, filas;
         for (int i = 0; i < bloques.length; i++) {
-            tablero[bloques[i][1]][bloques[i][0]] = tipo;
+            columnas = bloques[i][1];
+            filas = bloques[i][0];
+            // Comprobar si se sale de la pantalla
+            if(columnas < 10 && columnas >= 0 && filas >= 0 && filas < 20){
+                tablero[bloques[i][1]][bloques[i][0]] = tipo;
+            }
         }
     }
     public boolean isColision(int bloques[][]){

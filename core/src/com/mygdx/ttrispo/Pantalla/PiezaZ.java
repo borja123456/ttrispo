@@ -80,7 +80,6 @@ public class PiezaZ {
                 r[3][1] = this.c - 1;
                 break;
         }
-        //TODO Preguntar si la pieza cae
         return r;
     }
 
