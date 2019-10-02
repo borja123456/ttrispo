@@ -20,7 +20,7 @@ public class Tablero extends Actor {
 
     public Tablero() {
         this.tablero = new int[TableroX/size][TableroY/size];
-        img = new Texture("badlogic.jpg");
+        img = new Texture("T.jpg");
         this.setWidth(img.getWidth());
         this.setHeight(img.getHeight());
     }
