@@ -30,9 +30,9 @@ public class Partida extends PantallaBase {
     }
 
     private void cicloDeVida(float delta) {
-        Pieza currentPieza;
+        PiezaT currentPieza;
         switch (gEstado.getEstado(delta)){
-            // Pieza en reposo
+            // PiezaT en reposo
             case (GestorEstado.REPOSO):
 
                 break;
@@ -45,7 +45,7 @@ public class Partida extends PantallaBase {
                 currentPieza = gPieza.getCurrentPieza();
 
                 int posicionPiezaAbajo [][] = currentPieza.getPosicionAbajo();
-                tablero.cambiarBloque(currentPieza.getPosicionPieza(),Pieza.VACIA);
+                tablero.cambiarBloque(currentPieza.getPosicionPieza(), PiezaT.VACIA);
                 if(tablero.isColision(posicionPiezaAbajo)){
                     // La pieza no puede bajar
                     tablero.cambiarBloque(currentPieza.getPosicionPieza() ,currentPieza.getTipo());
@@ -66,7 +66,7 @@ public class Partida extends PantallaBase {
     }
 
     public boolean insertarNextPieza() {
-        Pieza pieza = gPieza.getNextPieza();
+        PiezaT pieza = gPieza.getNextPieza();
         tablero.cambiarBloque(pieza.getPosicionPieza(),pieza.getTipo());
         return false;
     }

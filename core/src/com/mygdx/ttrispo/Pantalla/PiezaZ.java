@@ -12,7 +12,7 @@ public class PiezaZ {
     public PiezaZ(int f,int c) {
         this.f = f;
         this.c = c;
-        tipo = Pieza.T;
+        tipo = PiezaT.T;
         this.numBlock = 4;
     }
 

@@ -13,7 +13,7 @@ public class PiezaL {
     public PiezaL(int f,int c) {
         this.f = f;
         this.c = c;
-        tipo = Pieza.T;
+        tipo = PiezaT.T;
         this.numBlock = 4;
     }
 
