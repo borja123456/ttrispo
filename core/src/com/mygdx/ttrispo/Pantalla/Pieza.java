@@ -91,6 +91,14 @@ public class Pieza {
         return r;
     }
 
+    public int [][] getPosicionDerecha(){
+        int[][] r= this.getPosicionPieza();
+        for (int i = 0; i < r.length; i++) {
+            r[i][1]++;
+        }
+        return r;
+    }
+
     public void setC(int c) {
         this.c = c;
     }

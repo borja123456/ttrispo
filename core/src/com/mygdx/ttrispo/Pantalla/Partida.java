@@ -1,9 +1,10 @@
 package com.mygdx.ttrispo.Pantalla;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
 import com.mygdx.ttrispo.Tablero;
 
-public class Partida extends PantallaBase {
+public class Partida extends PantallaBase  {
     private Tablero tablero;
     private GestorEstado gEstado;
     private GestorPiezas gPieza;
@@ -11,6 +12,7 @@ public class Partida extends PantallaBase {
     public Partida(){
         gEstado = new GestorEstado(this);
         gPieza = new GestorPiezas(this);
+        Procesador pc = new Procesador(gEstado);
     }
 
     @Override
