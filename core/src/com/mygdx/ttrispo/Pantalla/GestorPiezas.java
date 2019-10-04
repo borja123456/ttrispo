@@ -19,8 +19,6 @@ public class GestorPiezas {
         return currentPieza;
     }
 
-    public Pieza
-
     public Pieza getNextPieza() {
         this.currentPieza = null;
         return this.getCurrentPieza();

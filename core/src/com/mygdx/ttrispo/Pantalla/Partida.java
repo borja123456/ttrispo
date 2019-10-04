@@ -33,6 +33,7 @@ public class Partida extends PantallaBase  {
 
     private void cicloDeVida(float delta) {
         Pieza currentPieza;
+
         switch (gEstado.getEstado(delta)){
             // Pieza en reposo
             case (GestorEstado.REPOSO):
@@ -42,6 +43,13 @@ public class Partida extends PantallaBase  {
                 this.insertarNextPieza();
                 gEstado.setFlagSinFicha(false);
                 break;
+
+            case (GestorEstado.DERECHA):
+                currentPieza = gPieza.getCurrentPieza();
+                int posicionPiezaDerecha [][] = currentPieza.getPosicionDerecha();
+                tablero.cambiarBloque(posicionPiezaDerecha ,currentPieza.getTipo());
+                currentPieza.setF(currentPieza.c + 1);
+
             // La pieza intenta caer
             case (GestorEstado.CAER):
                 currentPieza = gPieza.getCurrentPieza();
