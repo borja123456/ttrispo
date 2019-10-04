@@ -1,20 +1,10 @@
 package com.mygdx.ttrispo.Pantalla;
 
-public class PiezaO {
-
-    public static final int O = 7;
-
-    public static final int VACIA = 0;
-
-    protected int f, c, numBlock;
-    private int giro = 1;
-    private int tipo;
+public class PiezaO extends Pieza {
 
     public PiezaO(int f, int c) {
-        this.f = f;
-        this.c = c;
-        tipo = Pieza.O;
-        this.numBlock = 4;
+        super(f, c);
+        tipo = O;
     }
 
     protected int[][] getPosicionPieza() {
@@ -76,23 +66,4 @@ public class PiezaO {
         return r;
     }
 
-    public int[][] getPosicionAbajo() {
-        int[][] r = this.getPosicionPieza();
-        for (int i = 0; i < r.length; i++) {
-            r[i][0]++;
-        }
-        return r;
-    }
-
-    public void setC(int c) {
-        this.c = c;
-    }
-
-    public void setF(int f) {
-        this.f = f;
-    }
-
-    public int getTipo() {
-        return this.tipo;
-    }
 }

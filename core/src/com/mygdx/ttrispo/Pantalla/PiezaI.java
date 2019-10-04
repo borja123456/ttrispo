@@ -1,24 +1,14 @@
 package com.mygdx.ttrispo.Pantalla;
 
-public class PiezaI {
-
-    public static final int I = 6;
-
-    public static final int VACIA = 0;
-
-    protected int f, c, numBlock;
-    private int giro = 1;
-    private int tipo;
+public class PiezaI extends Pieza {
 
     public PiezaI(int f, int c) {
-        this.f = f;
-        this.c = c;
-        tipo = Pieza.I;
-        this.numBlock = 4;
+        super(f, c);
+        tipo = I;
     }
 
-    protected int[][] getPosicionPieza() {
-        int[][] r = new int[numBlock][2];
+    protected int [][] getPosicionPieza() {
+        int [][] r = new int[super.numBlock][2];
         switch (giro) {
             case (1): // 0º -> 90º  (orientacion 1 a orientacion 2)
                 r[0][0] = this.f; // Fila
@@ -74,25 +64,5 @@ public class PiezaI {
                 break;
         }
         return r;
-    }
-
-    public int[][] getPosicionAbajo() {
-        int[][] r = this.getPosicionPieza();
-        for (int i = 0; i < r.length; i++) {
-            r[i][0]++;
-        }
-        return r;
-    }
-
-    public void setC(int c) {
-        this.c = c;
-    }
-
-    public void setF(int f) {
-        this.f = f;
-    }
-
-    public int getTipo() {
-        return this.tipo;
     }
 }
