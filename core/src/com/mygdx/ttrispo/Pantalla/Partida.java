@@ -13,6 +13,7 @@ public class Partida extends PantallaBase  {
         gEstado = new GestorEstado(this);
         gPieza = new GestorPiezas(this);
         Procesador pc = new Procesador(gEstado);
+        Gdx.input.setInputProcessor(new Procesador(gEstado));
     }
 
     @Override
@@ -47,9 +48,13 @@ public class Partida extends PantallaBase  {
             case (GestorEstado.DERECHA):
                 currentPieza = gPieza.getCurrentPieza();
                 int posicionPiezaDerecha [][] = currentPieza.getPosicionDerecha();
+                tablero.cambiarBloque(currentPieza.getPosicionPieza(),Pieza.VACIA);
+                //falta comprobar
                 tablero.cambiarBloque(posicionPiezaDerecha ,currentPieza.getTipo());
-                currentPieza.setF(currentPieza.c + 1);
-
+                currentPieza.setC(currentPieza.c + 1);
+                //Cambia a reposo. pero esto hay que refactorizarlo por el amor de dios
+                gEstado.setEstado(gEstado.REPOSO);
+                break;
             // La pieza intenta caer
             case (GestorEstado.CAER):
                 currentPieza = gPieza.getCurrentPieza();

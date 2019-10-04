@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.ttrispo.Pantalla.Partida;
+import com.mygdx.ttrispo.Pantalla.Procesador;
 
 public class MyGdxGame extends Game {
 //    SpriteBatch batch;
@@ -18,6 +19,7 @@ public class MyGdxGame extends Game {
 
     @Override
     public void create() {
+
         partida = new Partida();
 //        batch = new SpriteBatch();
 //        img = new Texture("badlogic.jpg");
@@ -25,6 +27,7 @@ public class MyGdxGame extends Game {
 //        width = img.getWidth();
 //        x = Gdx.graphics.getWidth() / 2 - (width / 2);
 //        y = Gdx.graphics.getHeight() - height / 2 ;
+
         this.setScreen(partida);
     }
 

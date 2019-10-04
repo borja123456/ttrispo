@@ -27,7 +27,7 @@ public class GestorEstado {
                 contador += delta;
             }
             else if (contador < velocity) {
-
+                contador += delta;
                 estado = REPOSO;
 
             }
