@@ -4,12 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.mygdx.ttrispo.Pantalla.Pieza;
+import com.mygdx.ttrispo.Pantalla.PiezaT;
 
 public class Tablero extends Actor {
     private int tablero[][];
     private Texture img;
-    private Pieza a;
+    private PiezaT a;
     private int as = 0, asd[];
 
     public static final int size = 25; //pieza
