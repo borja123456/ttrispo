@@ -1,24 +1,14 @@
 package com.mygdx.ttrispo.Pantalla;
 
-public class PiezaL {
+public class PiezaL extends Pieza{
 
-    public static final int T = 1; //¿ actualizar estos valores ya que es otra pieza?
-    public static final int I = 2;
-    public static final int VACIA = 0;
-
-    protected int f,c, numBlock;
-    private int giro = 1; // ¿Deberia llamarse orientacion la variable o postura ?
-    private int tipo;
-
-    public PiezaL(int f,int c) {
-        this.f = f;
-        this.c = c;
-        tipo = PiezaT.T;
-        this.numBlock = 4;
+    public PiezaL(int f, int c) {
+        super(f, c);
+        tipo = L;
     }
 
     protected int [][] getPosicionPieza(){ // ¿Deberia llamarse giroPiezaLDerecha el metodo?
-        int [][] r = new int[numBlock][2]; // Cada fila del array representa las coordenadas de uno de los bloques que forman la pieza
+        int [][] r = new int[super.numBlock][2]; // Cada fila del array representa las coordenadas de uno de los bloques que forman la pieza
         switch (giro){
             case(1):
                 // 0º -> 90º  (orientacion 1 a orientacion 2)
@@ -80,25 +70,5 @@ public class PiezaL {
                 break;
         }
         return r;
-    }
-
-    public int [][] getPosicionAbajo(){
-        int [][] r = this.getPosicionPieza();
-        for (int i = 0; i < r.length; i++) {
-            r[i][0]++;
-        }
-        return r;
-    }
-
-    public void setC(int c) {
-        this.c = c;
-    }
-
-    public void setF(int f) {
-        this.f = f;
-    }
-
-    public int getTipo() {
-        return this.tipo;
     }
 }
