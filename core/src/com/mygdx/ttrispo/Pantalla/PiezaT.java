@@ -1,6 +1,6 @@
 package com.mygdx.ttrispo.Pantalla;
 
-public class Pieza {
+public class PiezaT {
 
     public static final int T = 1;
     public static final int S = 2;
@@ -16,10 +16,10 @@ public class Pieza {
     private int giro = 1;
     private int tipo;
 
-    public Pieza(int f,int c) {
+    public PiezaT(int f, int c) {
         this.f = f;
         this.c = c;
-        tipo = Pieza.T;
+        tipo = PiezaT.T;
         this.numBlock = 4;
     }
 

@@ -12,11 +12,11 @@ public class PiezaS {
     public PiezaS(int f,int c) {
         this.f = f;
         this.c = c;
-        tipo = Pieza.T;
+        tipo = PiezaT.T;
         this.numBlock = 4;
     }
 
-    protected int [][] getPosicionPiezaS(){
+    protected int [][] getPosicionPieza(){
         int [][] r = new int[numBlock][4];
         switch (giro){
             case(1):
@@ -49,7 +49,7 @@ public class PiezaS {
         return r;
     }
 
-    public int [][] bajarS(){
+    public int [][] bajar(){
         int [][] r = new int[4][2];
         switch (giro){
             case(1):
@@ -80,6 +80,14 @@ public class PiezaS {
                 break;
         }
         //TODO Preguntar si la pieza cae
+        return r;
+    }
+
+    public int [][] getPosicionAbajo(){
+        int [][] r = this.getPosicionPieza();
+        for (int i = 0; i < r.length; i++) {
+            r[i][0]++;
+        }
         return r;
     }
 
