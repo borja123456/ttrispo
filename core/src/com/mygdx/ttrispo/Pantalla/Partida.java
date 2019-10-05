@@ -82,6 +82,9 @@ public class Partida extends PantallaBase  {
                 if(tablero.isColision(posicionPiezaAbajo)){
                     // La pieza no puede bajar
                     tablero.cambiarBloque(currentPieza.getPosicionPieza() ,currentPieza.getTipo());
+                    tablero.comprobarLineaCompleta();
+
+
                     gEstado.setFlagSinFicha(true);
 
                 }else{

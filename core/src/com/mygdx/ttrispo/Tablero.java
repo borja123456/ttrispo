@@ -84,4 +84,21 @@ public class Tablero extends Actor {
         return false;
     }
 
+    public boolean comprobarLineaCompleta() {
+        int numeroColumnas = 10;
+        int filas = 20;
+        int valorFila = 0;
+        for(int i=0;i<this.tablero.length;i++){
+            for(int j=0; j<this.tablero[i].length;j++){
+                valorFila += tablero[i][j];
+            }
+
+            if(valorFila==numeroColumnas){
+                System.out.println("Premio");
+            }
+
+            valorFila =0;
+        }
+        return false;
+    }
 }
