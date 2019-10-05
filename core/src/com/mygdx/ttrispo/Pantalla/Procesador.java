@@ -9,7 +9,7 @@ public class Procesador extends InputAdapter {
     }
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        gestorEstado.setEstado(gestorEstado.DERECHA);
+        gestorEstado.setEstado(gestorEstado.IZQUIERDA);
         return true;
     }
 }

@@ -7,6 +7,7 @@ public class GestorEstado {
     public static final int REPOSO = 0;
     public static final int CAER = 1;
     public static final int DERECHA = 3;
+    public static final int IZQUIERDA = 4;
 
     private final Partida partida;
     private float velocity = 0.05f;
@@ -23,7 +24,10 @@ public class GestorEstado {
         if (flagSinFicha) {
             estado = SINPIEZA;
         } else {
-            if (estado == DERECHA){
+            if (estado == IZQUIERDA){
+                contador += delta;
+            }
+            else if (estado == DERECHA){
                 contador += delta;
             }
             else if (contador < velocity) {

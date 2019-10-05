@@ -13,8 +13,8 @@ public class Pieza {
     public static final int VACIA = 0;
 
     protected int f,c, numBlock;
-    private int giro = 1;
-    private int tipo;
+    protected int giro = 1;
+    protected int tipo;
 
     public Pieza(int f,int c) {
         this.f = f;
@@ -95,6 +95,13 @@ public class Pieza {
         int[][] r= this.getPosicionPieza();
         for (int i = 0; i < r.length; i++) {
             r[i][1]++;
+        }
+        return r;
+    }
+    public int [][] getPosicionIzquierda(){
+        int[][] r= this.getPosicionPieza();
+        for (int i = 0; i < r.length; i++) {
+            r[i][1]--;
         }
         return r;
     }

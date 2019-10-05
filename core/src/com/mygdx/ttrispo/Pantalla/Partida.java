@@ -44,14 +44,32 @@ public class Partida extends PantallaBase  {
                 this.insertarNextPieza();
                 gEstado.setFlagSinFicha(false);
                 break;
+            case (GestorEstado.IZQUIERDA):
+                currentPieza = gPieza.getCurrentPieza();
+                int posicionPiezaIzquierda [][] = currentPieza.getPosicionIzquierda();
+                tablero.cambiarBloque(currentPieza.getPosicionPieza(),Pieza.VACIA);
+                if(tablero.isColision(posicionPiezaIzquierda)){
+                    tablero.cambiarBloque(currentPieza.getPosicionPieza() ,currentPieza.getTipo());
+                    //si no puede seguir moviendo a la izquierda pues ahi se queda
+                }else{
+                    tablero.cambiarBloque(posicionPiezaIzquierda ,currentPieza.getTipo());
+                    currentPieza.setC(currentPieza.c -1);
+                }
+                //Cambia a reposo. pero esto hay que refactorizarlo por el amor de dios
+                gEstado.setEstado(gEstado.REPOSO);
+                break;
 
             case (GestorEstado.DERECHA):
                 currentPieza = gPieza.getCurrentPieza();
                 int posicionPiezaDerecha [][] = currentPieza.getPosicionDerecha();
                 tablero.cambiarBloque(currentPieza.getPosicionPieza(),Pieza.VACIA);
-                //falta comprobar
-                tablero.cambiarBloque(posicionPiezaDerecha ,currentPieza.getTipo());
-                currentPieza.setC(currentPieza.c + 1);
+                if(tablero.isColision(posicionPiezaDerecha)){
+                    tablero.cambiarBloque(currentPieza.getPosicionPieza() ,currentPieza.getTipo());
+                    //si no puede seguir moviendo a la derecha pues ahi se queda
+                }else{
+                    tablero.cambiarBloque(posicionPiezaDerecha ,currentPieza.getTipo());
+                    currentPieza.setC(currentPieza.c + 1);
+                }
                 //Cambia a reposo. pero esto hay que refactorizarlo por el amor de dios
                 gEstado.setEstado(gEstado.REPOSO);
                 break;
