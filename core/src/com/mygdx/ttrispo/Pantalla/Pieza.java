@@ -2,7 +2,7 @@ package com.mygdx.ttrispo.Pantalla;
 
 public class Pieza {
 
-    public static final int T = 1;
+    public static final int T = 1;//Hay que cambiar esto de si se quiere probar otra pieza, y la otra pieza debe llevar el 1
     public static final int S = 2;
     public static final int Z = 3;
     public static final int J = 4;

@@ -21,17 +21,10 @@ public class PantallaBase implements Screen {
     protected Stage stage;
     protected Skin skin;
     private ShapeRenderer shapeRenderer;
-    private SpriteBatch sp;
-    private Texture img;
-    private int alto, largo;
 
 
     public PantallaBase() {
         shapeRenderer = new ShapeRenderer();
-        sp = new SpriteBatch();
-        img = new Texture("tablero.png");
-        alto = img.getHeight();
-        largo = img.getWidth();
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
     }
 
@@ -42,12 +35,6 @@ public class PantallaBase implements Screen {
     @Override
     public void render(float delta) {
         //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        sp.begin();
-
-        sp.draw(img, 80,Tablero.tablero.length*40,
-                largo*2.5f,alto*2.5f);
-
-        sp.end();
     }
 
     @Override
@@ -75,7 +62,6 @@ public class PantallaBase implements Screen {
         stage.dispose();
         skin.dispose();
         shapeRenderer.dispose();
-        sp.dispose();
     }
 }
 

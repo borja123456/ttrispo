@@ -1,6 +1,6 @@
 package com.mygdx.ttrispo.Pantalla;
 
-import sun.security.util.DerEncoder;
+//import sun.security.util.DerEncoder;
 
 public class GestorEstado {
     public static final int SINPIEZA = 2;

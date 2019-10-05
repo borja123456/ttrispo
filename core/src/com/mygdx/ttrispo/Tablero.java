@@ -8,9 +8,11 @@ import com.mygdx.ttrispo.Pantalla.PiezaT;
 
 public class Tablero extends Actor {
     public static int tablero[][];
-    private Texture img;
+    private Texture img, img2;
     private PiezaT a;
     private int as = 0, asd[];
+
+
 
     public static final int size = 25; //pieza
     public static int TableroX = size * 10;
@@ -21,6 +23,7 @@ public class Tablero extends Actor {
     public Tablero() {
         this.tablero = new int[TableroX/size][TableroY/size];
         img = new Texture("L.jpg");
+        img2 = new Texture("bg_tablero.png");
         this.setWidth(img.getWidth());
         this.setHeight(img.getHeight());
     }
@@ -35,6 +38,10 @@ public class Tablero extends Actor {
                     x =  80*i;
                     y =  Gdx.graphics.getHeight() - 80*j;
                     batch.draw(img,x,y,0,0,75,75);
+                }if(this.tablero[i][j] == 0){
+                    x =  80*i;
+                    y =  Gdx.graphics.getHeight() - 80*j;
+                    batch.draw(img2,x,y,0,0,70,70);
                 }
             }
         }
@@ -96,7 +103,7 @@ public class Tablero extends Actor {
             if(valorFila==numeroColumnas){
                 System.out.println("Premio");
                 eliminarfila(i);
-                bajarFilaAnterior();
+                //bajarFilaAnterior();
             }
 
             valorFila =0;
@@ -110,7 +117,8 @@ public class Tablero extends Actor {
         }
     }
 
-    private void bajarFilaAnterior(int fila) {
+    /*private void bajarFilaAnterior(int fila) {
         //implementando.....
-    }
+        //TODO
+    }*/
 }
