@@ -23,7 +23,7 @@ public class Partida extends PantallaBase {
     @Override
     public void render(float delta) {
         super.render(delta);
-        Gdx.gl.glClearColor(0.4f, 0.8f,0.3f, 1f);
+        //Gdx.gl.glClearColor(0.1f, 0.1f,0.1f, 1f);
         // Ciclo de vida
         cicloDeVida(delta);
         stage.draw();
