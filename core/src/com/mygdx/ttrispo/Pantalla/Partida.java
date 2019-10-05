@@ -34,7 +34,6 @@ public class Partida extends PantallaBase  {
 
     private void cicloDeVida(float delta) {
         Pieza currentPieza;
-
         switch (gEstado.getEstado(delta)){
             // Pieza en reposo
             case (GestorEstado.REPOSO):

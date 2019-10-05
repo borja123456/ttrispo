@@ -19,8 +19,8 @@ public class Pieza {
     public Pieza(int f,int c) {
         this.f = f;
         this.c = c;
-        tipo = Pieza.T;
         this.numBlock = 4;
+        this.tipo=this.T;
     }
 
     protected int [][] getPosicionPieza(){
@@ -116,5 +116,9 @@ public class Pieza {
 
     public int getTipo() {
         return this.tipo;
+    }
+
+    public void setTipo(int tipo) {
+        this.tipo = tipo;
     }
 }

@@ -9,10 +9,8 @@ import com.mygdx.ttrispo.Pantalla.PiezaT;
 public class Tablero extends Actor {
     public static int tablero[][];
     private Texture img, img2;
-    private PiezaT a;
+    //private PiezaT a;
     private int as = 0, asd[];
-
-
 
     public static final int size = 25; //pieza
     public static int TableroX = size * 10;
@@ -34,7 +32,7 @@ public class Tablero extends Actor {
         int x,y;
         for (int i = 0; i < this.tablero.length; i++) {
             for (int j = 0; j < this.tablero[i].length; j++) {
-                if(this.tablero[i][j] == 1){
+                if(this.tablero[i][j] >= 1){
                     x =  80*i;
                     y =  Gdx.graphics.getHeight() - 80*j;
                     batch.draw(img,x,y,0,0,75,75);

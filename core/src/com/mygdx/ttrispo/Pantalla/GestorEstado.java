@@ -10,7 +10,7 @@ public class GestorEstado {
     public static final int IZQUIERDA = 4;
 
     private final Partida partida;
-    private float velocity = 0.05f;
+    private float velocity = 0.2f;
     private float contador = 0;
     private boolean flagSinFicha = true;
     private int estado = REPOSO;
