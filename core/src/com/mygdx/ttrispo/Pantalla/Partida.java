@@ -1,7 +1,7 @@
 package com.mygdx.ttrispo.Pantalla;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
+import com.mygdx.ttrispo.Procesador;
 import com.mygdx.ttrispo.Tablero;
 
 public class Partida extends PantallaBase  {

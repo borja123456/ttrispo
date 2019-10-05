@@ -1,6 +1,7 @@
-package com.mygdx.ttrispo.Pantalla;
+package com.mygdx.ttrispo;
 
 import com.badlogic.gdx.InputAdapter;
+import com.mygdx.ttrispo.Pantalla.GestorEstado;
 
 public class Procesador extends InputAdapter {
     GestorEstado gestorEstado;

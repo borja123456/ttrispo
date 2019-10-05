@@ -57,19 +57,29 @@ public class Tablero extends Actor {
             }
         }
     }
+
+   /*
+   Este metodo es dios en la tierra.
+   Implemento un try catch para cuando se sale de array.
+    */
+
     public boolean isColision(int bloques[][]){
         int columnas, filas;
-        for (int i = 0; i < bloques.length; i++) {
-            columnas = bloques[i][1];
-            filas = bloques[i][0];
-            // Comprobar si se sale de la pantalla
-            if(columnas >= 10 || filas >= 20){
-                return true;
+        try {
+            for (int i = 0; i < bloques.length; i++) {
+                columnas = bloques[i][1];
+                filas = bloques[i][0];
+                // Comprobar si se sale de la pantalla
+                if (columnas >= 10 || filas >= 20) {
+                    return true;
+                }
+                // Colisiona con otro bloque
+                if (tablero[bloques[i][1]][bloques[i][0]] != 0) {
+                    return true;
+                }
             }
-            // Colisiona con otro bloque
-            if(tablero[bloques[i][1]][bloques[i][0]] != 0){
-                return true;
-            }
+        }catch (ArrayIndexOutOfBoundsException e){
+            return true;
         }
         return false;
     }
