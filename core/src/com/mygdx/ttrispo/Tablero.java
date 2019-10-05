@@ -95,10 +95,22 @@ public class Tablero extends Actor {
 
             if(valorFila==numeroColumnas){
                 System.out.println("Premio");
+                eliminarfila(i);
+                bajarFilaAnterior();
             }
 
             valorFila =0;
         }
         return false;
+    }
+
+    private void eliminarfila(int fila) {
+        for(int j=0; j<this.tablero[fila].length;j++){
+            tablero[fila][j]=0;
+        }
+    }
+
+    private void bajarFilaAnterior(int fila) {
+        //implementando.....
     }
 }
