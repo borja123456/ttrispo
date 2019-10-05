@@ -15,7 +15,7 @@ public class GestorPiezas {
     private PiezaL pL;
     private PiezaJ pJ;
     private Pieza currentPieza, piezaAux;
-    private int aleatorio;
+    public static int aleatorio;
     private Random rand;
 
 

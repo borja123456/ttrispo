@@ -4,51 +4,60 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.mygdx.ttrispo.Pantalla.PiezaT;
+import com.mygdx.ttrispo.Pantalla.GestorPiezas;
+import com.mygdx.ttrispo.Pantalla.PiezaS;
 
 public class Tablero extends Actor {
     public static int tablero[][];
     private Texture img, img2;
-    //private PiezaT a;
-    private int as = 0, asd[];
 
     public static final int size = 25; //pieza
-    public static int TableroX = size * 10;
-    public static int TableroY = size * 20;
+    public static int TableroX = size*10;
+    public static int TableroY = size*20;
+    private float ekis, de;
 
 
-
-    public Tablero() {
+    public Tablero(float x, float y) {
         this.tablero = new int[TableroX/size][TableroY/size];
-        img = new Texture("L.jpg");
+
         img2 = new Texture("bg_tablero.png");
-        this.setWidth(img.getWidth());
-        this.setHeight(img.getHeight());
+        //this.setWidth(img.getWidth());
+        //this.setHeight(img.getHeight());
+        this.ekis=x;
+        this.de=y;
+
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        int x,y;
+        pintarPieza();
+        int x,y;setScaleX(50);
         for (int i = 0; i < this.tablero.length; i++) {
             for (int j = 0; j < this.tablero[i].length; j++) {
                 if(this.tablero[i][j] >= 1){
-                    x =  80*i;
-                    y =  Gdx.graphics.getHeight() - 80*j;
-                    batch.draw(img,x,y,0,0,75,75);
+                    x = 60*i;
+                    y = Gdx.graphics.getHeight() - 60*j;
+                    batch.setColor(1, 1, 1, 1f);
+                    batch.draw(img,x+ekis,y+de,0,0,55,55);
                 }if(this.tablero[i][j] == 0){
-                    x =  80*i;
-                    y =  Gdx.graphics.getHeight() - 80*j;
-                    batch.draw(img2,x,y,0,0,70,70);
+                    x = 60*i;
+                    y = Gdx.graphics.getHeight() - 60*j;
+                    batch.draw(img2,x+ekis,y+de,0,0,50,50);
+                    batch.setColor(1, 1, 1, 0.6f);
                 }
             }
         }
+
+    }
+
+    private void pintarPieza() {
+        img = PiezaS.getColor(GestorPiezas.aleatorio);
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
-
     }
 
     public void cambiarBloque(int bloques[][], int tipo) {

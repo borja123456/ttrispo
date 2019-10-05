@@ -8,19 +8,23 @@ public class Partida extends PantallaBase  {
     private Tablero tablero;
     private GestorEstado gEstado;
     private GestorPiezas gPieza;
+    public static float x, y;
 
     public Partida(){
         gEstado = new GestorEstado(this);
         gPieza = new GestorPiezas(this);
         Procesador pc = new Procesador(gEstado);
         Gdx.input.setInputProcessor(new Procesador(gEstado));
+        this.x = Gdx.graphics.getWidth()/4;
+        this.y = -(Gdx.graphics.getWidth()/3);
     }
 
     @Override
     public void show() {
         super.show();
-        tablero = new Tablero();
+        tablero = new Tablero(x,y);
         stage.addActor(tablero);
+        tablero.setPosition(x, y);
     }
 
     @Override

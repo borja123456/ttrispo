@@ -1,5 +1,7 @@
 package com.mygdx.ttrispo.Pantalla;
 
+import com.badlogic.gdx.graphics.Texture;
+
 public class Pieza {
 
     public static final int T = 1;//Hay que cambiar esto de si se quiere probar otra pieza, y la otra pieza debe llevar el 1
@@ -9,6 +11,8 @@ public class Pieza {
     public static final int L = 5;
     public static final int I = 6;
     public static final int O = 7;
+
+    public static Texture color;
 
     public static final int VACIA = 0;
 
@@ -81,6 +85,35 @@ public class Pieza {
                 break;
         }
         return r;
+    }
+
+    public static Texture getColor(int tipo) {
+        Texture aux = new Texture("T.jpg");
+        switch (tipo){
+            case 1:
+                aux = new Texture("T.jpg");
+                break;
+            case 2:
+                aux = new Texture("S.jpg");
+                break;
+            case 3:
+                aux = new Texture("Z.jpg");
+                break;
+            case 4:
+                aux = new Texture("J.jpg");
+                break;
+            case 5:
+                aux = new Texture("L.jpg");
+                break;
+            case 6:
+                aux = new Texture("I.jpg");
+                break;
+            case 7:
+                aux = new Texture("O.jpg");
+                break;
+        }
+
+        return aux;
     }
 
     public int [][] getPosicionAbajo(){

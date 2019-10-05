@@ -10,7 +10,7 @@ public class PiezaS extends Pieza{
     protected int [][] getPosicionPieza(){
         int [][] r = new int[super.numBlock][4];
         switch (giro){
-            /*case(1):
+            case(1):
                 r[0][0] = this.f + 1; // Fila
                 r[0][1] = this.c - 1; // Columna
 
@@ -24,7 +24,7 @@ public class PiezaS extends Pieza{
                 r[3][1] = this.c + 1;
                 break;
 
-            case(1):
+            case(2):
                 r[0][0] = this.f - 1; // Fila
                 r[0][1] = this.c; // Columna
 
@@ -38,7 +38,7 @@ public class PiezaS extends Pieza{
                 r[3][1] = this.c + 1;
                 break;
 
-            case(1):
+            case(3):
                 r[0][0] = this.f; // Fila
                 r[0][1] = this.c - 1; // Columna
 
@@ -52,8 +52,7 @@ public class PiezaS extends Pieza{
                 r[3][1] = this.c + 1;
                 break;
 
-             */
-            case(1):
+            case(4):
                 r[0][0] = this.f - 1; // Fila
                 r[0][1] = this.c - 1; // Columna
 
