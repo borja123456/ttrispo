@@ -60,7 +60,7 @@ public class Tablero extends Actor {
         super.act(delta);
     }
 
-    public void  cambiarBloque(int bloques[][], int tipo) {
+    public void cambiarBloque(int bloques[][], int tipo) {
         int columnas, filas;
         for (int i = 0; i < bloques.length; i++) {
             columnas = bloques[i][1];
@@ -97,10 +97,7 @@ public class Tablero extends Actor {
         }
         return false;
     }
-    /*
-    A REFACTORIZAR.
-    El numero de filas y columnas. No consigo obtener correctamente el el numero
-     */
+
     public boolean comprobarLineaCompleta() {
         int numeroColumnas = 10;
         int filas = 20;
@@ -112,10 +109,11 @@ public class Tablero extends Actor {
                 }
 
             }
+
             if(valorFila==numeroColumnas){
                 System.out.println("Premio");
                 eliminarfila(i);
-                bajarFilaAnterior(i);
+                //bajarFilaAnterior();
             }
 
             valorFila =0;
@@ -124,24 +122,13 @@ public class Tablero extends Actor {
     }
 
     private void eliminarfila(int fila) {
-        for(int j=0; j<10;j++){
-            tablero[j][fila]=0;
+        for(int j=0; j<this.tablero[fila].length;j++){
+            tablero[fila][j]=0;
         }
     }
 
-    /*
-    se recoge la fila eliminada y desde ahi hasta arriba se copia la fila anterior en la actual.
-    Habria que darle una vuelta en el siguiente sprint porque es un poco chapuza.
-  */
-    /*
-    Posible refatorizacion: Si son todpo 0 pues que no baje mas, pero eso ya mas adelante
-     */
-    private void bajarFilaAnterior(int fila) {
-        for(;fila>0;fila--){
-            for(int c=0;c<10;c++){
-                tablero[c][fila]= tablero[c][fila-1];
-            }
-        }
-
-    }
+    /*private void bajarFilaAnterior(int fila) {
+        //implementando.....
+        //TODO
+    }*/
 }
