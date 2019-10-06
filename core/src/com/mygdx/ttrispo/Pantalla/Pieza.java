@@ -117,28 +117,28 @@ public class Pieza {
     }
 
     public static Texture getFichaCompleta(int tipo) {
-        Texture aux = new Texture("Tcompleta.jpg");
+        Texture aux = new Texture("TCompleta.png");
         switch (tipo){
             case 1:
-                aux = new Texture("Tcompleta.jpg");
+                aux = new Texture("TCompleta.png");
                 break;
             case 2:
-                aux = new Texture("SCompleta.jpg");
+                aux = new Texture("SCompleta.png");
                 break;
             case 3:
-                aux = new Texture("ZCompleta.jpg");
+                aux = new Texture("ZCompleta.png");
                 break;
             case 4:
-                aux = new Texture("JCompleta.jpg");
+                aux = new Texture("JCompleta.png");
                 break;
             case 5:
-                aux = new Texture("LCompleta.jpg");
+                aux = new Texture("LCompleta.png");
                 break;
             case 6:
-                aux = new Texture("ICompleta.jpg");
+                aux = new Texture("ICompleta.png");
                 break;
             case 7:
-                aux = new Texture("O.Completa.jpg");
+                aux = new Texture("OCompleta.png");
                 break;
         }
 
