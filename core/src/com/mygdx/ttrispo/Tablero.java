@@ -102,9 +102,12 @@ public class Tablero extends Actor {
         int numeroColumnas = 10;
         int filas = 20;
         int valorFila = 0;
-        for(int i=0;i<this.tablero.length;i++){
-            for(int j=0; j<this.tablero[i].length;j++){
-                valorFila += tablero[i][j];
+        for(int i=0;i<20;i++){
+            for(int j=0; j<10;j++){
+                if(tablero[j][i]!=0){
+                    valorFila ++;
+                }
+
             }
 
             if(valorFila==numeroColumnas){
