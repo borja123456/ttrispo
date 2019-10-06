@@ -116,6 +116,35 @@ public class Pieza {
         return aux;
     }
 
+    public static Texture getFichaCompleta(int tipo) {
+        Texture aux = new Texture("Tcompleta.jpg");
+        switch (tipo){
+            case 1:
+                aux = new Texture("Tcompleta.jpg");
+                break;
+            case 2:
+                aux = new Texture("SCompleta.jpg");
+                break;
+            case 3:
+                aux = new Texture("ZCompleta.jpg");
+                break;
+            case 4:
+                aux = new Texture("JCompleta.jpg");
+                break;
+            case 5:
+                aux = new Texture("LCompleta.jpg");
+                break;
+            case 6:
+                aux = new Texture("ICompleta.jpg");
+                break;
+            case 7:
+                aux = new Texture("O.Completa.jpg");
+                break;
+        }
+
+        return aux;
+    }
+
     public static Texture getImagen(int tipo) {
         Texture aux = new Texture("SCompleta.png");
         switch (tipo){

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.mygdx.ttrispo.Pantalla.GestorPiezas;
+import com.mygdx.ttrispo.Pantalla.Pieza;
 import com.mygdx.ttrispo.Pantalla.PiezaS;
 
 public class Tablero extends Actor {
@@ -48,11 +49,18 @@ public class Tablero extends Actor {
                 }
             }
         }
-
+        if(GestorPiezas.piezasEncoladas.size()!=0) {
+            batch.draw(pintarPiezaCompleta(), 0, 0, 0, 0, 50, 50);
+        }
     }
 
     private void pintarPieza() {
-        img = PiezaS.getColor(GestorPiezas.aleatorio);
+        img = Pieza.getColor(GestorPiezas.aleatorio);
+    }
+
+    private Texture pintarPiezaCompleta(){
+
+        return Pieza.getFichaCompleta(GestorPiezas.piezasEncoladas.poll().getTipo());
     }
 
     @Override
