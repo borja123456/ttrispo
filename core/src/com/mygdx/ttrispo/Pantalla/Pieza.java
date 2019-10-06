@@ -117,7 +117,7 @@ public class Pieza {
     }
 
     public static Texture getImagen(int tipo) {
-        Texture aux = new Texture(null);
+        Texture aux = new Texture("SCompleta.png");
         switch (tipo){
             case 1:
                 aux = new Texture("TCompleta.jpeg");
