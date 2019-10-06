@@ -120,7 +120,7 @@ public class Pieza {
         Texture aux = new Texture("SCompleta.png");
         switch (tipo){
             case 1:
-                aux = new Texture("TCompleta.jpeg");
+                aux = new Texture("TCompleta.png");
                 break;
             case 2:
                 aux = new Texture("SCompleta.png");
