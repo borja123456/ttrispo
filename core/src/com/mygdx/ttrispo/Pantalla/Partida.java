@@ -17,10 +17,14 @@ public class Partida extends PantallaBase  {
         Gdx.input.setInputProcessor(new Procesador(gEstado));
         this.x = Gdx.graphics.getWidth()/4;
         this.y = -(Gdx.graphics.getWidth()/3);
+
+        //Debug scene2d
+       // stage.setDebugAll(true);
     }
 
     @Override
     public void show() {
+        // Añadir escuchador de eventos al stage
         super.show();
         tablero = new Tablero(x,y);
         stage.addActor(tablero);
