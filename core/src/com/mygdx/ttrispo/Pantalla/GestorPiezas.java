@@ -1,11 +1,12 @@
 package com.mygdx.ttrispo.Pantalla;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Random;
 
 public class GestorPiezas {
     private final Partida partida;
-    //private Queue<Pieza> piezas = new ArrayDeque<>();
+    private LinkedList<Pieza> colaPiezasSiguientes = new LinkedList<>();
     private ArrayList<Pieza> piezas = new ArrayList<>();
     private PiezaT pT;
     private PiezaS pS;
@@ -24,8 +25,16 @@ public class GestorPiezas {
     }
 
     public void generarPiezaAleatoria(){
-        this.rand = new Random();
-        this.aleatorio = rand.nextInt(7)+1;
+        for (int i = 0; i <= 1; i++){
+            Random numRandom = new Random();
+            int posicion = numRandom.nextInt(7) + 1;
+
+            Pieza piezaSiguiente = piezas.get(posicion);
+            this.colaPiezasSiguientes.add(piezaSiguiente);
+        }
+    }
+    public LinkedList<Pieza> getColaPiezasSiguientes() {
+        return this.colaPiezasSiguientes;
     }
 
     private Pieza newPieza(){

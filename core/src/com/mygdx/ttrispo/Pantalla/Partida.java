@@ -114,7 +114,6 @@ public class Partida extends PantallaBase  {
                         currentPieza.setGiroInicial();
                     }
                 }
-                System.out.println("Giro: "+ currentPieza.getGiro());
                 gEstado.setEstado(GestorEstado.CAER);
                 break;
         }
