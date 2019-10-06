@@ -17,14 +17,15 @@ public class Pieza {
     public static final int VACIA = 0;
 
     protected int f,c, numBlock;
-    protected int giro = 1;
+    protected int giro;
     protected int tipo;
 
     public Pieza(int f,int c) {
         this.f = f;
         this.c = c;
         this.numBlock = 4;
-        this.tipo=this.T;
+        this.tipo = this.T;
+        this.giro = 1;
     }
 
     protected int [][] getPosicionPieza(){
@@ -151,7 +152,19 @@ public class Pieza {
         return this.tipo;
     }
 
+    public void setGiro(int giro) {
+        this.giro += giro;
+    }
+
+    public int getGiro() {
+        return giro;
+    }
+
     public void setTipo(int tipo) {
         this.tipo = tipo;
+    }
+
+    public void setGiroInicial() {
+        this.giro=1;
     }
 }

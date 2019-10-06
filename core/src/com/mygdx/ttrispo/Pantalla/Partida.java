@@ -9,14 +9,18 @@ public class Partida extends PantallaBase  {
     private GestorEstado gEstado;
     private GestorPiezas gPieza;
     public static float x, y;
+    private Procesador pc;
 
     public Partida(){
         gEstado = new GestorEstado(this);
         gPieza = new GestorPiezas(this);
-        Procesador pc = new Procesador(gEstado);
-        Gdx.input.setInputProcessor(new Procesador(gEstado));
+        pc = new Procesador(gEstado);
+
+        Gdx.input.setInputProcessor(pc);
+
+
         this.x = Gdx.graphics.getWidth()/4;
-        this.y = -(Gdx.graphics.getWidth()/3);
+        this.y = -(Gdx.graphics.getWidth()/4);
     }
 
     @Override
@@ -86,8 +90,6 @@ public class Partida extends PantallaBase  {
                     // La pieza no puede bajar
                     tablero.cambiarBloque(currentPieza.getPosicionPieza() ,currentPieza.getTipo());
                     tablero.comprobarLineaCompleta();
-
-
                     gEstado.setFlagSinFicha(true);
 
                 }else{
@@ -95,6 +97,25 @@ public class Partida extends PantallaBase  {
                     tablero.cambiarBloque(posicionPiezaAbajo ,currentPieza.getTipo());
                     currentPieza.setF(currentPieza.f + 1);
                 }
+                break;
+            case (GestorEstado.GIRO):
+                currentPieza = gPieza.getCurrentPieza();
+                int piezaChocada [][] = currentPieza.getPosicionAbajo();
+                tablero.cambiarBloque(currentPieza.getPosicionPieza(),Pieza.VACIA);
+                if(tablero.isColision(piezaChocada)){
+                    // La pieza no puede bajar
+                    tablero.cambiarBloque(currentPieza.getPosicionPieza() ,currentPieza.getTipo());
+                    tablero.comprobarLineaCompleta();
+                    gEstado.setFlagSinFicha(true);
+                }else {
+                    if (currentPieza.getGiro()<4){
+                        currentPieza.setGiro(1);
+                    }else {
+                        currentPieza.setGiroInicial();
+                    }
+                }
+                System.out.println("Giro: "+ currentPieza.getGiro());
+                gEstado.setEstado(GestorEstado.CAER);
                 break;
         }
     }
