@@ -12,13 +12,12 @@ public class Pieza {
     public static final int I = 6;
     public static final int O = 7;
 
-    public static Texture color;
+    public static Texture color, imagen;
 
     public static final int VACIA = 0;
 
     protected int f,c, numBlock;
-    protected int giro;
-    protected int tipo;
+    protected int tipo, giro;
 
     public Pieza(int f,int c) {
         this.f = f;
@@ -111,6 +110,35 @@ public class Pieza {
                 break;
             case 7:
                 aux = new Texture("O.jpg");
+                break;
+        }
+
+        return aux;
+    }
+
+    public static Texture getImagen(int tipo) {
+        Texture aux = new Texture(null);
+        switch (tipo){
+            case 1:
+                aux = new Texture("TCompleta.jpeg");
+                break;
+            case 2:
+                aux = new Texture("SCompleta.png");
+                break;
+            case 3:
+                aux = new Texture("ZCompleta.png");
+                break;
+            case 4:
+                aux = new Texture("JCompleta.png");
+                break;
+            case 5:
+                aux = new Texture("LCompleta.png");
+                break;
+            case 6:
+                aux = new Texture("ICompleta.png");
+                break;
+            case 7:
+                aux = new Texture("OCompleta.png");
                 break;
         }
 
