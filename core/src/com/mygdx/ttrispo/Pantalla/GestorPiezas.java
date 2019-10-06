@@ -15,7 +15,7 @@ public class GestorPiezas {
     private PiezaO pO;
     private PiezaL pL;
     private PiezaJ pJ;
-    private Queue<Pieza> piezasEncoladas;
+    public static Queue<Pieza> piezasEncoladas;
     private Pieza currentPieza;
     public static int aleatorio;
     private Random rand;
