@@ -3,12 +3,10 @@ package com.mygdx.ttrispo;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.mygdx.ttrispo.Pantalla.GestorPiezas;
 import com.mygdx.ttrispo.Pantalla.Pieza;
-import com.mygdx.ttrispo.Pantalla.PiezaS;
 
 public class Tablero extends Actor {
     public static int tablero[][];
@@ -18,6 +16,7 @@ public class Tablero extends Actor {
     public static int TableroX = size*10;
     public static int TableroY = size*20;
     private float ekis, de;
+    public static int puntuacion;
 
 
     public Tablero(float x, float y) {
@@ -28,6 +27,7 @@ public class Tablero extends Actor {
         //this.setHeight(img.getHeight());
         this.ekis=x;
         this.de=y;
+        this.puntuacion = 0;
 
     }
 
@@ -120,7 +120,7 @@ public class Tablero extends Actor {
 
             }
             if(valorFila==numeroColumnas){
-                System.out.println("Premio");
+                puntuacion+=30;
                 eliminarfila(i);
                 bajarFilaAnterior(i);
             }
