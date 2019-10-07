@@ -8,9 +8,10 @@ public class GestorEstado {
     public static final int CAER = 1;
     public static final int DERECHA = 3;
     public static final int IZQUIERDA = 4;
+    public static final int GIRO = 5;
 
     private final Partida partida;
-    private float velocity = 0.2f;
+    private float velocity = 0.5f;
     private float contador = 0;
     private boolean flagSinFicha = true;
     private int estado = REPOSO;
@@ -29,11 +30,12 @@ public class GestorEstado {
             }
             else if (estado == DERECHA){
                 contador += delta;
+            }else if (estado == GIRO){
+                contador=delta;
             }
             else if (contador < velocity) {
                 contador += delta;
                 estado = REPOSO;
-
             }
             else {
                 contador = 0;
