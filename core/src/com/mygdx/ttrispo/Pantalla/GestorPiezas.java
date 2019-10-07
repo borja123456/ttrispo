@@ -1,13 +1,12 @@
 package com.mygdx.ttrispo.Pantalla;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Queue;
 import java.util.Random;
 
 public class GestorPiezas {
     private final Partida partida;
     //private Queue<Pieza> piezas = new ArrayDeque<>();
+    private ArrayList<Pieza> piezas = new ArrayList<>();
     private PiezaT pT;
     private PiezaS pS;
     private PiezaZ pZ;
@@ -15,23 +14,13 @@ public class GestorPiezas {
     private PiezaO pO;
     private PiezaL pL;
     private PiezaJ pJ;
-    public static Queue<Pieza> piezasEncoladas;
-    private Pieza currentPieza;
+    private Pieza currentPieza, piezaAux;
     public static int aleatorio;
     private Random rand;
 
 
     public GestorPiezas(Partida partida) {
-        piezasEncoladas = new ArrayDeque<Pieza>();
         this.partida = partida;
-        rellenarCola();
-    }
-
-    private void rellenarCola() {
-        for(int i=0;i<2;i++){
-            generarPiezaAleatoria();
-            piezasEncoladas.add(newPieza());
-        }
     }
 
     public void generarPiezaAleatoria(){
@@ -40,8 +29,6 @@ public class GestorPiezas {
     }
 
     private Pieza newPieza(){
-        ArrayList<Pieza> piezas = new ArrayList<>();
-        Pieza piezaAux;
         this.pT=new PiezaT(0, 5);
         this.pS=new PiezaS(0, 5);
         this.pZ=new PiezaZ(0, 5);
@@ -49,28 +36,30 @@ public class GestorPiezas {
         this.pO=new PiezaO(0, 5);
         this.pL=new PiezaL(0, 5);
         this.pJ=new PiezaJ(0, 5);
-        piezas.add(null);
-        piezas.add(pT);
-        piezas.add(pS);
-        piezas.add(pZ);
-        piezas.add(pI);
-        piezas.add(pO);
-        piezas.add(pL);
-        piezas.add(pJ);
+        this.piezas.add(null);
+        this.piezas.add(pT);
+        this.piezas.add(pS);
+        this.piezas.add(pZ);
+        this.piezas.add(pI);
+        this.piezas.add(pO);
+        this.piezas.add(pL);
+        this.piezas.add(pJ);
         piezaAux = piezas.get(this.aleatorio);
+        piezaAux.setTipo(aleatorio);
+        this.piezas.clear();
         return piezaAux;
     }
 
     public Pieza getCurrentPieza() {
+        if(this.currentPieza == null){
+            generarPiezaAleatoria();
+            this.currentPieza = newPieza();
+        }
         return currentPieza;
     }
 
     public Pieza getNextPieza() {
-
-        currentPieza = piezasEncoladas.poll();
-        if(piezasEncoladas.size()==0) {
-            rellenarCola();
-        }
-        return currentPieza;
+        this.currentPieza = null;
+        return this.getCurrentPieza();
     }
 }
