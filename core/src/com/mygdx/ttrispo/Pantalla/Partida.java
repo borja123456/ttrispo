@@ -9,22 +9,24 @@ public class Partida extends PantallaBase  {
     private GestorEstado gEstado;
     private GestorPiezas gPieza;
     public static float x, y;
+    private Procesador pc;
+    private GameOver gameOver;
 
     public Partida(){
         gEstado = new GestorEstado(this);
         gPieza = new GestorPiezas(this);
-        Procesador pc = new Procesador(gEstado);
-        Gdx.input.setInputProcessor(new Procesador(gEstado));
-        this.x = Gdx.graphics.getWidth()/4;
-        this.y = -(Gdx.graphics.getWidth()/3);
+        pc = new Procesador(gEstado);
+        gameOver = new GameOver(this);
 
-        //Debug scene2d
-       // stage.setDebugAll(true);
+        Gdx.input.setInputProcessor(pc);
+
+
+        this.x = Gdx.graphics.getWidth()/4;
+        this.y = -(Gdx.graphics.getWidth()/4);
     }
 
     @Override
     public void show() {
-        // Añadir escuchador de eventos al stage
         super.show();
         tablero = new Tablero(x,y);
         stage.addActor(tablero);
@@ -50,6 +52,7 @@ public class Partida extends PantallaBase  {
             case (GestorEstado.SINPIEZA):
                 this.insertarNextPieza();
                 gEstado.setFlagSinFicha(false);
+                tablero.setImg3(Pieza.getImagen(GestorPiezas.piezasEncoladas.peek().getTipo()));
                 break;
             case (GestorEstado.IZQUIERDA):
                 currentPieza = gPieza.getCurrentPieza();
@@ -89,16 +92,38 @@ public class Partida extends PantallaBase  {
                 if(tablero.isColision(posicionPiezaAbajo)){
                     // La pieza no puede bajar
                     tablero.cambiarBloque(currentPieza.getPosicionPieza() ,currentPieza.getTipo());
+                    if (tablero.comprobarGameOver(currentPieza.getPosicionPieza())) {
+                        stage.clear();
+                        stage.addActor(gameOver);
+                    }
                     tablero.comprobarLineaCompleta();
-
-
                     gEstado.setFlagSinFicha(true);
+
 
                 }else{
                     // La pieza puede baja
                     tablero.cambiarBloque(posicionPiezaAbajo ,currentPieza.getTipo());
                     currentPieza.setF(currentPieza.f + 1);
                 }
+                break;
+            case (GestorEstado.GIRO):
+                currentPieza = gPieza.getCurrentPieza();
+                int piezaChocada [][] = currentPieza.getPosicionAbajo();
+                tablero.cambiarBloque(currentPieza.getPosicionPieza(),Pieza.VACIA);
+                if(tablero.isColision(piezaChocada)){
+                    // La pieza no puede bajar
+                    tablero.cambiarBloque(currentPieza.getPosicionPieza() ,currentPieza.getTipo());
+                    tablero.comprobarLineaCompleta();
+                    gEstado.setFlagSinFicha(true);
+                }else {
+                    if (currentPieza.getGiro()<4){
+                        currentPieza.setGiro(1);
+                    }else {
+                        currentPieza.setGiroInicial();
+                    }
+                }
+                System.out.println("Giro: "+ currentPieza.getGiro());
+                gEstado.setEstado(GestorEstado.CAER);
                 break;
         }
     }

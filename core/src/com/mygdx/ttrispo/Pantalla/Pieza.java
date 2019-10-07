@@ -1,6 +1,7 @@
 package com.mygdx.ttrispo.Pantalla;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Pieza {
 
@@ -12,19 +13,19 @@ public class Pieza {
     public static final int I = 6;
     public static final int O = 7;
 
-    public static Texture color;
+    public static Texture color, imagen;
 
     public static final int VACIA = 0;
 
     protected int f,c, numBlock;
-    protected int giro = 1;
-    protected int tipo;
+    protected int tipo, giro;
 
     public Pieza(int f,int c) {
         this.f = f;
         this.c = c;
         this.numBlock = 4;
-        this.tipo=this.T;
+        this.tipo = this.T;
+        this.giro = 1;
     }
 
     protected int [][] getPosicionPieza(){
@@ -116,6 +117,38 @@ public class Pieza {
         return aux;
     }
 
+
+
+    public static TextureRegion getImagen(int tipo) {
+        TextureRegion aux = new TextureRegion(new Texture("SCompleta.png"));
+
+        switch (tipo){
+            case 1:
+                aux = new TextureRegion(new Texture("TCompleta.png"));
+                break;
+            case 2:
+                aux = new TextureRegion(new Texture("SCompleta.png"));
+                break;
+            case 3:
+                aux = new TextureRegion(new Texture("ZCompleta.png"));
+                break;
+            case 4:
+                aux = new TextureRegion(new Texture("JCompleta.png"));
+                break;
+            case 5:
+                aux = new TextureRegion(new Texture("LCompleta.png"));
+                break;
+            case 6:
+                aux = new TextureRegion(new Texture("ICompleta.png"));
+                break;
+            case 7:
+                aux = new TextureRegion(new Texture("OCompleta.png"));
+                break;
+        }
+
+        return aux;
+    }
+
     public int [][] getPosicionAbajo(){
         int [][] r = this.getPosicionPieza();
         for (int i = 0; i < r.length; i++) {
@@ -151,7 +184,19 @@ public class Pieza {
         return this.tipo;
     }
 
+    public void setGiro(int giro) {
+        this.giro += giro;
+    }
+
+    public int getGiro() {
+        return giro;
+    }
+
     public void setTipo(int tipo) {
         this.tipo = tipo;
+    }
+
+    public void setGiroInicial() {
+        this.giro=1;
     }
 }
