@@ -93,8 +93,9 @@ public class Partida extends PantallaBase  {
                     // La pieza no puede bajar
                     tablero.cambiarBloque(currentPieza.getPosicionPieza() ,currentPieza.getTipo());
                     if (tablero.comprobarGameOver(currentPieza.getPosicionPieza())) {
-                        pause();
+                        stage.clear();
                         stage.addActor(gameOver);
+
                     }
                     tablero.comprobarLineaCompleta();
                     gEstado.setFlagSinFicha(true);
