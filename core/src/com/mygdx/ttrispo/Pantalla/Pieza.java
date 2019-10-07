@@ -117,42 +117,11 @@ public class Pieza {
         return aux;
     }
 
-<<<<<<< HEAD
-=======
-    public static Texture getFichaCompleta(int tipo) {
-        Texture aux = new Texture("TCompleta.png");
-        switch (tipo){
-            case 1:
-                aux = new Texture("TCompleta.png");
-                break;
-            case 2:
-                aux = new Texture("SCompleta.png");
-                break;
-            case 3:
-                aux = new Texture("ZCompleta.png");
-                break;
-            case 4:
-                aux = new Texture("JCompleta.png");
-                break;
-            case 5:
-                aux = new Texture("LCompleta.png");
-                break;
-            case 6:
-                aux = new Texture("ICompleta.png");
-                break;
-            case 7:
-                aux = new Texture("OCompleta.png");
-                break;
-        }
->>>>>>> b2cadab111690f225bbe310eac2707faaad71878
 
 
-<<<<<<< HEAD
     public static TextureRegion getImagen(int tipo) {
         TextureRegion aux = new TextureRegion(new Texture("SCompleta.png"));
-=======
 
->>>>>>> b2cadab111690f225bbe310eac2707faaad71878
         switch (tipo){
             case 1:
                 aux = new TextureRegion(new Texture("TCompleta.png"));
