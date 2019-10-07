@@ -22,7 +22,7 @@ public class Partida extends PantallaBase  {
 
 
         this.x = Gdx.graphics.getWidth()/4;
-        this.y = -(Gdx.graphics.getWidth()/4);
+        this.y = -(Gdx.graphics.getWidth()/3);
     }
 
     @Override
