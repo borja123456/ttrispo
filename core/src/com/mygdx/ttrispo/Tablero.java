@@ -3,6 +3,8 @@ package com.mygdx.ttrispo;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.mygdx.ttrispo.Pantalla.GestorPiezas;
 import com.mygdx.ttrispo.Pantalla.Pieza;
@@ -11,7 +13,7 @@ import com.mygdx.ttrispo.Pantalla.PiezaS;
 public class Tablero extends Actor {
     public static int tablero[][];
     private Texture img, img2;
-
+    private TextureRegion img3;
     public static final int size = 25; //pieza
     public static int TableroX = size*10;
     public static int TableroY = size*20;
@@ -31,26 +33,26 @@ public class Tablero extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
         pintarPieza();
         int x,y;setScaleX(50);
+
         for (int i = 0; i < this.tablero.length; i++) {
             for (int j = 0; j < this.tablero[i].length; j++) {
+                x = 60*i;
+                y = Gdx.graphics.getHeight() - 60*j;
                 if(this.tablero[i][j] >= 1){
-                    x = 60*i;
-                    y = Gdx.graphics.getHeight() - 60*j;
+
                     batch.setColor(1, 1, 1, 1f);
                     batch.draw(img,x+ekis,y+de,0,0,55,55);
                 }if(this.tablero[i][j] == 0){
-                    x = 60*i;
-                    y = Gdx.graphics.getHeight() - 60*j;
+
                     batch.draw(img2,x+ekis,y+de,0,0,50,50);
                     batch.setColor(1, 1, 1, 0.6f);
                 }
             }
         }
         if(GestorPiezas.piezasEncoladas.size()!=0) {
-            batch.draw(pintarPiezaCompleta(), 0, 0, 0, 0, 50, 50);
+            batch.draw(img3, Gdx.graphics.getWidth() / 3, (8 * Gdx.graphics.getHeight()) / 10);
         }
     }
 
@@ -58,10 +60,7 @@ public class Tablero extends Actor {
         img = Pieza.getColor(GestorPiezas.aleatorio);
     }
 
-    private Texture pintarPiezaCompleta(){
 
-        return Pieza.getFichaCompleta(GestorPiezas.piezasEncoladas.poll().getTipo());
-    }
 
     @Override
     public void act(float delta) {
@@ -151,5 +150,9 @@ public class Tablero extends Actor {
             }
         }
 
+    }
+
+    public void setImg3(TextureRegion img3) {
+        this.img3 = img3;
     }
 }

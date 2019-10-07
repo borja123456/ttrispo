@@ -1,6 +1,7 @@
 package com.mygdx.ttrispo.Pantalla;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Pieza {
 
@@ -116,58 +117,31 @@ public class Pieza {
         return aux;
     }
 
-    public static Texture getFichaCompleta(int tipo) {
-        Texture aux = new Texture("Tcompleta.jpg");
+
+
+    public static TextureRegion getImagen(int tipo) {
+        TextureRegion aux = new TextureRegion(new Texture("SCompleta.png"));
         switch (tipo){
             case 1:
-                aux = new Texture("Tcompleta.jpg");
+                aux = new TextureRegion(new Texture("TCompleta.png"));
                 break;
             case 2:
-                aux = new Texture("SCompleta.jpg");
+                aux = new TextureRegion(new Texture("SCompleta.png"));
                 break;
             case 3:
-                aux = new Texture("ZCompleta.jpg");
+                aux = new TextureRegion(new Texture("ZCompleta.png"));
                 break;
             case 4:
-                aux = new Texture("JCompleta.jpg");
+                aux = new TextureRegion(new Texture("JCompleta.png"));
                 break;
             case 5:
-                aux = new Texture("LCompleta.jpg");
+                aux = new TextureRegion(new Texture("LCompleta.png"));
                 break;
             case 6:
-                aux = new Texture("ICompleta.jpg");
+                aux = new TextureRegion(new Texture("ICompleta.png"));
                 break;
             case 7:
-                aux = new Texture("O.Completa.jpg");
-                break;
-        }
-
-        return aux;
-    }
-
-    public static Texture getImagen(int tipo) {
-        Texture aux = new Texture("SCompleta.png");
-        switch (tipo){
-            case 1:
-                aux = new Texture("TCompleta.png");
-                break;
-            case 2:
-                aux = new Texture("SCompleta.png");
-                break;
-            case 3:
-                aux = new Texture("ZCompleta.png");
-                break;
-            case 4:
-                aux = new Texture("JCompleta.png");
-                break;
-            case 5:
-                aux = new Texture("LCompleta.png");
-                break;
-            case 6:
-                aux = new Texture("ICompleta.png");
-                break;
-            case 7:
-                aux = new Texture("OCompleta.png");
+                aux = new TextureRegion(new Texture("OCompleta.png"));
                 break;
         }
 

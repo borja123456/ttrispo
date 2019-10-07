@@ -50,6 +50,7 @@ public class Partida extends PantallaBase  {
             case (GestorEstado.SINPIEZA):
                 this.insertarNextPieza();
                 gEstado.setFlagSinFicha(false);
+                tablero.setImg3(Pieza.getImagen(GestorPiezas.piezasEncoladas.peek().getTipo()));
                 break;
             case (GestorEstado.IZQUIERDA):
                 currentPieza = gPieza.getCurrentPieza();

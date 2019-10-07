@@ -58,7 +58,6 @@ public class GestorPiezas {
         piezas.add(pL);
         piezas.add(pJ);
         piezaAux = piezas.get(this.aleatorio);
-        piezaAux.setTipo(this.aleatorio);
         return piezaAux;
     }
 
@@ -67,10 +66,11 @@ public class GestorPiezas {
     }
 
     public Pieza getNextPieza() {
+
+        currentPieza = piezasEncoladas.poll();
         if(piezasEncoladas.size()==0) {
             rellenarCola();
         }
-        currentPieza = piezasEncoladas.poll();
         return currentPieza;
     }
 }
