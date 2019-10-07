@@ -10,11 +10,13 @@ public class Partida extends PantallaBase  {
     private GestorPiezas gPieza;
     public static float x, y;
     private Procesador pc;
+    private GameOver gameOver;
 
     public Partida(){
         gEstado = new GestorEstado(this);
         gPieza = new GestorPiezas(this);
         pc = new Procesador(gEstado);
+        gameOver = new GameOver(this);
 
         Gdx.input.setInputProcessor(pc);
 
@@ -90,8 +92,13 @@ public class Partida extends PantallaBase  {
                 if(tablero.isColision(posicionPiezaAbajo)){
                     // La pieza no puede bajar
                     tablero.cambiarBloque(currentPieza.getPosicionPieza() ,currentPieza.getTipo());
-                    tablero.comprobarLineaCompleta();
-                    gEstado.setFlagSinFicha(true);
+                    if (tablero.comprobarGameOver()){
+                        pause();
+                        stage.addActor(gameOver);
+                    }else {
+                        tablero.comprobarLineaCompleta();
+                        gEstado.setFlagSinFicha(true);
+                    }
 
                 }else{
                     // La pieza puede baja
