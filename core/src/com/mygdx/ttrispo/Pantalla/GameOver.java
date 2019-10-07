@@ -24,8 +24,8 @@ public class GameOver extends Actor {
         super.draw(batch, parentAlpha);
         batch.draw(imagen, Gdx.graphics.getHeight()/8, Gdx.graphics.getHeight()/2, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/3);
         batch.setColor(1, 1, 1, 0.9f);
-        font.getData().setScale(2f);
-        font.draw(batch, "PUNTUACION: " + Tablero.puntuacion, Gdx.graphics.getWidth()/4, Gdx.graphics.getHeight()/2);
+        font.getData().setScale(8);
+        font.draw(batch, "" + Tablero.puntuacion, Gdx.graphics.getWidth()/5, 93*Gdx.graphics.getHeight()/100);
     }
 
 }
