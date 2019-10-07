@@ -136,23 +136,17 @@ public class Tablero extends Actor {
         }
     }
 
-    public boolean comprobarGameOver(){
+    public boolean comprobarGameOver(int bloques[][]){
         int numeroColumnas = 10;
         int valorFila = 0;
         boolean gameover=false;
-        for(int j=0; j<10;j++){
-            for(int i=0;i<20;i++){
-                if(tablero[j][i]!=0){
-                    valorFila ++;
-                }
+        for (int i = 0; i < bloques.length; i++) {
+            if (bloques[i][0] == 0) {
+                return true;
             }
-            if(valorFila==numeroColumnas){
-                gameover= true;
-                System.out.println("Gamse Over");
-            }
-            valorFila =0;
         }
-        return gameover;
+
+        return false;
     }
 
     /*

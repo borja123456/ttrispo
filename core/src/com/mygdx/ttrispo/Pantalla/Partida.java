@@ -92,13 +92,13 @@ public class Partida extends PantallaBase  {
                 if(tablero.isColision(posicionPiezaAbajo)){
                     // La pieza no puede bajar
                     tablero.cambiarBloque(currentPieza.getPosicionPieza() ,currentPieza.getTipo());
-                    if (tablero.comprobarGameOver()){
+                    if (tablero.comprobarGameOver(currentPieza.getPosicionPieza())) {
                         pause();
                         stage.addActor(gameOver);
-                    }else {
-                        tablero.comprobarLineaCompleta();
-                        gEstado.setFlagSinFicha(true);
                     }
+                    tablero.comprobarLineaCompleta();
+                    gEstado.setFlagSinFicha(true);
+
 
                 }else{
                     // La pieza puede baja
