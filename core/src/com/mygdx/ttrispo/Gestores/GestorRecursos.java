@@ -20,7 +20,7 @@ public  class GestorRecursos {
         manager.load("ZCompleta.png", Texture.class);
         manager.load("JCompleta.png", Texture.class);
         manager.load("LCompleta.png", Texture.class);
-        manager.load("ICompletaC.png", Texture.class);
+        manager.load("ICompleta.png", Texture.class);
         manager.load("OCompleta.png", Texture.class);
         manager.load("bg_tablero.png", Texture.class);
         while (!manager.update()) {

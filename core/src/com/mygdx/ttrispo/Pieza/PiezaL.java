@@ -8,6 +8,7 @@ public class PiezaL extends Pieza{
         super(f, c);
         tipo = L;
         this.texture = GestorRecursos.get("L.jpg");
+        this.imagen = GestorRecursos.get("LCompleta.png");
     }
 
     public int [][] getPosicionPieza(){ // ¿Deberia llamarse giroPiezaLDerecha el metodo?

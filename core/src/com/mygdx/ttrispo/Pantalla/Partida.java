@@ -12,6 +12,7 @@ import com.mygdx.ttrispo.Tablero;
 public class Partida extends PantallaBase {
     private GestorRecursos gRecursos;
     private Tablero tablero;
+    private ProgresoPartida progresoPartida;
     private GestorEstado gEstado;
     private GestorPiezas gPieza;
     public static float x, y;
@@ -35,7 +36,9 @@ public class Partida extends PantallaBase {
     public void show() {
         super.show();
         tablero = new Tablero(this);
+        progresoPartida = new ProgresoPartida(this, tablero);
         stage.addActor(tablero);
+        stage.addActor(progresoPartida);
         tablero.setPosition(x, y);
     }
 

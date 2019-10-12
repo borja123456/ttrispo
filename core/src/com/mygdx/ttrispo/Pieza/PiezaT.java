@@ -8,6 +8,7 @@ public class PiezaT extends Pieza {
         super(f, c);
         tipo = T;
         this.texture = GestorRecursos.get("T.jpg");
+        this.imagen = GestorRecursos.get("TCompleta.png");
     }
 
     public int[][] getPosicionPieza() {

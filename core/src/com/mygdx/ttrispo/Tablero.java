@@ -39,7 +39,7 @@ public class Tablero extends Actor {
                 tipo = this.tablero[i][j];
                 if(tipo >= 1) {
                     imgBloque = partida.getTexturaPieza(tipo);
-                    batch.setColor(1, 1, 1, 1f);
+                    //batch.setColor(1, 1, 1, 1f);
                     batch.draw(imgBloque, x - tableroX, y - tableroY, 0, 0, size, size);
                 }
             }
@@ -135,6 +135,10 @@ public class Tablero extends Actor {
                 tablero[c][fila]= tablero[c][fila-1];
             }
         }
+    }
+
+    public int getPuntuacion(){
+        return this.puntuacion;
     }
 
     public void setNextPiezaImagen(Texture nextPiezaImagen) {
