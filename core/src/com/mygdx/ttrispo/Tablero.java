@@ -16,13 +16,11 @@ public class Tablero extends Actor {
     public  int size = 60; //pieza
     public  int tableroX = 20;
     public  int tableroY = 500;
-    public  int puntuacion;
 
     public Tablero(Partida partida) {
         this.partida = partida;
         this.tablero = new int[10][20];
         tableroImg = GestorRecursos.get("bg_tablero.png");
-        this.puntuacion = 0;
     }
 
     @Override
@@ -102,7 +100,7 @@ public class Tablero extends Actor {
                 }
             }
             if(valorFila==numeroColumnas){
-                puntuacion+=30;
+                partida.setPuntuacion(30);
                 eliminarfila(i);
                 bajarFilaAnterior(i);
             }
@@ -139,10 +137,6 @@ public class Tablero extends Actor {
                 tablero[c][fila]= tablero[c][fila-1];
             }
         }
-    }
-
-    public int getPuntuacion(){
-        return this.puntuacion;
     }
 
     public void setNextPiezaImagen(Texture nextPiezaImagen) {
