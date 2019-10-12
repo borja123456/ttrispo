@@ -1,6 +1,7 @@
 package com.mygdx.ttrispo;
 
 import com.badlogic.gdx.Game;
+import com.mygdx.ttrispo.Gestores.GestorRecursos;
 import com.mygdx.ttrispo.Pantalla.Partida;
 
 public class MyGdxGame extends Game {
@@ -13,6 +14,7 @@ public class MyGdxGame extends Game {
     @Override
     public void create() {
 
+        GestorRecursos.cargarImagenes();
         partida = new Partida();
 //        batch = new SpriteBatch();
 //        img = new Texture("badlogic.jpg");

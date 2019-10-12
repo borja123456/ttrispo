@@ -3,64 +3,60 @@ package com.mygdx.ttrispo;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.mygdx.ttrispo.Pantalla.GestorPiezas;
-import com.mygdx.ttrispo.Pantalla.Pieza;
+import com.mygdx.ttrispo.Gestores.GestorRecursos;
+import com.mygdx.ttrispo.Pantalla.Partida;
+import com.mygdx.ttrispo.Pieza.Pieza;
 
 public class Tablero extends Actor {
     public static int tablero[][];
-    private Texture img, img2;
-    private TextureRegion img3;
-    public static final int size = 25; //pieza
-    public static int TableroX = size*10;
-    public static int TableroY = size*20;
-    private float ekis, de;
-    public static int puntuacion;
+    private Partida partida;
+    private Texture tableroImg;
+    private Texture nextPiezaImagen;
+    public  int size = 60; //pieza
+    public  int tableroX = 20;
+    public  int tableroY = 500;
+    public  int puntuacion;
 
 
     public Tablero(float x, float y) {
-        this.tablero = new int[TableroX/size][TableroY/size];
+        this.tablero = new int[10][20];
 
-        img2 = new Texture("bg_tablero.png");
+        tableroImg = GestorRecursos.get("bg_tablero.png");
         //this.setWidth(img.getWidth());
         //this.setHeight(img.getHeight());
-        this.ekis=x;
-        this.de=y;
+        this.puntuacion = 0;
+
+    }
+    public Tablero(Partida partida) {
+        this.partida = partida;
+        this.tablero = new int[10][20];
+
+        tableroImg = GestorRecursos.get("bg_tablero.png");
         this.puntuacion = 0;
 
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        pintarPieza();
-        int x,y;setScaleX(50);
+        //pintarPieza();
+        int x,y,tipo;
+        setScaleX(50);
+        Texture imgBloque;
 
         for (int i = 0; i < this.tablero.length; i++) {
             for (int j = 0; j < this.tablero[i].length; j++) {
-                x = 60*i;
-                y = Gdx.graphics.getHeight() - 60*j;
-                if(this.tablero[i][j] >= 1){
-
+                x = size*i;
+                y = Gdx.graphics.getHeight() - size*j;
+                tipo = this.tablero[i][j];
+                if(tipo >= 1) {
+                    imgBloque = Pieza.getTexture(tipo);
                     batch.setColor(1, 1, 1, 1f);
-                    batch.draw(img,x+ekis,y+de,0,0,55,55);
-                }if(this.tablero[i][j] == 0){
-
-                    batch.draw(img2,x+ekis,y+de,0,0,50,50);
-                    batch.setColor(1, 1, 1, 0.6f);
+                    batch.draw(imgBloque, x - tableroX, y - tableroY, 0, 0, size, size);
                 }
             }
         }
-        if(GestorPiezas.piezasEncoladas.size()!=0) {
-            batch.draw(img3, Gdx.graphics.getWidth() / 3, (8 * Gdx.graphics.getHeight()) / 10);
-        }
     }
-
-    private void pintarPieza() {
-        img = Pieza.getColor(GestorPiezas.aleatorio);
-    }
-
-
 
     @Override
     public void act(float delta) {
@@ -165,7 +161,7 @@ public class Tablero extends Actor {
 
     }
 
-    public void setImg3(TextureRegion img3) {
-        this.img3 = img3;
+    public void setNextPiezaImagen(Texture nextPiezaImagen) {
+        this.nextPiezaImagen = nextPiezaImagen;
     }
 }

@@ -1,18 +1,26 @@
 package com.mygdx.ttrispo.Pantalla;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.mygdx.ttrispo.Gestores.GestorEstado;
+import com.mygdx.ttrispo.Gestores.GestorPiezas;
+import com.mygdx.ttrispo.Gestores.GestorRecursos;
+import com.mygdx.ttrispo.Pieza.Pieza;
 import com.mygdx.ttrispo.Procesador;
 import com.mygdx.ttrispo.Tablero;
 
-public class Partida extends PantallaBase  {
+public class Partida extends PantallaBase {
+    private GestorRecursos gRecursos;
     private Tablero tablero;
     private GestorEstado gEstado;
     private GestorPiezas gPieza;
     public static float x, y;
     private Procesador pc;
     private GameOver gameOver;
+    
 
-    public Partida(){
+
+    public Partida() {
         gEstado = new GestorEstado(this);
         gPieza = new GestorPiezas(this);
         pc = new Procesador(gEstado);
@@ -20,15 +28,13 @@ public class Partida extends PantallaBase  {
 
         Gdx.input.setInputProcessor(pc);
 
-
-        this.x = Gdx.graphics.getWidth()/4;
-        this.y = -(Gdx.graphics.getWidth()/4);
+        gRecursos.cargarImagenes();
     }
 
     @Override
     public void show() {
         super.show();
-        tablero = new Tablero(x,y);
+        tablero = new Tablero(this);
         stage.addActor(tablero);
         tablero.setPosition(x, y);
     }
@@ -36,96 +42,9 @@ public class Partida extends PantallaBase  {
     @Override
     public void render(float delta) {
         super.render(delta);
-        Gdx.gl.glClearColor(0.1f, 0.1f,0.1f, 1f);
         // Ciclo de vida
         cicloDeVida(delta);
         stage.draw();
-    }
-
-    private void cicloDeVida(float delta) {
-        Pieza currentPieza;
-        switch (gEstado.getEstado(delta)){
-            // Pieza en reposo
-            case (GestorEstado.REPOSO):
-
-                break;
-            case (GestorEstado.SINPIEZA):
-                this.insertarNextPieza();
-                gEstado.setFlagSinFicha(false);
-                tablero.setImg3(Pieza.getImagen(GestorPiezas.piezasEncoladas.peek().getTipo()));
-                break;
-            case (GestorEstado.IZQUIERDA):
-                currentPieza = gPieza.getCurrentPieza();
-                int posicionPiezaIzquierda [][] = currentPieza.getPosicionIzquierda();
-                tablero.cambiarBloque(currentPieza.getPosicionPieza(),Pieza.VACIA);
-                if(tablero.isColision(posicionPiezaIzquierda)){
-                    tablero.cambiarBloque(currentPieza.getPosicionPieza() ,currentPieza.getTipo());
-                    //si no puede seguir moviendo a la izquierda pues ahi se queda
-                }else{
-                    tablero.cambiarBloque(posicionPiezaIzquierda ,currentPieza.getTipo());
-                    currentPieza.setC(currentPieza.c -1);
-                }
-                //Cambia a reposo. pero esto hay que refactorizarlo por el amor de dios
-                gEstado.setEstado(gEstado.REPOSO);
-                break;
-
-            case (GestorEstado.DERECHA):
-                currentPieza = gPieza.getCurrentPieza();
-                int posicionPiezaDerecha [][] = currentPieza.getPosicionDerecha();
-                tablero.cambiarBloque(currentPieza.getPosicionPieza(),Pieza.VACIA);
-                if(tablero.isColision(posicionPiezaDerecha)){
-                    tablero.cambiarBloque(currentPieza.getPosicionPieza() ,currentPieza.getTipo());
-                    //si no puede seguir moviendo a la derecha pues ahi se queda
-                }else{
-                    tablero.cambiarBloque(posicionPiezaDerecha ,currentPieza.getTipo());
-                    currentPieza.setC(currentPieza.c + 1);
-                }
-                //Cambia a reposo. pero esto hay que refactorizarlo por el amor de dios
-                gEstado.setEstado(gEstado.REPOSO);
-                break;
-            // La pieza intenta caer
-            case (GestorEstado.CAER):
-                currentPieza = gPieza.getCurrentPieza();
-
-                int posicionPiezaAbajo [][] = currentPieza.getPosicionAbajo();
-                tablero.cambiarBloque(currentPieza.getPosicionPieza(),Pieza.VACIA);
-                if(tablero.isColision(posicionPiezaAbajo)){
-                    // La pieza no puede bajar
-                    tablero.cambiarBloque(currentPieza.getPosicionPieza() ,currentPieza.getTipo());
-                    if (tablero.comprobarGameOver(currentPieza.getPosicionPieza())) {
-                        stage.clear();
-                        stage.addActor(gameOver);
-                    }
-                    tablero.comprobarLineaCompleta();
-                    gEstado.setFlagSinFicha(true);
-
-
-                }else{
-                    // La pieza puede baja
-                    tablero.cambiarBloque(posicionPiezaAbajo ,currentPieza.getTipo());
-                    currentPieza.setF(currentPieza.f + 1);
-                }
-                break;
-            case (GestorEstado.GIRO):
-                currentPieza = gPieza.getCurrentPieza();
-                int piezaChocada [][] = currentPieza.getPosicionAbajo();
-                tablero.cambiarBloque(currentPieza.getPosicionPieza(),Pieza.VACIA);
-                if(tablero.isColision(piezaChocada)){
-                    // La pieza no puede bajar
-                    tablero.cambiarBloque(currentPieza.getPosicionPieza() ,currentPieza.getTipo());
-                    tablero.comprobarLineaCompleta();
-                    gEstado.setFlagSinFicha(true);
-                }else {
-                    if (currentPieza.getGiro()<4){
-                        currentPieza.setGiro(1);
-                    }else {
-                        currentPieza.setGiroInicial();
-                    }
-                }
-                System.out.println("Giro: "+ currentPieza.getGiro());
-                gEstado.setEstado(GestorEstado.CAER);
-                break;
-        }
     }
 
     @Override
@@ -133,9 +52,124 @@ public class Partida extends PantallaBase  {
         super.dispose();
     }
 
-    public boolean insertarNextPieza() {
-        Pieza pieza = gPieza.getNextPieza();
-        tablero.cambiarBloque(pieza.getPosicionPieza(),pieza.getTipo());
-        return false;
+    private void cicloDeVida(float delta) {
+        switch (gEstado.getEstado(delta)) {
+            // Pieza en reposo
+            case (GestorEstado.REPOSO):
+                if (gPieza.getCurrentPieza() == null) {
+                    gEstado.setEstado(GestorEstado.SINPIEZA);
+                }
+                break;
+            case (GestorEstado.SINPIEZA):
+                sinPiezaState();
+                break;
+            case (GestorEstado.IZQUIERDA):
+                moverIzquierdaState();
+                break;
+            case (GestorEstado.DERECHA):
+                moverDerechaState();
+                break;
+            // La pieza intenta caer
+            case (GestorEstado.CAER):
+                caerState();
+                break;
+            case (GestorEstado.GIRO):
+                giroState();
+                break;
+            case (GestorEstado.BLOQUEAR):
+                bloquearPieza();
+                break;
+        }
     }
+
+    private void bloquearPieza() {
+        // La pieza no puede bajar
+        Pieza currentPieza = gPieza.getCurrentPieza();
+        tablero.cambiarBloque(currentPieza.getPosicionPieza(), currentPieza.getTipo());
+        if (tablero.comprobarGameOver(currentPieza.getPosicionPieza())) {
+            stage.clear();
+            stage.addActor(gameOver);
+        }
+        tablero.comprobarLineaCompleta();
+        gPieza.bloquearPieza();
+        gEstado.setEstado(GestorEstado.SINPIEZA);
+    }
+
+    private void giroState() {
+        Pieza currentPieza;
+        currentPieza = gPieza.getCurrentPieza();
+        tablero.cambiarBloque(currentPieza.getPosicionPieza(), Pieza.VACIA);
+        currentPieza.girarDer();
+        int piezaGirada[][] = currentPieza.getPosicionPieza();
+        if (tablero.isColision(piezaGirada)) {
+            // La pieza no puede girar
+            currentPieza.girarIz();
+            tablero.cambiarBloque(currentPieza.getPosicionPieza(), currentPieza.getTipo());
+        } else {
+            tablero.cambiarBloque(currentPieza.getPosicionPieza(), currentPieza.getTipo());
+        }
+        gEstado.setEstado(GestorEstado.REPOSO);
+    }
+
+    private void caerState() {
+        Pieza currentPieza;
+        currentPieza = gPieza.getCurrentPieza();
+
+        int posicionPiezaAbajo[][] = currentPieza.getPosicionAbajo();
+        tablero.cambiarBloque(currentPieza.getPosicionPieza(), Pieza.VACIA);
+        if (tablero.isColision(posicionPiezaAbajo)) {
+            gEstado.setEstado(GestorEstado.BLOQUEAR);
+        } else {
+            // La pieza puede baja
+            tablero.cambiarBloque(posicionPiezaAbajo, currentPieza.getTipo());
+            currentPieza.setFila(currentPieza.getFila() + 1);
+            gEstado.setEstado(GestorEstado.REPOSO);
+        }
+    }
+
+    private void moverDerechaState() {
+        Pieza currentPieza;
+        currentPieza = gPieza.getCurrentPieza();
+        int posicionPiezaDerecha[][] = currentPieza.getPosicionDerecha();
+        tablero.cambiarBloque(currentPieza.getPosicionPieza(), Pieza.VACIA);
+        if (tablero.isColision(posicionPiezaDerecha)) {
+            tablero.cambiarBloque(currentPieza.getPosicionPieza(), currentPieza.getTipo());
+            //si no puede seguir moviendo a la derecha pues ahi se queda
+        } else {
+            tablero.cambiarBloque(posicionPiezaDerecha, currentPieza.getTipo());
+            currentPieza.setColumna(currentPieza.getColumna() + 1);
+        }
+        //Cambia a reposo. pero esto hay que refactorizarlo por el amor de dios
+        gEstado.setEstado(gEstado.REPOSO);
+    }
+
+    private void moverIzquierdaState() {
+        Pieza currentPieza;
+        currentPieza = gPieza.getCurrentPieza();
+        int posicionPiezaIzquierda[][] = currentPieza.getPosicionIzquierda();
+        tablero.cambiarBloque(currentPieza.getPosicionPieza(), Pieza.VACIA);
+        if (tablero.isColision(posicionPiezaIzquierda)) {
+            tablero.cambiarBloque(currentPieza.getPosicionPieza(), currentPieza.getTipo());
+            //si no puede seguir moviendo a la izquierda pues ahi se queda
+        } else {
+            tablero.cambiarBloque(posicionPiezaIzquierda, currentPieza.getTipo());
+            currentPieza.setColumna(currentPieza.getColumna() - 1);
+        }
+        //Cambia a reposo. pero esto hay que refactorizarlo por el amor de dios
+        gEstado.setEstado(gEstado.REPOSO);
+    }
+
+    private void sinPiezaState() {
+        Pieza pieza = gPieza.getCurrentPieza();
+        tablero.cambiarBloque(pieza.getPosicionPieza(), pieza.getTipo());
+        tablero.setNextPiezaImagen(gPieza.getImagenNextPieza());
+        gEstado.setEstado(GestorEstado.REPOSO);
+    }
+
+
+
+    public Texture getTexture(int tipo) {
+        return gPieza.getNombreTexture(tipo);
+    }
+
 }
