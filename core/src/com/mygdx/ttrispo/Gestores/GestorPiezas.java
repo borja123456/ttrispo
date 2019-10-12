@@ -53,7 +53,7 @@ public class GestorPiezas {
     }
 
     public Pieza getCurrentPieza() {
-        if(currentPieza == null){
+        if (currentPieza == null) {
             currentPieza = piezas[piezasEncoladas.remove(0)];
             rellenarCola();
         }
@@ -66,7 +66,11 @@ public class GestorPiezas {
     }
 
     public Texture getImagenNextPieza() {
-        return piezas[piezasEncoladas.get(1)].getImagen();
+        Pieza nextPiezas = piezas[piezasEncoladas.get(0)];
+        if (nextPiezas == null) {
+            nextPiezas = piezas[Pieza.T];
+        }
+        return nextPiezas.getImagen();
     }
 
     public Texture getTexturaBloque(int tipo) {

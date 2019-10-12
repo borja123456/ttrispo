@@ -173,4 +173,7 @@ public class Partida extends PantallaBase {
         return gPieza.getTexturaBloque(tipo);
     }
 
+    public Texture getImagenNextPieza() {
+        return gPieza.getImagenNextPieza();
+    }
 }

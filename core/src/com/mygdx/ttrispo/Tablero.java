@@ -44,6 +44,10 @@ public class Tablero extends Actor {
                 }
             }
         }
+        if (nextPiezaImagen != null){
+            batch.draw(nextPiezaImagen, Gdx.graphics.getWidth() - (nextPiezaImagen.getWidth() - 50), Gdx.graphics.getHeight()- nextPiezaImagen.getHeight());
+        }
+
     }
 
     public void  cambiarBloque(int bloques[][], int tipo) {
