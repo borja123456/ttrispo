@@ -44,7 +44,7 @@ public class Partida extends PantallaBase {
         super.render(delta);
         // Ciclo de vida
         cicloDeVida(delta);
-        stage.draw();
+        stage.draw(); // pintar los actores
     }
 
     @Override
@@ -164,12 +164,6 @@ public class Partida extends PantallaBase {
         tablero.cambiarBloque(pieza.getPosicionPieza(), pieza.getTipo());
         tablero.setNextPiezaImagen(gPieza.getImagenNextPieza());
         gEstado.setEstado(GestorEstado.REPOSO);
-    }
-
-
-
-    public Texture getTexture(int tipo) {
-        return gPieza.getNombreTexture(tipo);
     }
 
 }

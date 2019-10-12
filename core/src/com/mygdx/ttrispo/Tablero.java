@@ -18,23 +18,11 @@ public class Tablero extends Actor {
     public  int tableroY = 500;
     public  int puntuacion;
 
-
-    public Tablero(float x, float y) {
-        this.tablero = new int[10][20];
-
-        tableroImg = GestorRecursos.get("bg_tablero.png");
-        //this.setWidth(img.getWidth());
-        //this.setHeight(img.getHeight());
-        this.puntuacion = 0;
-
-    }
     public Tablero(Partida partida) {
         this.partida = partida;
         this.tablero = new int[10][20];
-
         tableroImg = GestorRecursos.get("bg_tablero.png");
         this.puntuacion = 0;
-
     }
 
     @Override
@@ -56,11 +44,6 @@ public class Tablero extends Actor {
                 }
             }
         }
-    }
-
-    @Override
-    public void act(float delta) {
-        super.act(delta);
     }
 
     public void  cambiarBloque(int bloques[][], int tipo) {
@@ -113,14 +96,12 @@ public class Tablero extends Actor {
                 if(tablero[j][i]!=0){
                     valorFila ++;
                 }
-
             }
             if(valorFila==numeroColumnas){
                 puntuacion+=30;
                 eliminarfila(i);
                 bajarFilaAnterior(i);
             }
-
             valorFila =0;
         }
         return false;
@@ -133,15 +114,11 @@ public class Tablero extends Actor {
     }
 
     public boolean comprobarGameOver(int bloques[][]){
-        int numeroColumnas = 10;
-        int valorFila = 0;
-        boolean gameover=false;
         for (int i = 0; i < bloques.length; i++) {
             if (bloques[i][0] == 0) {
                 return true;
             }
         }
-
         return false;
     }
 
@@ -158,7 +135,6 @@ public class Tablero extends Actor {
                 tablero[c][fila]= tablero[c][fila-1];
             }
         }
-
     }
 
     public void setNextPiezaImagen(Texture nextPiezaImagen) {

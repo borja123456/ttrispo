@@ -5,15 +5,13 @@ import com.mygdx.ttrispo.Gestores.GestorRecursos;
 
 public class Pieza {
 
-    public static final int T = 1;//Hay que cambiar esto de si se quiere probar otra pieza, y la otra pieza debe llevar el 1
+    public static final int T = 1;
     public static final int S = 2;
     public static final int Z = 3;
     public static final int J = 4;
     public static final int L = 5;
     public static final int I = 6;
     public static final int O = 7;
-
-//    public static Texture texture;
 
     public static final int VACIA = 0;
 
@@ -61,35 +59,6 @@ public class Pieza {
                 //TODO: Esto deberia ser una Pieza estandar GestorRecursos.get("estandar.jpg")
                 return null;
         }
-    }
-
-
-    public static Texture getImagen(int tipo) {
-        switch (tipo) {
-            case 1:
-                return GestorRecursos.get("TCompletaC.png");
-
-//            case 2:
-//                aux = new TextureRegion(new Texture("SCompleta.png"));
-//
-//            case 3:
-//                aux = new TextureRegion(new Texture("ZCompleta.png"));
-//
-//            case 4:
-//                aux = new TextureRegion(new Texture("JCompleta.png"));
-//
-//            case 5:
-//                aux = new TextureRegion(new Texture("LCompleta.png"));
-//
-//            case 6:
-//                aux = new TextureRegion(new Texture("ICompleta.png"));
-//
-//            case 7:
-//                aux = new TextureRegion(new Texture("OCompleta.png"));
-
-        }
-
-        return GestorRecursos.get("TCompleta.png");
     }
 
     public int[][] getPosicionAbajo() {
@@ -156,14 +125,6 @@ public class Pieza {
         } else {
             giro = 4;
         }
-    }
-
-    public void setTipo(int tipo) {
-        this.tipo = tipo;
-    }
-
-    public void setGiroInicial() {
-        this.giro = 1;
     }
 
     public int getColumna() {

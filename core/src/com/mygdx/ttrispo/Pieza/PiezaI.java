@@ -6,7 +6,6 @@ public class PiezaI extends Pieza {
         super(f, c);
         tipo = I;
         this.texture = getTexture(this.tipo);
-        this.imagen = getImagen(this.tipo);
     }
 
     public int[][] getPosicionPieza() {
