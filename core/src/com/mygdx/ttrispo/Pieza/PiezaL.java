@@ -1,11 +1,13 @@
 package com.mygdx.ttrispo.Pieza;
 
+import com.mygdx.ttrispo.Gestores.GestorRecursos;
+
 public class PiezaL extends Pieza{
 
     public PiezaL(int f, int c) {
         super(f, c);
         tipo = L;
-        this.texture = getTexture(this.tipo);
+        this.texture = GestorRecursos.get("L.jpg");
     }
 
     public int [][] getPosicionPieza(){ // ¿Deberia llamarse giroPiezaLDerecha el metodo?

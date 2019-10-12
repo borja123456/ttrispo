@@ -166,4 +166,8 @@ public class Partida extends PantallaBase {
         gEstado.setEstado(GestorEstado.REPOSO);
     }
 
+    public Texture getTexturaPieza(int tipo){
+        return gPieza.getTexturaBloque(tipo);
+    }
+
 }

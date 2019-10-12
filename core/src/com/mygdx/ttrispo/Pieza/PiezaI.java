@@ -1,11 +1,13 @@
 package com.mygdx.ttrispo.Pieza;
 
+import com.mygdx.ttrispo.Gestores.GestorRecursos;
+
 public class PiezaI extends Pieza {
 
     public PiezaI(int f, int c) {
         super(f, c);
         tipo = I;
-        this.texture = getTexture(this.tipo);
+        this.texture = GestorRecursos.get("I.jpg");
     }
 
     public int[][] getPosicionPieza() {

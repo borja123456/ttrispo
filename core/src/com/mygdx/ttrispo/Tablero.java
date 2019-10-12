@@ -38,7 +38,7 @@ public class Tablero extends Actor {
                 y = Gdx.graphics.getHeight() - size*j;
                 tipo = this.tablero[i][j];
                 if(tipo >= 1) {
-                    imgBloque = Pieza.getTexture(tipo);
+                    imgBloque = partida.getTexturaPieza(tipo);
                     batch.setColor(1, 1, 1, 1f);
                     batch.draw(imgBloque, x - tableroX, y - tableroY, 0, 0, size, size);
                 }

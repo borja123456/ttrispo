@@ -17,14 +17,8 @@ public class Pieza {
 
     protected int fila, columna, numBlock;
     protected int tipo, giro;
-
-    public Texture getTexture() {
-        return texture;
-    }
-
     protected Texture texture;
     protected Texture imagen;
-
 
     public Pieza(int fila, int columna) {
         this.fila = fila;
@@ -34,31 +28,13 @@ public class Pieza {
         this.giro = 1;
     }
 
+    public Texture getTexture() {
+        return this.texture;
+    }
+
     public int[][] getPosicionPieza() {
         int[][] r = new int[numBlock][2];
         return r;
-    }
-
-    public static Texture getTexture(int tipo) {
-        switch (tipo) {
-            case 1:
-                return GestorRecursos.get("T.jpg");
-            case 2:
-                return GestorRecursos.get("S.jpg");
-            case 3:
-                return GestorRecursos.get("Z.jpg");
-            case 4:
-                return GestorRecursos.get("J.jpg");
-            case 5:
-                return GestorRecursos.get("L.jpg");
-            case 6:
-                return GestorRecursos.get("I.jpg");
-            case 7:
-                return GestorRecursos.get("O.jpg");
-            default:
-                //TODO: Esto deberia ser una Pieza estandar GestorRecursos.get("estandar.jpg")
-                return null;
-        }
     }
 
     public int[][] getPosicionAbajo() {

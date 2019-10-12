@@ -68,4 +68,8 @@ public class GestorPiezas {
     public Texture getImagenNextPieza() {
         return piezas[piezasEncoladas.get(1)].getImagen();
     }
+
+    public Texture getTexturaBloque(int tipo) {
+        return piezas[tipo].getTexture();
+    }
 }
