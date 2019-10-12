@@ -19,7 +19,7 @@ public class Partida extends PantallaBase {
     private Procesador pc;
     private GameOver gameOver;
     
-
+    private static int puntuacion;
 
     public Partida() {
         gEstado = new GestorEstado(this);
@@ -36,10 +36,12 @@ public class Partida extends PantallaBase {
     public void show() {
         super.show();
         tablero = new Tablero(this);
-        progresoPartida = new ProgresoPartida(this, tablero);
+        progresoPartida = new ProgresoPartida(this);
         stage.addActor(tablero);
         stage.addActor(progresoPartida);
         tablero.setPosition(x, y);
+        
+        this.puntuacion = 0;
     }
 
     @Override
@@ -175,5 +177,13 @@ public class Partida extends PantallaBase {
 
     public Texture getImagenNextPieza() {
         return gPieza.getImagenNextPieza();
+    }
+    
+    public int getPuntuacion(){
+        return this.puntuacion;
+    }
+    
+    public void setPuntuacion(int i) {
+        puntuacion+=i;
     }
 }
