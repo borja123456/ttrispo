@@ -101,7 +101,8 @@ public class GestorPiezas {
         Pieza nextPiezas = piezas[piezasEncoladas.get(0)];
         //¿?¿?¿?
         if (nextPiezas == null) {
-            nextPiezas = piezas[Pieza.T];
+            rellenarCola();
+            nextPiezas = piezas[piezasEncoladas.get(0)];
         }
         return nextPiezas.getImagen();
     }
