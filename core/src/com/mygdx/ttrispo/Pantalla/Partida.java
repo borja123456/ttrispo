@@ -26,10 +26,7 @@ public class Partida extends PantallaBase {
         gPieza = new GestorPiezas(this);
         pc = new Procesador(gEstado);
         gameOver = new GameOver(this);
-
         Gdx.input.setInputProcessor(pc);
-
-        gRecursos.cargarImagenes();
     }
 
     @Override
@@ -49,6 +46,7 @@ public class Partida extends PantallaBase {
         super.render(delta);
         // Ciclo de vida
         cicloDeVida(delta);
+
         stage.draw(); // pintar los actores
     }
 
