@@ -1,7 +1,6 @@
 package com.mygdx.ttrispo.Pieza;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.mygdx.ttrispo.Gestores.GestorRecursos;
 
 public class Pieza {
 
@@ -16,8 +15,8 @@ public class Pieza {
     public static final int VACIA = 0;
 
     protected int fila, columna, numBlock;
-    protected int tipo, giro;
-    protected Texture texture;
+    protected int tipo, estadoGiro;
+    protected Texture textura;
     protected Texture imagen;
 
     public Pieza(int fila, int columna) {
@@ -25,46 +24,46 @@ public class Pieza {
         this.columna = columna;
         this.numBlock = 4;
         this.tipo = this.T;
-        this.giro = 1;
+        this.estadoGiro = 1;
     }
 
-    public Texture getTexture() {
-        return this.texture;
+    public Texture getTextura() {
+        return this.textura;
     }
 
     public int[][] getPosicionPieza() {
-        int[][] r = new int[numBlock][2];
-        return r;
+        int[][] coordenadasPieza = new int[numBlock][2];
+        return coordenadasPieza;
     }
 
     public int[][] getPosicionAbajo() {
-        int[][] r = this.getPosicionPieza();
-        for (int i = 0; i < r.length; i++) {
-            r[i][0]++;
+        int[][] coordenadasPieza = this.getPosicionPieza();
+        for (int i = 0; i < coordenadasPieza.length; i++) {
+            coordenadasPieza[i][0]++;
         }
-        return r;
+        return coordenadasPieza;
     }
 
     public int[][] getPosicionDerecha() {
-        int[][] r = this.getPosicionPieza();
-        for (int i = 0; i < r.length; i++) {
-            r[i][1]++;
+        int[][] coordenadasPieza = this.getPosicionPieza();
+        for (int i = 0; i < coordenadasPieza.length; i++) {
+            coordenadasPieza[i][1]++;
         }
-        return r;
+        return coordenadasPieza;
     }
 
     public int[][] getPosicionIzquierda() {
-        int[][] r = this.getPosicionPieza();
-        for (int i = 0; i < r.length; i++) {
-            r[i][1]--;
+        int[][] coordenadasPieza = this.getPosicionPieza();
+        for (int i = 0; i < coordenadasPieza.length; i++) {
+            coordenadasPieza[i][1]--;
         }
-        return r;
+        return coordenadasPieza;
     }
 
     public void bloquear() {
         this.fila = 0;
         this.columna = 5;
-        this.giro = 1;
+        this.estadoGiro = 1;
     }
 
     public void setColumna(int columna) {
@@ -79,27 +78,27 @@ public class Pieza {
         return this.tipo;
     }
 
-    public void setGiro(int giro) {
-        this.giro += giro;
+    public void setEstadoGiro(int estadoGiro) {
+        this.estadoGiro += estadoGiro;
     }
 
-    public int getGiro() {
-        return giro;
+    public int getEstadoGiro() {
+        return estadoGiro;
     }
 
     public void girarDer() {
-        if (giro < 4) {
-            giro++;
+        if (estadoGiro < 4) {
+            estadoGiro++;
         } else {
-            giro = 1;
+            estadoGiro = 1;
         }
     }
 
     public void girarIz() {
-        if (giro > 1) {
-            giro--;
+        if (estadoGiro > 1) {
+            estadoGiro--;
         } else {
-            giro = 4;
+            estadoGiro = 4;
         }
     }
 

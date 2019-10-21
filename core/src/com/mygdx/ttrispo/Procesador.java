@@ -15,7 +15,7 @@ public class Procesador extends InputAdapter {
         int anchoMax = Gdx.graphics.getWidth();
         //Demomento lo vamos a resolver por sectores.
         /*7
-        De 0 a max/3 iz de max/3 a 2max/3 arriba y abajo y el resto derecha
+        De 0 a max/3 iz de max/3 a 2max/3 arriba posicionY abajo posicionY el resto derecha
          */
         if((screenY>(0.78*altoMax))&& (screenY <altoMax)){
             if(screenX<(anchoMax/3)){

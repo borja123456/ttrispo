@@ -4,78 +4,78 @@ import com.mygdx.ttrispo.Gestores.GestorRecursos;
 
 public class PiezaJ extends Pieza{
 
-    public PiezaJ(int f,int c) {
-        super(f, c);
+    public PiezaJ(int fila,int columna) {
+        super(fila, columna);
         tipo = J;
-        this.texture = GestorRecursos.get("J.jpg");
+        this.textura = GestorRecursos.get("J.jpg");
         this.imagen = GestorRecursos.get("JCompleta.png");
     }
 
     public int [][] getPosicionPieza(){ // ¿Deberia llamarse giroPiezaLDerecha, el metodo?
-        int [][] r = new int[super.numBlock][2]; // Cada fila del array representa las coordenadas de uno de los bloques que forman la pieza
-        switch (giro){
+        int [][] nuevaPosicionBloquesPieza = new int[super.numBlock][2]; // Cada fila del array representa las coordenadas de uno de los bloques que forman la pieza
+        switch (estadoGiro){
             case(1):
                 // 0º -> 90º  (orientacion 1 a orientacion 2)
-                r[0][0] = this.fila - 1; // Fila
-                r[0][1] = this.columna - 1; // Columna
+                nuevaPosicionBloquesPieza[0][0] = this.fila - 1; // Fila
+                nuevaPosicionBloquesPieza[0][1] = this.columna - 1; // Columna
 
-                r[1][0] = this.fila - 1;
-                r[1][1] = this.columna;
+                nuevaPosicionBloquesPieza[1][0] = this.fila - 1;
+                nuevaPosicionBloquesPieza[1][1] = this.columna;
 
-                r[2][0] = this.fila - 1;
-                r[2][1] = this.columna + 1;
+                nuevaPosicionBloquesPieza[2][0] = this.fila - 1;
+                nuevaPosicionBloquesPieza[2][1] = this.columna + 1;
 
-                r[3][0] = this.fila;
-                r[3][1] = this.columna + 1;
-               // giro = 2; // ¿Actualizar la nueva "orientacion" de la pieza?
+                nuevaPosicionBloquesPieza[3][0] = this.fila;
+                nuevaPosicionBloquesPieza[3][1] = this.columna + 1;
+               // estadoGiro = 2; // ¿Actualizar la nueva "orientacion" de la pieza?
                 break;
 
             case(2): // 90º -> 180º  (orientacion 2 a orientacion 3)
-                r[0][0] = this.fila - 1; // Fila
-                r[0][1] = this.columna; // Columna
+                nuevaPosicionBloquesPieza[0][0] = this.fila - 1; // Fila
+                nuevaPosicionBloquesPieza[0][1] = this.columna; // Columna
 
-                r[1][0] = this.fila;
-                r[1][1] = this.columna;
+                nuevaPosicionBloquesPieza[1][0] = this.fila;
+                nuevaPosicionBloquesPieza[1][1] = this.columna;
 
-                r[2][0] = this.fila + 1;
-                r[2][1] = this.columna;
+                nuevaPosicionBloquesPieza[2][0] = this.fila + 1;
+                nuevaPosicionBloquesPieza[2][1] = this.columna;
 
-                r[3][0] = this.fila + 1;
-                r[3][1] = this.columna - 1;
-               // giro = 3; // ¿Actualizar la nueva "orientacion" de la pieza?
+                nuevaPosicionBloquesPieza[3][0] = this.fila + 1;
+                nuevaPosicionBloquesPieza[3][1] = this.columna - 1;
+               // estadoGiro = 3; // ¿Actualizar la nueva "orientacion" de la pieza?
                 break;
 
             case(3): // 180º -> 270º  (orientacion 3 a orientacion 4)
-                r[0][0] = this.fila; // Fila
-                r[0][1] = this.columna - 1; // Columna
+                nuevaPosicionBloquesPieza[0][0] = this.fila; // Fila
+                nuevaPosicionBloquesPieza[0][1] = this.columna - 1; // Columna
 
-                r[1][0] = this.fila;
-                r[1][1] = this.columna;
+                nuevaPosicionBloquesPieza[1][0] = this.fila;
+                nuevaPosicionBloquesPieza[1][1] = this.columna;
 
-                r[2][0] = this.fila;
-                r[2][1] = this.columna + 1;
+                nuevaPosicionBloquesPieza[2][0] = this.fila;
+                nuevaPosicionBloquesPieza[2][1] = this.columna + 1;
 
-                r[3][0] = this.fila - 1;
-                r[3][1] = this.columna - 1;
-               // giro = 4; // ¿Actualizar la nueva "orientacion" de la pieza?
+                nuevaPosicionBloquesPieza[3][0] = this.fila - 1;
+                nuevaPosicionBloquesPieza[3][1] = this.columna - 1;
+               // estadoGiro = 4; // ¿Actualizar la nueva "orientacion" de la pieza?
                 break;
 
             case(4): // 270º -> 0º  (orientacion 4 a orientacion 1)
-                r[0][0] = this.fila - 1; // Fila
-                r[0][1] = this.columna + 1; // Columna
+                nuevaPosicionBloquesPieza[0][0] = this.fila - 1; // Fila
+                nuevaPosicionBloquesPieza[0][1] = this.columna + 1; // Columna
 
-                r[1][0] = this.fila - 1;
-                r[1][1] = this.columna;
+                nuevaPosicionBloquesPieza[1][0] = this.fila - 1;
+                nuevaPosicionBloquesPieza[1][1] = this.columna;
 
-                r[2][0] = this.fila;
-                r[2][1] = this.columna;
+                nuevaPosicionBloquesPieza[2][0] = this.fila;
+                nuevaPosicionBloquesPieza[2][1] = this.columna;
 
-                r[3][0] = this.fila + 1;
-                r[3][1] = this.columna;
-              //  giro = 1; // ¿Actualizar la nueva "orientacion" de la pieza?
+                nuevaPosicionBloquesPieza[3][0] = this.fila + 1;
+                nuevaPosicionBloquesPieza[3][1] = this.columna;
+              //  estadoGiro = 1; // ¿Actualizar la nueva "orientacion" de la pieza?
                 break;
         }
-        return r;
+        return nuevaPosicionBloquesPieza;
     }
 
 }

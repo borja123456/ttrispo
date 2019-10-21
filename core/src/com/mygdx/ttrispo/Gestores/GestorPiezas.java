@@ -16,49 +16,43 @@ import java.util.Random;
 
 public class GestorPiezas {
     private final Partida partida;
-    // Colecion de pieza
-    private Pieza piezas[];
-    public static ArrayList<Integer> piezasEncoladas;
-    private Pieza currentPieza;
-    public static int aleatorio;
+
+    private Pieza piezas[]; //Array de Tipo Pieza con las piezas
+    public static ArrayList<Integer> listaPiezasSiguientes; //Cola de Piezas para el uso en partida
+
+    private Pieza piezaActual;
     private Random rand;
 
     /**
      * Constructor de las clase {@link GestorPiezas}
-     * Inicializa un {@link ArrayList} de piezas encoladas y lo rellena.
+     * Inicializa un {@link ArrayList} de piezas posicionY lo rellena.
      * @param partida partida que se esta ejecutando en curso.
      */
-    public GestorPiezas(Partida partida) {
-        piezasEncoladas = new ArrayList<Integer>();
-        this.partida = partida;
-        //relleno de las piezas de partida.
-        this.addPiezas();
-        rellenarCola();
-    }
 
     /**
-     * Encola hasta un maximo de 4 piezas
+     * Rellena hasta un maximo de 4 piezas
      */
-    private void rellenarCola() {
-        while (piezasEncoladas.size() < 4) {
-            piezasEncoladas.add(getTypePiezaRandom());
+    private void rellenarListaPiezasSiguientes() {
+        while (listaPiezasSiguientes.size() < 4) {
+            listaPiezasSiguientes.add(dameTipoPiezaAleatorio());
         }
     }
 
     /**
-     * Retorna un numero alateatorio que sera el numero perteneciente al tipo de pieza.
-     * Genera un random y recoge el resultado.
-     * @return Integer, el nunmero random que representa el tipo de pieza
+     * Retorna un numero alateatorio que sera el numero correspondiente al tipo de pieza de la lista.
+     * Genera un random posicionY recoge el resultado.
+     * @return Integer, el numero random que representa el tipo de pieza
      */
-    private int getTypePiezaRandom() {
+    private int dameTipoPiezaAleatorio() {
         this.rand = new Random();
         return rand.nextInt(7) + 1;
     }
 
     /**
-     * Inicializa y rellena el array de piezas.
-     * Inicializacion de 7 piezas con la fila 0 y la columna 5.
+     * Inicializa posicionY rellena el array de piezas.
+     * Inicializacion de 7 piezas con la fila 0 posicionY la columna 5.
      */
+
     private void addPiezas() {
         this.piezas = new Pieza[8];
         //Las piezas estan numeradas, cada una se coloca en su posicion dentro del array
@@ -71,40 +65,47 @@ public class GestorPiezas {
         piezas[Pieza.J] = new PiezaJ(0, 5);
     }
 
-    /**
-     * Obtiene la pieza actual.
-     * Si no encontramos el objeto pieza, obtenemos una {@link Pieza} nueva y rellenamos la cola.
-     * @return retornamos una {@link Pieza}
-     */
-    public Pieza getCurrentPieza() {
-        if (currentPieza == null) {
-            currentPieza = piezas[piezasEncoladas.remove(0)];
-            rellenarCola();
-        }
-        return currentPieza;
+    public GestorPiezas(Partida partida) {
+        listaPiezasSiguientes = new ArrayList<>(); //Lista con las siguientes Piezas a entrar al tablero
+        this.partida = partida;
+
+        this.addPiezas(); //Rellenamos el ArrayList con los tipos de pieza
+        rellenarListaPiezasSiguientes();
     }
 
     /**
-     * Metodo que pide a la pieza que se bloquee y coloca la currentPieza a null, debido a que al e
+     * Obtiene la pieza actual.
+     * Si no encontramos el objeto pieza, obtenemos una {@link Pieza} nueva posicionY rellenamos la cola.
+     * @return retornamos una {@link Pieza}
+     */
+
+    public Pieza getPiezaActual() {
+        if (piezaActual == null) { //Si no tenemos pieza actual
+            piezaActual = piezas[listaPiezasSiguientes.remove(0)]; //Cogemos la primera de la lista
+            rellenarListaPiezasSiguientes(); //Y rellenamos la lista de nuevo
+        }
+        return piezaActual;
+    }
+
+    /**
+     * Metodo que pide a la pieza que se bloquee posicionY coloca la piezaActual a null, debido a que al
      * estar bloqueada ya no puede seguir interactuando.
      */
+
     public void bloquearPieza() {
-        currentPieza.bloquear();
-        currentPieza = null;
+        piezaActual.bloquear(); //Bloqueamos pieza
+        piezaActual = null; //No tenemos pieza actual
     }
 
     /**
      *
      * @return
      */
-    public Texture getImagenNextPieza() {
-        Pieza nextPiezas = piezas[piezasEncoladas.get(0)];
-        //¿?¿?¿?
-        if (nextPiezas == null) {
-            rellenarCola();
-            nextPiezas = piezas[piezasEncoladas.get(0)];
+    public Texture getImagenPiezaSiguiente() {
+        if (piezas[listaPiezasSiguientes.get(0)] == null) { //Si no hubiese pieza en la lista la rellenamos
+            rellenarListaPiezasSiguientes();
         }
-        return nextPiezas.getImagen();
+        return piezas[listaPiezasSiguientes.get(0)].getImagen();
     }
 
     /**
@@ -113,6 +114,6 @@ public class GestorPiezas {
      * @return la {@link Texture} que corresponde a la {@link Pieza}
      */
     public Texture getTexturaBloque(int tipo) {
-        return piezas[tipo].getTexture();
+        return piezas[tipo].getTextura();
     }
 }

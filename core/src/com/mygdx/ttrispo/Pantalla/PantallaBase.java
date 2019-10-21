@@ -9,22 +9,24 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.mygdx.ttrispo.Gestores.GestorRecursos;
 
 public class PantallaBase implements Screen {
 
     protected Stage stage;
     protected Skin skin;
     private ShapeRenderer shapeRenderer;
-    private Texture bg;
+    private Texture backGround;
+    private int altura, anchura;
     private SpriteBatch batch;
 
 
     public PantallaBase() {
         shapeRenderer = new ShapeRenderer();
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
-        bg = GestorRecursos.get("background.jpeg");
-        batch=new SpriteBatch();
+        backGround = new Texture("background.jpeg");
+        anchura = backGround.getWidth();
+        altura = backGround.getHeight();
+        batch = new SpriteBatch();
     }
 
     @Override
@@ -37,7 +39,7 @@ public class PantallaBase implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClearColor(0.1f, 0.1f,0.1f, 1f);
         batch.begin();
-        batch.draw(bg, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.draw(backGround, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();
     }
 
