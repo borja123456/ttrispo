@@ -5,9 +5,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.ttrispo.Gestores.GestorEstado;
 import com.mygdx.ttrispo.Gestores.GestorPiezas;
 import com.mygdx.ttrispo.Gestores.GestorRecursos;
+import com.mygdx.ttrispo.MyGdxGame;
 import com.mygdx.ttrispo.Pieza.Pieza;
-import com.mygdx.ttrispo.Procesador;
 import com.mygdx.ttrispo.Tablero;
+import com.mygdx.ttrispo.Procesador;
 
 public class Partida extends PantallaBase {
     private GestorRecursos gestorRecursos;
@@ -21,7 +22,8 @@ public class Partida extends PantallaBase {
     
     private static int puntuacion;
 
-    public Partida() {
+    public Partida(MyGdxGame game) {
+        super(game);
         gestorEstado = new GestorEstado(this);
         gestorPiezas = new GestorPiezas(this);
         procesador = new Procesador(gestorEstado);

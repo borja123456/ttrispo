@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.mygdx.ttrispo.MyGdxGame;
 
 public class PantallaBase implements Screen {
 
@@ -18,9 +19,10 @@ public class PantallaBase implements Screen {
     private Texture backGround;
     private int altura, anchura;
     private SpriteBatch batch;
+    private MyGdxGame game;
 
-
-    public PantallaBase() {
+    public PantallaBase(MyGdxGame game) {
+        this.game = game;
         shapeRenderer = new ShapeRenderer();
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         backGround = new Texture("background.jpeg");

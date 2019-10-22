@@ -1,21 +1,30 @@
 package com.mygdx.ttrispo;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Screen;
 import com.mygdx.ttrispo.Gestores.GestorRecursos;
+import com.mygdx.ttrispo.Pantalla.PantallaGameOver;
+import com.mygdx.ttrispo.Pantalla.PantallaInicio;
 import com.mygdx.ttrispo.Pantalla.Partida;
 
 public class MyGdxGame extends Game {
-//    SpriteBatch batch;
+    //    SpriteBatch batch;
 //    Texture img;
 //    float vx = 0, vy = 0, posicionX = 0, posicionY = 0, ax = 0f, ay = -4;
 //    int width, height;
-    private Partida partida;
+
+    public Partida partida;
+    public PantallaInicio pantallaInicio;
+    public PantallaGameOver pantallaGameOver;
+
 
     @Override
     public void create() {
 
         GestorRecursos.cargarImagenes();
-        partida = new Partida();
+        partida = new Partida(this);
+        pantallaInicio = new PantallaInicio(this);
+        pantallaGameOver = new PantallaGameOver(this);
 //        batch = new SpriteBatch();
 //        img = new Texture("badlogic.jpg");
 //        height = img.getHeight();
@@ -23,7 +32,7 @@ public class MyGdxGame extends Game {
 //        posicionX = Gdx.graphics.getWidth() / 2 - (width / 2);
 //        posicionY = Gdx.graphics.getHeight() - height / 2 ;
 
-        this.setScreen(partida);
+        this.setScreen(pantallaInicio);
     }
 
 //    @Override

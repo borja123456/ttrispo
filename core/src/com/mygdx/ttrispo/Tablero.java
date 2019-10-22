@@ -12,6 +12,7 @@ public class Tablero extends Actor {
     private Partida partida;
     private Texture imagenTablero;
     private Texture imagenPiezaSiguiente;
+
     public  int tamanyoPieza = 60; //Tamaño Pieza
     public  int tableroX = 20;
     public  int tableroY = 500;
