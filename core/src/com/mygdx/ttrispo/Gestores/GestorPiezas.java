@@ -1,7 +1,6 @@
 package com.mygdx.ttrispo.Gestores;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.mygdx.ttrispo.Pantalla.Partida;
 import com.mygdx.ttrispo.Pieza.Pieza;
 import com.mygdx.ttrispo.Pieza.PiezaI;
 import com.mygdx.ttrispo.Pieza.PiezaJ;

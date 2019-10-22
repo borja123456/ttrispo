@@ -2,8 +2,6 @@ package com.mygdx.ttrispo.Gestores;
 
 //import sun.security.util.DerEncoder;
 
-import com.mygdx.ttrispo.Pantalla.Partida;
-
 public class GestorEstado {
     public static final int SINPIEZA = 2; //Valor del Gestor de Estado cuando no hay pieza en el tablero
     public static final int REPOSO = 0; //Valor del Gestor de Estado en reposo

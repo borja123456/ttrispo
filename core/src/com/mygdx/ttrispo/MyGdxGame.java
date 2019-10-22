@@ -2,7 +2,6 @@ package com.mygdx.ttrispo;
 
 import com.badlogic.gdx.Game;
 import com.mygdx.ttrispo.Gestores.GestorRecursos;
-import com.mygdx.ttrispo.Pantalla.Partida;
 
 public class MyGdxGame extends Game {
 //    SpriteBatch batch;
