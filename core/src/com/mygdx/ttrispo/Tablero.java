@@ -20,7 +20,6 @@ public class Tablero extends Actor {
     public Tablero(Partida partida) {
         this.partida = partida;
         this.tablero = new int[10][20];
-        imagenTablero = GestorRecursos.get("bg_tablero.png");
     }
 
     @Override

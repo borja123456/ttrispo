@@ -18,8 +18,8 @@ public class PantallaBase implements Screen {
     private ShapeRenderer shapeRenderer;
     private Texture backGround;
     private int altura, anchura;
-    private SpriteBatch batch;
-    private MyGdxGame game;
+    protected SpriteBatch batch;
+    protected MyGdxGame game;
 
     public PantallaBase(MyGdxGame game) {
         this.game = game;
@@ -33,16 +33,25 @@ public class PantallaBase implements Screen {
 
     @Override
     public void show() {
+        Gdx.input.setInputProcessor(stage); //procesa todos los eventos de los actores: el botón AKA: sale rojo cuando pulsas!!
+    }
 
+    @Override
+    public void hide() { // se haría everytime un show, si abandonamos la pantalla = DISPOSE
+        Gdx.input.setInputProcessor(null); //para dejar de usar este stage cuando cambiemos de pantalla
+        //stage.dispose(); //usamos dispose porque si cambiamos muchas veces de pantalla
     }
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClearColor(0.1f, 0.1f,0.1f, 1f);
-        batch.begin();
+
+        stage.act();
+        stage.draw();
+        /* batch.begin();
         batch.draw(backGround, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.end();
+        batch.end(); */
     }
 
     @Override
@@ -58,11 +67,6 @@ public class PantallaBase implements Screen {
     @Override
     public void resume() {
 
-    }
-
-    @Override
-    public void hide() {
-        stage.dispose();
     }
 
     @Override
