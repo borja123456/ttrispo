@@ -19,8 +19,6 @@ public class Partida extends PantallaBase {
     private GestorPiezas gestorPiezas;
     public static float posicionX, posicionY;
     private Procesador procesador;
-    private GameOver gameOver;
-    
     private static int puntuacion;
 
     public Partida(MyGdxGame game) {
@@ -28,7 +26,6 @@ public class Partida extends PantallaBase {
         gestorEstado = new GestorEstado(this);
         gestorPiezas = new GestorPiezas(this);
         procesador = new Procesador(gestorEstado);
-        gameOver = new GameOver(this);
         fondoPartida = GestorRecursos.get("background.jpeg");
 
         Gdx.input.setInputProcessor(procesador);
@@ -44,7 +41,7 @@ public class Partida extends PantallaBase {
         stage.addActor(tablero);
         stage.addActor(progresoPartida);
         tablero.setPosition(posicionX, posicionY);
-        
+
         this.puntuacion = 0;
     }
 
@@ -52,7 +49,7 @@ public class Partida extends PantallaBase {
     public void render(float delta) {
         super.render(delta);
         batch.begin();
-        batch.draw(fondoPartida, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.draw(fondoPartida,0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();
         cicloDeVida(delta);// Ciclo de vida
         stage.draw(); // Pintar los actores
@@ -102,7 +99,8 @@ public class Partida extends PantallaBase {
         tablero.insertarBloquesDePieza(currentPieza.getPosicionPieza(), currentPieza.getTipo());
         if (tablero.comprobarGameOver(currentPieza.getPosicionPieza())) {
             stage.clear();
-            stage.addActor(gameOver);
+            //stage.addActor(gameOver);
+            game.setScreen(game.pantallaGameOver);
         }
         tablero.comprobarLineaCompleta();
         gestorPiezas.bloquearPieza();

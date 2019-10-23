@@ -22,7 +22,7 @@ public  class GestorRecursos {
         manager.load("LCompleta.png", Texture.class);
         manager.load("ICompleta.png", Texture.class);
         manager.load("OCompleta.png", Texture.class);
-        manager.load("bg_tablero.png", Texture.class);
+        manager.load("background.jpeg", Texture.class);
         while (!manager.update()) {
             System.out.println("Cargando...");
         }
