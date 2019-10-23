@@ -57,7 +57,6 @@ public class PantallaGameOver extends PantallaBase {
     public void render(float delta) {
         super.render(delta);
         Gdx.gl.glClearColor(0.4f,0.2f,0.7f,0.7f); //morada
-
     }
 
     @Override

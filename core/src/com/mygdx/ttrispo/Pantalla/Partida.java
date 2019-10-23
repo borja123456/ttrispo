@@ -41,7 +41,7 @@ public class Partida extends PantallaBase {
         stage.addActor(tablero);
         stage.addActor(progresoPartida);
         tablero.setPosition(posicionX, posicionY);
-        
+
         this.puntuacion = 0;
     }
 

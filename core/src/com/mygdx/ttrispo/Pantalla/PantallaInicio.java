@@ -1,14 +1,13 @@
 package com.mygdx.ttrispo.Pantalla;
-
-        import com.badlogic.gdx.Gdx;
-        import com.badlogic.gdx.graphics.GL20;
-        import com.badlogic.gdx.scenes.scene2d.Actor;
-        import com.badlogic.gdx.scenes.scene2d.Stage;
-        import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-        import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-        import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-        import com.badlogic.gdx.utils.viewport.FitViewport;
-        import com.mygdx.ttrispo.MyGdxGame;
+ import com.badlogic.gdx.Gdx;
+ import com.badlogic.gdx.graphics.GL20;
+ import com.badlogic.gdx.scenes.scene2d.Actor;
+ import com.badlogic.gdx.scenes.scene2d.Stage;
+ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+ import com.badlogic.gdx.utils.viewport.FitViewport;
+ import com.mygdx.ttrispo.MyGdxGame;
 
 public class PantallaInicio extends PantallaBase{
     private Stage stage;
@@ -22,8 +21,8 @@ public class PantallaInicio extends PantallaBase{
         skin = new Skin(Gdx.files.internal("skins/default/skin/uiskin.json"));
         start = new TextButton("Start", skin);
 
-        start.setSize(300,100);
-        start.setPosition(Gdx.graphics.getWidth()/2.65f, Gdx.graphics.getHeight()/2);
+        start.setSize(300, 100);
+        start.setPosition(Gdx.graphics.getWidth() / 2.65f, Gdx.graphics.getHeight() / 2);
         super.stage.addActor(start);
 
         start.addCaptureListener(new ChangeListener() {
@@ -41,10 +40,10 @@ public class PantallaInicio extends PantallaBase{
     }
 
     @Override
-    public void hide() {
+    public void hide() { //usamos dispose porque si cambiamos muchas veces de pantalla
         super.hide();
-        //Gdx.input.setInputProcessor(null);
     }
+
     @Override
     public void render(float delta) {
         super.render(delta);
@@ -56,4 +55,6 @@ public class PantallaInicio extends PantallaBase{
     public void dispose() {
         super.dispose();
     }
+
 }
+
