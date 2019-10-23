@@ -56,19 +56,18 @@ public class PantallaGameOver extends PantallaBase {
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(stage); //procesa todos los eventos de los actores: el botón AKA: sale rojo cuando pulsas!!
+        super.show();
     }
 
     @Override
     public void hide() {
-        Gdx.input.setInputProcessor(null); //para dejar de usar este stage cuando cambiemos de pantalla
+        super.hide();
     }
 
     @Override
     public void render(float delta) {
+        super.render(delta);
         Gdx.gl.glClearColor(0.4f,0.2f,0.7f,0.7f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         stage.act();
         stage.draw();
     }

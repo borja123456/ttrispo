@@ -11,6 +11,7 @@ import com.mygdx.ttrispo.Tablero;
 import com.mygdx.ttrispo.Procesador;
 
 public class Partida extends PantallaBase {
+    private Texture fondoPartida;
     private GestorRecursos gestorRecursos;
     private Tablero tablero;
     private ProgresoPartida progresoPartida;
@@ -28,6 +29,7 @@ public class Partida extends PantallaBase {
         gestorPiezas = new GestorPiezas(this);
         procesador = new Procesador(gestorEstado);
         gameOver = new GameOver(this);
+        fondoPartida = GestorRecursos.get("background.jpeg");
 
         Gdx.input.setInputProcessor(procesador);
 
@@ -49,7 +51,9 @@ public class Partida extends PantallaBase {
     @Override
     public void render(float delta) {
         super.render(delta);
-
+        batch.begin();
+        batch.draw(fondoPartida, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.end();
         cicloDeVida(delta);// Ciclo de vida
         stage.draw(); // Pintar los actores
     }
