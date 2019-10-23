@@ -24,7 +24,7 @@ public class MyGdxGame extends Game {
         GestorRecursos.cargarImagenes();
         partida = new Partida(this);
         pantallaInicio = new PantallaInicio(this);
-        pantallaGameOver = new PantallaGameOver(this); /weoifwoiefjowe
+        pantallaGameOver = new PantallaGameOver(this);
 //        batch = new SpriteBatch();
 //        img = new Texture("badlogic.jpg");
 //        height = img.getHeight();
