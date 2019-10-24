@@ -28,31 +28,32 @@ public class Partida extends PantallaBase {
         procesador = new Procesador(gestorEstado);
         fondoPartida = GestorRecursos.get("background.jpeg");
 
-        Gdx.input.setInputProcessor(procesador);
+        tablero = new Tablero(this);
+        tablero.setPosition(posicionX, posicionY);
+        progresoPartida = new ProgresoPartida(this);
+
+        stage.addActor(tablero);
+        stage.addActor(progresoPartida);
 
         gestorRecursos.cargarImagenes();
+
+        this.puntuacion = 0;
     }
 
     @Override
     public void show() {
         super.show();
-        tablero = new Tablero(this);
-        progresoPartida = new ProgresoPartida(this);
-        stage.addActor(tablero);
-        stage.addActor(progresoPartida);
-        tablero.setPosition(posicionX, posicionY);
-
-        this.puntuacion = 0;
+        Gdx.input.setInputProcessor(procesador);
     }
 
     @Override
     public void render(float delta) {
         super.render(delta);
         batch.begin();
-        batch.draw(fondoPartida,0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.draw(fondoPartida, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();
-        cicloDeVida(delta);// Ciclo de vida
-        stage.draw(); // Pintar los actores
+        cicloDeVida(delta); // Ciclo de vida
+        stage.draw();  // Pintar los actores
     }
 
     @Override

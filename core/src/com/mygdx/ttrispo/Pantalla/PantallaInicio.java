@@ -6,6 +6,7 @@ package com.mygdx.ttrispo.Pantalla;
  import com.badlogic.gdx.scenes.scene2d.ui.Skin;
  import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
  import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+ import com.badlogic.gdx.utils.viewport.ExtendViewport;
  import com.badlogic.gdx.utils.viewport.FitViewport;
  import com.mygdx.ttrispo.MyGdxGame;
 
@@ -13,17 +14,26 @@ public class PantallaInicio extends PantallaBase{
     private Stage stage;
     private Skin skin;
     private TextButton start;
+    private TextButton settings;
 
     public PantallaInicio (final MyGdxGame game) {
         super(game);
-        stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+        //(stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+        //stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 
         skin = new Skin(Gdx.files.internal("skins/default/skin/uiskin.json"));
         start = new TextButton("Start", skin);
+        settings = new TextButton("Settings", skin);
+
+        settings.setSize(300, 100);
+        settings.setPosition(Gdx.graphics.getWidth() / 2.65f, Gdx.graphics.getHeight() / 3);
 
         start.setSize(300, 100);
         start.setPosition(Gdx.graphics.getWidth() / 2.65f, Gdx.graphics.getHeight() / 2);
+
         super.stage.addActor(start);
+        super.stage.addActor(settings);
+
 
         start.addCaptureListener(new ChangeListener() {
             @Override
@@ -31,6 +41,14 @@ public class PantallaInicio extends PantallaBase{
                 game.setScreen(game.partida);
             }
         });
+
+      /*  settings.addCaptureListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                game.setScreen(game.pantallaAjustes);
+            }
+        });*/
+
     }
 
     @Override

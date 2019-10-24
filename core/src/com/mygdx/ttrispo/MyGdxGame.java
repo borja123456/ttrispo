@@ -31,8 +31,7 @@ public class MyGdxGame extends Game {
 //        width = img.getWidth();
 //        posicionX = Gdx.graphics.getWidth() / 2 - (width / 2);
 //        posicionY = Gdx.graphics.getHeight() - height / 2 ;
-
-        this.setScreen(pantallaInicio);
+        this.setScreen(pantallaGameOver);
     }
 
 //    @Override

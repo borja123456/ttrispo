@@ -16,8 +16,6 @@ public class PantallaBase implements Screen {
     protected Stage stage;
     protected Skin skin;
     private ShapeRenderer shapeRenderer;
-    private Texture backGround;
-    private int altura, anchura;
     protected SpriteBatch batch;
     protected MyGdxGame game;
 
@@ -25,10 +23,11 @@ public class PantallaBase implements Screen {
         this.game = game;
         shapeRenderer = new ShapeRenderer();
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
-        backGround = new Texture("background.jpeg");
-        anchura = backGround.getWidth();
-        altura = backGround.getHeight();
         batch = new SpriteBatch();
+        //backGround = new Texture("background.jpeg");
+        //anchura = backGround.getWidth();
+        //altura = backGround.getHeight();
+
     }
 
     @Override
@@ -36,11 +35,11 @@ public class PantallaBase implements Screen {
         Gdx.input.setInputProcessor(stage); //procesa todos los eventos de los actores: el botón AKA: sale rojo cuando pulsas!!
     }
 
-
     @Override
     public void hide() { // se haría everytime un show, si abandonamos la pantalla = DISPOSE
         Gdx.input.setInputProcessor(null); //para dejar de usar este stage cuando cambiemos de pantalla
-        //stage.dispose(); //usamos dispose porque si cambiamos muchas veces de pantalla
+        stage.dispose(); //usamos dispose porque si cambiamos muchas veces de pantalla
+        stage.clear();
     }
 
     @Override
@@ -50,8 +49,7 @@ public class PantallaBase implements Screen {
 
         stage.act();
         stage.draw();
-        /* batch.begin();
-       /* batch.begin();
+        /*batch.begin();
         batch.draw(backGround, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end(); */
     }
@@ -74,8 +72,8 @@ public class PantallaBase implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
-        skin.dispose();
-        shapeRenderer.dispose();
+        //skin.dispose();
+        //shapeRenderer.dispose();
     }
 }
 
