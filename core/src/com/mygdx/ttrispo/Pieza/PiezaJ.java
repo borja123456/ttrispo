@@ -15,37 +15,6 @@ public class PiezaJ extends Pieza{
         int [][] nuevaPosicionBloquesPieza = new int[super.numBlock][2]; // Cada fila del array representa las coordenadas de uno de los bloques que forman la pieza
         switch (estadoGiro){
             case(1):
-                // 0º -> 90º  (orientacion 1 a orientacion 2)
-                nuevaPosicionBloquesPieza[0][0] = this.fila - 1; // Fila
-                nuevaPosicionBloquesPieza[0][1] = this.columna - 1; // Columna
-
-                nuevaPosicionBloquesPieza[1][0] = this.fila - 1;
-                nuevaPosicionBloquesPieza[1][1] = this.columna;
-
-                nuevaPosicionBloquesPieza[2][0] = this.fila - 1;
-                nuevaPosicionBloquesPieza[2][1] = this.columna + 1;
-
-                nuevaPosicionBloquesPieza[3][0] = this.fila;
-                nuevaPosicionBloquesPieza[3][1] = this.columna + 1;
-               // estadoGiro = 2; // ¿Actualizar la nueva "orientacion" de la pieza?
-                break;
-
-            case(2): // 90º -> 180º  (orientacion 2 a orientacion 3)
-                nuevaPosicionBloquesPieza[0][0] = this.fila - 1; // Fila
-                nuevaPosicionBloquesPieza[0][1] = this.columna; // Columna
-
-                nuevaPosicionBloquesPieza[1][0] = this.fila;
-                nuevaPosicionBloquesPieza[1][1] = this.columna;
-
-                nuevaPosicionBloquesPieza[2][0] = this.fila + 1;
-                nuevaPosicionBloquesPieza[2][1] = this.columna;
-
-                nuevaPosicionBloquesPieza[3][0] = this.fila + 1;
-                nuevaPosicionBloquesPieza[3][1] = this.columna - 1;
-               // estadoGiro = 3; // ¿Actualizar la nueva "orientacion" de la pieza?
-                break;
-
-            case(3): // 180º -> 270º  (orientacion 3 a orientacion 4)
                 nuevaPosicionBloquesPieza[0][0] = this.fila; // Fila
                 nuevaPosicionBloquesPieza[0][1] = this.columna - 1; // Columna
 
@@ -57,10 +26,10 @@ public class PiezaJ extends Pieza{
 
                 nuevaPosicionBloquesPieza[3][0] = this.fila - 1;
                 nuevaPosicionBloquesPieza[3][1] = this.columna - 1;
-               // estadoGiro = 4; // ¿Actualizar la nueva "orientacion" de la pieza?
+                // estadoGiro = 4; // ¿Actualizar la nueva "orientacion" de la pieza?
                 break;
 
-            case(4): // 270º -> 0º  (orientacion 4 a orientacion 1)
+            case(2): // 270º -> 0º  (orientacion 4 a orientacion 1)
                 nuevaPosicionBloquesPieza[0][0] = this.fila - 1; // Fila
                 nuevaPosicionBloquesPieza[0][1] = this.columna + 1; // Columna
 
@@ -72,7 +41,38 @@ public class PiezaJ extends Pieza{
 
                 nuevaPosicionBloquesPieza[3][0] = this.fila + 1;
                 nuevaPosicionBloquesPieza[3][1] = this.columna;
-              //  estadoGiro = 1; // ¿Actualizar la nueva "orientacion" de la pieza?
+                //  estadoGiro = 1; // ¿Actualizar la nueva "orientacion" de la pieza?
+                break;
+
+            case(3): // 0º -> 90º  (orientacion 1 a orientacion 2)
+                nuevaPosicionBloquesPieza[0][0] = this.fila - 1; // Fila
+                nuevaPosicionBloquesPieza[0][1] = this.columna - 1; // Columna
+
+                nuevaPosicionBloquesPieza[1][0] = this.fila - 1;
+                nuevaPosicionBloquesPieza[1][1] = this.columna;
+
+                nuevaPosicionBloquesPieza[2][0] = this.fila - 1;
+                nuevaPosicionBloquesPieza[2][1] = this.columna + 1;
+
+                nuevaPosicionBloquesPieza[3][0] = this.fila;
+                nuevaPosicionBloquesPieza[3][1] = this.columna + 1;
+                // estadoGiro = 2; // ¿Actualizar la nueva "orientacion" de la pieza?
+                break;
+
+            case(4):
+                // 90º -> 180º  (orientacion 2 a orientacion 3)
+                nuevaPosicionBloquesPieza[0][0] = this.fila - 1; // Fila
+                nuevaPosicionBloquesPieza[0][1] = this.columna; // Columna
+
+                nuevaPosicionBloquesPieza[1][0] = this.fila;
+                nuevaPosicionBloquesPieza[1][1] = this.columna;
+
+                nuevaPosicionBloquesPieza[2][0] = this.fila + 1;
+                nuevaPosicionBloquesPieza[2][1] = this.columna;
+
+                nuevaPosicionBloquesPieza[3][0] = this.fila + 1;
+                nuevaPosicionBloquesPieza[3][1] = this.columna - 1;
+                // estadoGiro = 3; // ¿Actualizar la nueva "orientacion" de la pieza?
                 break;
         }
         return nuevaPosicionBloquesPieza;

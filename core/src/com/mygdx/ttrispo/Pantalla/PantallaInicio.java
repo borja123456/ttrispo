@@ -38,7 +38,7 @@ public class PantallaInicio extends PantallaBase{
         start.addCaptureListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                game.setScreen(game.partida);
+                game.setScreen(new Partida(game));
             }
         });
 
@@ -59,7 +59,8 @@ public class PantallaInicio extends PantallaBase{
 
     @Override
     public void hide() { //usamos dispose porque si cambiamos muchas veces de pantalla
-        super.hide();
+        //super.hide();
+        //esto hay que dejarlo asi o no ira, incluso si borramos el metodo hide, la pantalla inicio se queda en azul, sin botones
     }
 
     @Override
@@ -67,11 +68,6 @@ public class PantallaInicio extends PantallaBase{
         super.render(delta);
         Gdx.gl.glClearColor(0.4f,0.5f,0.8f,1f); //azul
 
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose();
     }
 
 }

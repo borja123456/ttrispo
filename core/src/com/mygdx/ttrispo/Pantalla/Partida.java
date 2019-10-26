@@ -99,8 +99,7 @@ public class Partida extends PantallaBase {
         Pieza currentPieza = gestorPiezas.getPiezaActual();
         tablero.insertarBloquesDePieza(currentPieza.getPosicionPieza(), currentPieza.getTipo());
         if (tablero.comprobarGameOver(currentPieza.getPosicionPieza())) {
-            stage.clear();
-            //stage.addActor(gameOver);
+            dispose();
             game.setScreen(game.pantallaGameOver);
         }
         tablero.comprobarLineaCompleta();
@@ -182,10 +181,6 @@ public class Partida extends PantallaBase {
 
     public Texture getTexturaPieza(int tipo){
         return gestorPiezas.getTexturaBloque(tipo);
-    }
-
-    public Texture getImagenNextPieza() {
-        return gestorPiezas.getImagenPiezaSiguiente();
     }
     
     public int getPuntuacion(){

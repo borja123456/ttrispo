@@ -24,9 +24,6 @@ public class PantallaBase implements Screen {
         shapeRenderer = new ShapeRenderer();
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         batch = new SpriteBatch();
-        //backGround = new Texture("background.jpeg");
-        //anchura = backGround.getWidth();
-        //altura = backGround.getHeight();
 
     }
 
@@ -38,7 +35,7 @@ public class PantallaBase implements Screen {
     @Override
     public void hide() { // se haría everytime un show, si abandonamos la pantalla = DISPOSE
         Gdx.input.setInputProcessor(null); //para dejar de usar este stage cuando cambiemos de pantalla
-        stage.dispose(); //usamos dispose porque si cambiamos muchas veces de pantalla
+        //stage.dispose(); //usamos dispose porque si cambiamos muchas veces de pantalla
         stage.clear();
     }
 

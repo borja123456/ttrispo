@@ -22,7 +22,7 @@ public class PantallaGameOver extends PantallaBase {
 
     public PantallaGameOver(final MyGdxGame game){
         super(game);
-        fondoGameOver = GestorRecursos.get("GameOver.jpg");
+        fondoGameOver = GestorRecursos.get("GameOver.jpeg");
         //stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         skin = new Skin(Gdx.files.internal("skins/default/skin/uiskin.json"));
         retry = new TextButton("Retry", skin);
@@ -40,7 +40,7 @@ public class PantallaGameOver extends PantallaBase {
         retry.addCaptureListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                game.setScreen(game.partida);
+                game.setScreen(new Partida(game));
             }
         });
         home.addCaptureListener(new ChangeListener() {
@@ -60,7 +60,7 @@ public class PantallaGameOver extends PantallaBase {
 
     @Override
     public void hide() {
-        super.hide();
+        //super.hide();
         //Gdx.input.setInputProcessor(null); //para dejar de usar este stage cuando cambiemos de pantalla
     }
 
