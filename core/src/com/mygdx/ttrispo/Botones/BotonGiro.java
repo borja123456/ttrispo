@@ -8,10 +8,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mygdx.ttrispo.Gestores.GestorEstado;
 
 public class BotonGiro extends TextButton {
-    private static int POSICION_X= Gdx.graphics.getWidth();
-    private int POSICION_Y = Gdx.graphics.getHeight();
-    private static int ANCHO=300;
-    private static int ALTO=300;
+    private final int POSICION_X= Gdx.graphics.getWidth();
+    private final int POSICION_Y = Gdx.graphics.getHeight();
+    private final int ANCHO=300;
+    private final int ALTO=300;
     public BotonGiro(String text, Skin skin, final GestorEstado gestorEstado) {
         super(text, skin);
         this.setPosition(POSICION_X,POSICION_Y);

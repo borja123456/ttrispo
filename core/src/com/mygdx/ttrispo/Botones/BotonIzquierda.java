@@ -10,10 +10,10 @@ import com.mygdx.ttrispo.MyGdxGame;
 import com.mygdx.ttrispo.Pantalla.Partida;
 
 public class BotonIzquierda extends TextButton {
-    private static int POSICION_X= Gdx.graphics.getWidth();
-    private int POSICION_Y = Gdx.graphics.getHeight();
-    private static int ANCHO=300;
-    private static int ALTO=300;
+    private final int POSICION_X= Gdx.graphics.getWidth();
+    private final int POSICION_Y = Gdx.graphics.getHeight();
+    private final static int ANCHO=300;
+    private final int ALTO=300;
     public BotonIzquierda(String text, Skin skin, final GestorEstado gestorEstado) {
         super(text, skin);
         this.setPosition(POSICION_X,POSICION_Y);
