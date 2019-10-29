@@ -13,7 +13,7 @@ public class Tablero extends Actor {
     private Texture imagenPiezaSiguiente;
     public  int tamanyoPieza = (int) (51 * MyGdxGame.ratioPixelesHeight); //Tamaño Pieza
     public  int tableroX = (int) (124 * MyGdxGame.ratioPixelesWidth);;
-    public  int tableroY = (int) (270 * MyGdxGame.ratioPixelesHeight);
+    public  int tableroY = (int) (250 * MyGdxGame.ratioPixelesHeight);
 
     public Tablero(Partida partida) {
         this.partida = partida;
