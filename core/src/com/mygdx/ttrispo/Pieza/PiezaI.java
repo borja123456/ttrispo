@@ -1,5 +1,6 @@
 package com.mygdx.ttrispo.Pieza;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.ttrispo.Gestores.GestorRecursos;
 
 public class PiezaI extends Pieza {
@@ -7,8 +8,17 @@ public class PiezaI extends Pieza {
     public PiezaI(int fila, int columna) {
         super(fila, columna);
         tipo = I;
-        this.textura = GestorRecursos.get("I.jpg");
+        this.textura = GestorRecursos.get("O.jpg");
         this.imagen = GestorRecursos.get("ICompleta.png");
+    }
+
+    @Override
+    public Texture getTextura() {
+        return this.textura;
+    }
+
+    public void setTextura(Texture textura) {
+        this.textura = textura;
     }
 
     public int[][] getPosicionPieza() {
@@ -69,4 +79,7 @@ public class PiezaI extends Pieza {
         }
         return nuevaPosicionBloquesPieza;
     }
+
+
+
 }

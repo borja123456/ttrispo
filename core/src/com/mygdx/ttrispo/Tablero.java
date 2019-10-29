@@ -10,7 +10,6 @@ import com.mygdx.ttrispo.Pantalla.Partida;
 public class Tablero extends Actor {
     public static int tablero[][];
     private Partida partida;
-    private Texture imagenTablero;
     private Texture imagenPiezaSiguiente;
 
     public  int tamanyoPieza = 60; //Tamaño Pieza
