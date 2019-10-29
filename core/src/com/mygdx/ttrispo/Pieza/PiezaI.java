@@ -8,7 +8,7 @@ public class PiezaI extends Pieza {
     public PiezaI(int fila, int columna) {
         super(fila, columna);
         tipo = I;
-        this.textura = GestorRecursos.get("O.jpg");
+        this.textura = GestorRecursos.get("I.jpg");
         this.imagen = GestorRecursos.get("ICompleta.png");
     }
 

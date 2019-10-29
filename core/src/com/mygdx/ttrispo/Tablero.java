@@ -11,21 +11,20 @@ public class Tablero extends Actor {
     public static int tablero[][];
     private Partida partida;
     private Texture imagenPiezaSiguiente;
-    public  int tamanyoPieza = (int) (50 * MyGdxGame.ratioPixelesHeight); //Tamaño Pieza
-    public  int tableroX = (int) (120 * MyGdxGame.ratioPixelesWidth);;
-    public  int tableroY = (int) (224 * MyGdxGame.ratioPixelesHeight);
+    public  int tamanyoPieza = (int) (51 * MyGdxGame.ratioPixelesHeight); //Tamaño Pieza
+    public  int tableroX = (int) (124 * MyGdxGame.ratioPixelesWidth);;
+    public  int tableroY = (int) (270 * MyGdxGame.ratioPixelesHeight);
 
     public Tablero(Partida partida) {
         this.partida = partida;
         this.tablero = new int[10][20];
-        imagenTablero = GestorRecursos.get("background.jpeg");
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
         //pintarPieza();
         int posicionX,posicionY,tipo;
-        setScaleX(50);
+        //setScaleX(50);
         Texture imagenBloque;
 
         for (int i = 0; i < this.tablero.length; i++){
