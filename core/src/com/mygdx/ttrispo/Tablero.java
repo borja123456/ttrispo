@@ -11,14 +11,14 @@ public class Tablero extends Actor {
     public static int tablero[][];
     private Partida partida;
     private Texture imagenPiezaSiguiente;
-
-    public  int tamanyoPieza = 60; //Tamaño Pieza
-    public  int tableroX = 20;
-    public  int tableroY = 500;
+    public  int tamanyoPieza = (int) (50 * MyGdxGame.ratioPixelesHeight); //Tamaño Pieza
+    public  int tableroX = (int) (120 * MyGdxGame.ratioPixelesWidth);;
+    public  int tableroY = (int) (224 * MyGdxGame.ratioPixelesHeight);
 
     public Tablero(Partida partida) {
         this.partida = partida;
         this.tablero = new int[10][20];
+        imagenTablero = GestorRecursos.get("background.jpeg");
     }
 
     @Override
@@ -38,7 +38,7 @@ public class Tablero extends Actor {
                 if(tipo >= 1) {
                     imagenBloque = partida.getTexturaPieza(tipo);
                     //batch.setColor(1, 1, 1, 1f);
-                    batch.draw(imagenBloque, posicionX - tableroX, posicionY - tableroY, 0, 0, tamanyoPieza, tamanyoPieza);
+                    batch.draw(imagenBloque, posicionX + tableroX, posicionY - tableroY, 0, 0, tamanyoPieza, tamanyoPieza);
                 }
             }
         }
