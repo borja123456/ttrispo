@@ -28,11 +28,11 @@ public class MyGdxGame extends Game {
         pantallaInicio = new PantallaInicio(this, partida);
         firebaseHelper=new FirebaseHelper();
         pantallaGameOver = new PantallaGameOver(this, partida);
+        pantallaAjustes = new PantallaAjustes(this);
         this.setScreen(pantallaInicio);
 
         //partida = new Partida(this);
-        pantallaAjustes = new PantallaAjustes(this);
-        this.setScreen(pantallaAjustes);
+        //this.setScreen(pantallaAjustes);
     }
 
     @Override

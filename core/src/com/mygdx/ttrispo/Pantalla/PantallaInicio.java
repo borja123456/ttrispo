@@ -46,13 +46,11 @@ public class PantallaInicio extends PantallaBase{
                 game.setScreen(new Partida(game));
             }
         });
-
-
-
+        
         settings.addCaptureListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                //game.setScreen(game.pantallaAjustes);
+                game.setScreen(game.pantallaAjustes);
 
             }
         });
