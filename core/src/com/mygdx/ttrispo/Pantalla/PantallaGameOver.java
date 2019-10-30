@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -17,10 +18,13 @@ import com.mygdx.ttrispo.BaseDeDatos.Jugador;
 import com.mygdx.ttrispo.Gestores.GestorRecursos;
 import com.mygdx.ttrispo.MyGdxGame;
 
+
 import java.util.ArrayList;
 
+import javax.swing.plaf.nimbus.State;
+import javax.xml.soap.Text;
+
 import static com.mygdx.ttrispo.MyGdxGame.firebaseHelper;
-import static java.lang.Thread.sleep;
 
 public class PantallaGameOver extends PantallaBase {
     private Skin skin;
@@ -28,14 +32,18 @@ public class PantallaGameOver extends PantallaBase {
     private TextButton home;
     private Texture fondoGameOver;
     private BitmapFont font;
+    private int j;
     private boolean isRankingLoaded;
     private ArrayList<Jugador> listaRanking;
     private Table table;
     private Label label, labelID;
     private GlyphLayout glyphLayout;
+    private Partida partida;
 
-    public PantallaGameOver(final MyGdxGame game){
+
+    public PantallaGameOver(final MyGdxGame game, final Partida partida){
         super(game);
+        this.partida = partida;
         fondoGameOver = GestorRecursos.get("GameOver.jpeg");
         skin = new Skin(Gdx.files.internal("skins/default/skin/uiskin.json"));
         retry = new TextButton("Retry", skin);
@@ -55,6 +63,7 @@ public class PantallaGameOver extends PantallaBase {
         tableContainer.fillX();
         table.setSkin(skin);
 
+
         retry.setSize(300,100);
         retry.setPosition(Gdx.graphics.getWidth()/2.65f, Gdx.graphics.getHeight()/6);
 
@@ -69,9 +78,7 @@ public class PantallaGameOver extends PantallaBase {
         retry.addCaptureListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if(listaRanking!=null){
-                    listaRanking.clear();
-                }
+                listaRanking.clear();
                 table.reset();
                 game.setScreen(new Partida(game));
             }
@@ -79,14 +86,13 @@ public class PantallaGameOver extends PantallaBase {
         home.addCaptureListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if(listaRanking!=null){
-                    listaRanking.clear();
-                }
+                listaRanking.clear();
                 table.reset();
                 game.setScreen(game.pantallaInicio);
             }
         });
     }
+
 
     @Override
     public void show() {
@@ -94,7 +100,7 @@ public class PantallaGameOver extends PantallaBase {
         firebaseHelper.rellenarArrayDeRanking(new FirebaseCallback() {
             @Override
             public void onCallback(ArrayList<Jugador> lista) {
-                firebaseHelper.insertarPuntuacionEnRanking("Alias ttrispo", Partida.partidaAux.getPuntuacion());
+                firebaseHelper.insertarPuntuacionEnRanking("Alias Ttrispo", partida.getPuntuacion());
                 listaRanking = lista;
                 isRankingLoaded = true;
             }
@@ -113,23 +119,15 @@ public class PantallaGameOver extends PantallaBase {
         font.getData().setScale(3);
         glyphLayout.setText(font, "TOP 10 MEJORES PUNTUACIONES");
         font.draw(batch, glyphLayout,(Gdx.graphics.getWidth()-glyphLayout.width)/2, 0.95f*Gdx.graphics.getHeight());
-        try {
-            // esto simplemente es para que, dependiendo de la conexion del movil, duerma 2 segundos para que le de tiempo al callback a cargar el ranking, pero si aun asi no lo carga, se mostrara el else que viene a continuacion del siguiente if
-            sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         if(isRankingLoaded) {
-            boolean nuevoRank = false;
             for (int i = 1; i < listaRanking.size(); i++) {
-                labelID = new Label(i+"ª", skin);
+                labelID = new Label(String.valueOf(i)+"º", skin);
                 label = new Label(String.valueOf(listaRanking.get(i).getPuntuacion()), skin);
                 label.setAlignment(Align.center);
                 labelID.setAlignment(Align.left);
-                if ((!nuevoRank) && (Partida.partidaAux.getPuntuacion()==listaRanking.get(i).getPuntuacion())){
+                if(partida.getPuntuacion()==listaRanking.get(i).getPuntuacion()){
                     label.setFontScale(8);
                     labelID.setFontScale(9);
-                    nuevoRank = true;
                 }else{
                     label.setFontScale(4);
                     labelID.setFontScale(5);
@@ -139,14 +137,6 @@ public class PantallaGameOver extends PantallaBase {
                 table.add(label).padLeft(100);
             }
             isRankingLoaded = false;
-        }else{
-            if(listaRanking==null){
-                font.getData().setScale(2.5f);
-                glyphLayout.setText(font, "Conectate a internet para");
-                font.draw(batch, glyphLayout, (Gdx.graphics.getWidth()-glyphLayout.width)/2, 0.75f*Gdx.graphics.getHeight());
-                glyphLayout.setText(font, "ver el ranking online");
-                font.draw(batch, glyphLayout, (Gdx.graphics.getWidth()-glyphLayout.width)/2, 0.7f*Gdx.graphics.getHeight());
-            }
         }
         batch.end();
         Gdx.gl.glClearColor(0.4f,0.2f,0.7f,0.7f); //morada

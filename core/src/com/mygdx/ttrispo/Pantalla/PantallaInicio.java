@@ -21,8 +21,10 @@ public class PantallaInicio extends PantallaBase{
     private TextButton start;
     private TextButton settings;
 
-    public PantallaInicio (final MyGdxGame game) {
+    public PantallaInicio (final MyGdxGame game, Partida partida) {
         super(game);
+        //(stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+        //stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 
         skin = new Skin(Gdx.files.internal("skins/default/skin/uiskin.json"));
         start = new TextButton("Start", skin);
@@ -52,15 +54,19 @@ public class PantallaInicio extends PantallaBase{
 
             }
         });
+
     }
 
     @Override
     public void show() {
         super.show();
+        //Gdx.input.setInputProcessor(stage);
     }
 
     @Override
     public void hide() { //usamos dispose porque si cambiamos muchas veces de pantalla
+        //super.hide();
+        //esto hay que dejarlo asi o no ira, incluso si borramos el metodo hide, la pantalla inicio se queda en azul, sin botones
     }
 
     @Override

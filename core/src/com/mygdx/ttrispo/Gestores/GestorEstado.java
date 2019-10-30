@@ -1,5 +1,7 @@
 package com.mygdx.ttrispo.Gestores;
 
+//import sun.security.util.DerEncoder;
+
 import com.mygdx.ttrispo.Pantalla.Partida;
 
 public class GestorEstado {
