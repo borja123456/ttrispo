@@ -34,7 +34,6 @@ public class FirebaseHelper {
     public void insertarPuntuacionEnRanking(String nombre, long puntos) {
         int contador = 1;
         boolean esMayorQueAlguno = false;
-        System.out.println("NOMBRE: " + nombre + " PUNTOS: " + puntos);
         while(!esMayorQueAlguno && contador<listaRanking.size()){
             if(listaRanking.get(contador).getPuntuacion()<puntos){
                 Jugador jugador = new Jugador(nombre, puntos);
@@ -45,11 +44,6 @@ public class FirebaseHelper {
             }
             contador++;
         }
-        for(int i = 1; i<listaRanking.size(); i++){
-            System.out.println(listaRanking.get(i).getPuntuacion());
-        }
-
-        System.out.println("ES " + esMayorQueAlguno);
         if (esMayorQueAlguno){
             databaseReference = GDXFirebase.FirebaseDatabase().getReference("bbdd");
             databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -71,7 +65,6 @@ public class FirebaseHelper {
             });
         }
     }
-
     /** rellena el array del ranking, maximo 10
      **/
     public void rellenarArrayDeRanking(final FirebaseCallback firebaseCallback){
@@ -96,7 +89,6 @@ public class FirebaseHelper {
                         }
                     }
                 }
-                //reordenarArray();
                 firebaseCallback.onCallback(listaRanking);
             }
             @Override
