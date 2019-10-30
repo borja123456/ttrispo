@@ -88,6 +88,7 @@ public class Tablero extends Actor {
         int numeroColumnas = 10;
         int filas = 20;
         int valorFila = 0;
+        int lineas=0;
 
         for(int i = 0; i < 20; i++){
             for(int j = 0; j < 10; j++){
@@ -99,12 +100,22 @@ public class Tablero extends Actor {
             if(valorFila == numeroColumnas){
                 partida.setPuntuacion(30);
                 eliminarfila(i);
+                lineas++;
                 bajarFilaAnterior(i);
             }
             valorFila = 0;
         }
+        if (lineas == 1)
+        {
+            setMismoColorPiezas((int) Math.round(Math.random()*6+1));
+        }
+        else if(lineas > 1)
+        {
+            setRandomColorPiezas();
+        }
         return false;
     }
+
 
     private void eliminarfila(int fila) {
         for(int j = 0; j < 10; j++){
@@ -122,10 +133,10 @@ public class Tablero extends Actor {
     }
 
     /**
-    Se recoge la fila eliminada posicionY desde ahi hasta arriba se copia la fila anterior en la actual.
-    Habria que darle una vuelta en el siguiente sprint porque es un poco chapuza.
+     Se recoge la fila eliminada posicionY desde ahi hasta arriba se copia la fila anterior en la actual.
+     Habria que darle una vuelta en el siguiente sprint porque es un poco chapuza.
 
-    Posible refatorizacion: Si son todpo 0 pues que no baje mas, pero eso ya mas adelante
+     Posible refatorizacion: Si son todpo 0 pues que no baje mas, pero eso ya mas adelante
      */
     private void bajarFilaAnterior(int fila) {
         for(;fila > 0; fila--){
@@ -140,5 +151,31 @@ public class Tablero extends Actor {
 
     public void setImagenPiezaSiguiente(Texture imagenPiezaSiguiente) {
         this.imagenPiezaSiguiente = imagenPiezaSiguiente;
+    }
+
+    // Cambia el tipo (color) de todos los bloques que hay en el tablero por la del tipo(color) de la pieza en uso.
+    public void setMismoColorPiezas(int tipo)
+    {
+        for (int i = 0; i < this.tablero.length; i++){
+            for (int j = 0; j < this.tablero[i].length; j++){
+                if (tablero[i][j] > 0)
+                {
+                    tablero[i][j]= tipo;
+                }
+            }
+        }
+    }
+
+    // Cambia el tipo (color) de todos los bloques que hay en el tablero de forma aleatoria
+    public void setRandomColorPiezas()
+    {
+        for (int i = 0; i < this.tablero.length; i++){
+            for (int j = 0; j < this.tablero[i].length; j++){
+                if (tablero[i][j] > 0)
+                {
+                    tablero[i][j]= (int) Math.round(Math.random()*6+1);
+                }
+            }
+        }
     }
 }
