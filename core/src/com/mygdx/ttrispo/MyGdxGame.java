@@ -15,8 +15,8 @@ public class MyGdxGame extends Game {
     private Partida partida;
 
     public PantallaInicio pantallaInicio;
-    public static PantallaGameOver pantallaGameOver;
-    public static FirebaseHelper firebaseHelper;
+    public PantallaGameOver pantallaGameOver;
+    public PantallaAjustes pantallaAjustes;
 
     @Override
     public void create() {
