@@ -18,7 +18,7 @@ android {
     }
     defaultConfig {
         applicationId "com.mygdx.ttrispo"
-        minSdkVersion 9
+        minSdkVersion 15
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -88,3 +88,4 @@ task run(type: Exec) {
     def adb = path + "/platform-tools/adb"
     commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.mygdx.ttrispo/com.mygdx.ttrispo.AndroidLauncher'
 }
+apply plugin: 'com.google.gms.google-services'

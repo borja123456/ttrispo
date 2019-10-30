@@ -1,6 +1,7 @@
 package com.mygdx.ttrispo;
 
 import com.badlogic.gdx.Game;
+import com.mygdx.ttrispo.BaseDeDatos.FirebaseHelper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.mygdx.ttrispo.Gestores.GestorRecursos;
@@ -14,10 +15,8 @@ public class MyGdxGame extends Game {
     private Partida partida;
 
     public PantallaInicio pantallaInicio;
-    //public Partida partida;
-    public PantallaGameOver pantallaGameOver;
-    public PantallaAjustes pantallaAjustes;
-
+    public static PantallaGameOver pantallaGameOver;
+    public static FirebaseHelper firebaseHelper;
 
     @Override
     public void create() {
@@ -28,16 +27,24 @@ public class MyGdxGame extends Game {
         //partida = new Partida(this);
         pantallaGameOver = new PantallaGameOver(this);
         pantallaAjustes = new PantallaAjustes(this);
+        firebaseHelper=new FirebaseHelper();
         this.setScreen(pantallaInicio);
     }
 
     @Override
     public void dispose() {
-//        batch.dispose();
-//        img.dispose();
     }
 
+    @Override
+    public void render() {
+        super.render();
+        partidaTerminada(partida);
+    }
 
-
-
+    private boolean partidaTerminada(Partida party){
+        if(party==null){
+            partida = new Partida(this);
+            return true;
+        }else return false;
+    }
 }
