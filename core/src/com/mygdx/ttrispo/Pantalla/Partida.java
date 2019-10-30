@@ -20,6 +20,7 @@ public class Partida extends PantallaBase {
     public static float posicionX, posicionY;
     private Procesador procesador;
     private static long puntuacion;
+    public static Partida partidaAux;
 
     public Partida(MyGdxGame game) {
         super(game);
@@ -98,6 +99,7 @@ public class Partida extends PantallaBase {
         // La pieza no puede bajar
         Pieza currentPieza = gestorPiezas.getPiezaActual();
         tablero.insertarBloquesDePieza(currentPieza.getPosicionPieza(), currentPieza.getTipo());
+        partidaAux = this;
         if (tablero.comprobarGameOver(currentPieza.getPosicionPieza())) {
             dispose();
             game.setScreen(game.pantallaGameOver);
