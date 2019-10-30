@@ -109,7 +109,7 @@ public class Tablero extends Actor {
         }
         if (lineas == 1)
         {
-            setMismoColorPiezas(partida.getGestorPieza().getPiezaActual().getTipo());
+            setMismoColorPiezas((int) Math.round(Math.random()*6+1));
         }
         else if(lineas > 1)
         {
@@ -173,7 +173,7 @@ public class Tablero extends Actor {
             for (int j = 0; j < this.tablero[i].length; j++){
                 if (tablero[i][j] > 0)
                 {
-                    tablero[i][j]= (int) (Math.random()*(5-1)+1);
+                    tablero[i][j]= (int) Math.round(Math.random()*6+1);
                 }
             }
         }

@@ -192,6 +192,5 @@ public class Partida extends PantallaBase {
     public void setPuntuacion(int i) {
         puntuacion+=i;
     }
-    
 
 }
