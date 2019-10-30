@@ -4,8 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.mygdx.ttrispo.Gestores.GestorPiezas;
 import com.mygdx.ttrispo.Gestores.GestorRecursos;
 import com.mygdx.ttrispo.Pantalla.Partida;
+import com.mygdx.ttrispo.Pieza.Pieza;
 
 public class Tablero extends Actor {
     public static int tablero[][];
@@ -88,6 +90,7 @@ public class Tablero extends Actor {
         int numeroColumnas = 10;
         int filas = 20;
         int valorFila = 0;
+        int lineas=0;
 
         for(int i = 0; i < 20; i++){
             for(int j = 0; j < 10; j++){
@@ -99,9 +102,18 @@ public class Tablero extends Actor {
             if(valorFila == numeroColumnas){
                 partida.setPuntuacion(30);
                 eliminarfila(i);
+                lineas++;
                 bajarFilaAnterior(i);
             }
             valorFila = 0;
+        }
+        if (lineas == 1)
+        {
+            setMismoColorPiezas(partida.getGestorPieza().getPiezaActual().getTipo());
+        }
+        else if(lineas > 1)
+        {
+            setRandomColorPiezas();
         }
         return false;
     }
@@ -140,5 +152,30 @@ public class Tablero extends Actor {
 
     public void setImagenPiezaSiguiente(Texture imagenPiezaSiguiente) {
         this.imagenPiezaSiguiente = imagenPiezaSiguiente;
+    }
+    // Cambia el tipo (color) de todos los bloques que hay en el tablero por la del tipo(color) de la pieza en uso.
+    public void setMismoColorPiezas(int tipo)
+    {
+        for (int i = 0; i < this.tablero.length; i++){
+            for (int j = 0; j < this.tablero[i].length; j++){
+                if (tablero[i][j] > 0)
+                {
+                    tablero[i][j]= tipo;
+                }
+            }
+        }
+    }
+
+    // Cambia el tipo (color) de todos los bloques que hay en el tablero de forma aleatoria
+    public void setRandomColorPiezas()
+    {
+        for (int i = 0; i < this.tablero.length; i++){
+            for (int j = 0; j < this.tablero[i].length; j++){
+                if (tablero[i][j] > 0)
+                {
+                    tablero[i][j]= (int) (Math.random()*(5-1)+1);
+                }
+            }
+        }
     }
 }
