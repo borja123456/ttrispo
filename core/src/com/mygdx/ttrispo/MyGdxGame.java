@@ -17,15 +17,16 @@ public class MyGdxGame extends Game {
     public PantallaInicio pantallaInicio;
     public PantallaGameOver pantallaGameOver;
     public PantallaAjustes pantallaAjustes;
+    public static FirebaseHelper firebaseHelper;
 
     @Override
     public void create() {
         GestorRecursos.cargarImagenes();
         ratioPixelesHeight = (float) Gdx.graphics.getHeight()/GestorRecursos.get("background.jpeg").getHeight();
         ratioPixelesWidth = (float) Gdx.graphics.getWidth()/GestorRecursos.get("background.jpeg").getWidth();
-        pantallaInicio = new PantallaInicio(this);
+        pantallaInicio = new PantallaInicio(this, partida);
         //partida = new Partida(this);
-        pantallaGameOver = new PantallaGameOver(this);
+        pantallaGameOver = new PantallaGameOver(this, partida);
         pantallaAjustes = new PantallaAjustes(this);
         firebaseHelper=new FirebaseHelper();
         this.setScreen(pantallaInicio);
