@@ -50,7 +50,7 @@ public class PantallaInicio extends PantallaBase{
         settings.addCaptureListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                //game.setScreen(game.pantallaAjustes);
+                game.setScreen(game.pantallaAjustes);
 
             }
         });
