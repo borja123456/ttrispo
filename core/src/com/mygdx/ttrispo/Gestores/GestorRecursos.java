@@ -5,8 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 
 public  class GestorRecursos {
     private static AssetManager manager = new AssetManager();
-
-
+    private static int contador = 0;
     public static void cargarImagenes() {
         manager.load("T.jpg", Texture.class);
         manager.load("S.jpg", Texture.class);
@@ -25,7 +24,8 @@ public  class GestorRecursos {
         manager.load("background.jpeg", Texture.class);
         manager.load("GameOver.jpeg", Texture.class);
         while (!manager.update()) {
-            System.out.println("Cargando...");
+            //System.out.println("Cargando...");
+            contador++;
         }
     }
 

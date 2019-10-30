@@ -19,7 +19,7 @@ public class Partida extends PantallaBase {
     private GestorPiezas gestorPiezas;
     public static float posicionX, posicionY;
     private Procesador procesador;
-    private static int puntuacion;
+    private static long puntuacion;
 
     public Partida(MyGdxGame game) {
         super(game);
@@ -183,7 +183,7 @@ public class Partida extends PantallaBase {
         return gestorPiezas.getTexturaBloque(tipo);
     }
     
-    public int getPuntuacion(){
+    public long getPuntuacion(){
         return this.puntuacion;
     }
     

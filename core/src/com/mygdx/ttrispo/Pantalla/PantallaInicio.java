@@ -8,7 +8,12 @@ package com.mygdx.ttrispo.Pantalla;
  import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
  import com.badlogic.gdx.utils.viewport.ExtendViewport;
  import com.badlogic.gdx.utils.viewport.FitViewport;
+ import com.mygdx.ttrispo.BaseDeDatos.FirebaseCallback;
+ import com.mygdx.ttrispo.BaseDeDatos.FirebaseHelper;
+ import com.mygdx.ttrispo.BaseDeDatos.Jugador;
  import com.mygdx.ttrispo.MyGdxGame;
+
+ import java.util.ArrayList;
 
 public class PantallaInicio extends PantallaBase{
     private Stage stage;
@@ -16,7 +21,7 @@ public class PantallaInicio extends PantallaBase{
     private TextButton start;
     private TextButton settings;
 
-    public PantallaInicio (final MyGdxGame game) {
+    public PantallaInicio (final MyGdxGame game, Partida partida) {
         super(game);
         //(stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         //stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
@@ -42,10 +47,11 @@ public class PantallaInicio extends PantallaBase{
             }
         });
 
-      /*  settings.addCaptureListener(new ChangeListener() {
+      /*settings.addCaptureListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                game.setScreen(game.pantallaAjustes);
+                //game.setScreen(game.pantallaAjustes);
+
             }
         });*/
 
