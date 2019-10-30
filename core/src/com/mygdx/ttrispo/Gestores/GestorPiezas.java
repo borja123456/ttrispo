@@ -45,8 +45,7 @@ public class GestorPiezas {
      */
     private int dameTipoPiezaAleatorio() {
         this.rand = new Random();
-        //return rand.nextInt(7) + 1;
-        return 7;
+        return rand.nextInt(7) + 1;
     }
 
     /**
