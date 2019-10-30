@@ -36,7 +36,7 @@ public class PantallaInicio extends PantallaBase{
         start.setSize(300, 100);
         start.setPosition(Gdx.graphics.getWidth() / 2.65f, Gdx.graphics.getHeight() / 2);
 
-        super.stage.addActor(start);
+        super.stage.addActor(start); //si no ponemos super falla, yo flipo
         super.stage.addActor(settings);
 
 
@@ -47,13 +47,15 @@ public class PantallaInicio extends PantallaBase{
             }
         });
 
-      /*settings.addCaptureListener(new ChangeListener() {
+
+
+        settings.addCaptureListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 //game.setScreen(game.pantallaAjustes);
 
             }
-        });*/
+        });
 
     }
 
