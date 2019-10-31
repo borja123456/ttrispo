@@ -1,6 +1,8 @@
 package com.mygdx.ttrispo.Pantalla;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
@@ -20,7 +22,7 @@ import com.mygdx.ttrispo.MyGdxGame;
 import java.util.ArrayList;
 
 import static com.mygdx.ttrispo.MyGdxGame.firebaseHelper;
-import static java.lang.Thread.sleep;
+
 
 public class PantallaGameOver extends PantallaBase {
     private Skin skin;
@@ -28,11 +30,15 @@ public class PantallaGameOver extends PantallaBase {
     private TextButton home;
     private Texture fondoGameOver;
     private BitmapFont font;
-    private boolean isRankingLoaded;
+    private boolean isRankingLoaded, activo;
     private ArrayList<Jugador> listaRanking;
     private Table table;
-    private Label label, labelID;
+    private Label label, labelID, labelAlias;
     private GlyphLayout glyphLayout;
+
+    private String alias;
+    private long pasado;
+
 
     public PantallaGameOver(final MyGdxGame game){
         super(game);
@@ -91,12 +97,32 @@ public class PantallaGameOver extends PantallaBase {
     @Override
     public void show() {
         super.show();
+        activo = false;
+        listaRanking=null;
+        pasado = System.currentTimeMillis();
+    }
+    private void realShow1() {
         firebaseHelper.rellenarArrayDeRanking(new FirebaseCallback() {
             @Override
             public void onCallback(ArrayList<Jugador> lista) {
-                firebaseHelper.insertarPuntuacionEnRanking("Alias ttrispo", Partida.partidaAux.getPuntuacion());
+                System.out.println("EL PUTO ALIAS DE LOS COJONES 2"+ alias);
+                firebaseHelper.insertarPuntuacionEnRanking(alias, Partida.partidaAux.getPuntuacion());
                 listaRanking = lista;
                 isRankingLoaded = true;
+            }
+        });
+    }
+    private void realShow2() {
+        recogerAlias(new AliasCallback() {
+            @Override
+            public void onCallback(String cadena) {
+                alias = cadena;
+                if (alias.length() > 8) {
+                    alias = alias.substring(0, 8);
+                    alias = alias + "...";
+                }
+                System.out.println("EL PUTO ALIAS DE LOS COJONES "+ alias);
+                realShow1();
             }
         });
     }
@@ -111,46 +137,70 @@ public class PantallaGameOver extends PantallaBase {
         batch.begin();
         batch.draw(fondoGameOver, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         font.getData().setScale(3);
+        if(!activo) {
+            realShow2();
+            activo = true;
+        }
+        font.setColor(Color.YELLOW);
         glyphLayout.setText(font, "TOP 10 MEJORES PUNTUACIONES");
         font.draw(batch, glyphLayout,(Gdx.graphics.getWidth()-glyphLayout.width)/2, 0.95f*Gdx.graphics.getHeight());
-        try {
-            // esto simplemente es para que, dependiendo de la conexion del movil, duerma 2 segundos para que le de tiempo al callback a cargar el ranking, pero si aun asi no lo carga, se mostrara el else que viene a continuacion del siguiente if
-            sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        font.setColor(Color.WHITE);
         if(isRankingLoaded) {
             boolean nuevoRank = false;
             for (int i = 1; i < listaRanking.size(); i++) {
                 labelID = new Label(i+"ª", skin);
+                labelAlias = new Label(listaRanking.get(i).getNombre(), skin);
                 label = new Label(String.valueOf(listaRanking.get(i).getPuntuacion()), skin);
-                label.setAlignment(Align.center);
+                label.setAlignment(Align.right);
+                labelAlias.setAlignment(Align.center);
                 labelID.setAlignment(Align.left);
                 if ((!nuevoRank) && (Partida.partidaAux.getPuntuacion()==listaRanking.get(i).getPuntuacion())){
                     label.setFontScale(8);
                     labelID.setFontScale(9);
+                    labelAlias.setFontScale(5);
                     nuevoRank = true;
                 }else{
                     label.setFontScale(4);
                     labelID.setFontScale(5);
+                    labelAlias.setFontScale(3);
                 }
                 table.row();
-                table.add(labelID).padRight(100);
-                table.add(label).padLeft(100);
+                table.add(labelID).padRight(50);
+                table.add(labelAlias).padLeft(50);
+                table.add(label).padLeft(50);
             }
             isRankingLoaded = false;
-        }else{
-            if(listaRanking==null){
+        }else if(!isRankingLoaded && listaRanking==null){
                 font.getData().setScale(2.5f);
+            long futuro = System.currentTimeMillis();
+            if(futuro >= pasado+30000) { //30 SEGUNDOS DE ESPERA
                 glyphLayout.setText(font, "Conectate a internet para");
                 font.draw(batch, glyphLayout, (Gdx.graphics.getWidth()-glyphLayout.width)/2, 0.75f*Gdx.graphics.getHeight());
                 glyphLayout.setText(font, "ver el ranking online");
                 font.draw(batch, glyphLayout, (Gdx.graphics.getWidth()-glyphLayout.width)/2, 0.7f*Gdx.graphics.getHeight());
+            }else{
+                glyphLayout.setText(font, "cargando ranking...");
+                font.draw(batch, glyphLayout, (Gdx.graphics.getWidth()-glyphLayout.width)/2, 0.75f*Gdx.graphics.getHeight());
             }
         }
         batch.end();
         Gdx.gl.glClearColor(0.4f,0.2f,0.7f,0.7f); //morada
         stage.draw(); // Pintar los actores los botones por encima del background
+    }
+    private void recogerAlias(final AliasCallback aliasCallback){
+        Gdx.input.getTextInput(new Input.TextInputListener() {
+            @Override
+            public void input(String cadena) {
+                alias = cadena;
+                aliasCallback.onCallback(cadena);
+            }
+
+            @Override
+            public void canceled() {
+                alias = "\"annonymous\"";
+                aliasCallback.onCallback(alias);
+            }
+        }, "Introduce tu alias", "", " _ _ _ _ _ _ _ _");
     }
 
     @Override
