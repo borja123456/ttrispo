@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -20,11 +19,7 @@ import com.mygdx.ttrispo.BaseDeDatos.Jugador;
 import com.mygdx.ttrispo.Gestores.GestorRecursos;
 import com.mygdx.ttrispo.MyGdxGame;
 
-
 import java.util.ArrayList;
-
-import javax.swing.plaf.nimbus.State;
-import javax.xml.soap.Text;
 
 import static com.mygdx.ttrispo.MyGdxGame.firebaseHelper;
 
@@ -40,7 +35,6 @@ public class PantallaGameOver extends PantallaBase {
     private Table table;
     private Label label, labelID, labelAlias;
     private GlyphLayout glyphLayout;
-    private Partida partida;
 
     private String alias;
     private long pasado;
@@ -49,7 +43,6 @@ public class PantallaGameOver extends PantallaBase {
 
     public PantallaGameOver(final MyGdxGame game){
         super(game);
-        this.partida = partida;
         fondoGameOver = GestorRecursos.get("GameOver.jpeg");
         skin = new Skin(Gdx.files.internal("skins/default/skin/uiskin.json"));
         retry = new TextButton("Retry", skin);
@@ -69,7 +62,6 @@ public class PantallaGameOver extends PantallaBase {
         tableContainer.fillX();
         table.setSkin(skin);
 
-
         retry.setSize(300,100);
         retry.setPosition(Gdx.graphics.getWidth()/2.65f, Gdx.graphics.getHeight()/6);
 
@@ -84,7 +76,9 @@ public class PantallaGameOver extends PantallaBase {
         retry.addCaptureListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                listaRanking.clear();
+                if(listaRanking!=null){
+                    listaRanking.clear();
+                }
                 table.reset();
                 game.setScreen(new Partida(game));
             }
@@ -92,13 +86,14 @@ public class PantallaGameOver extends PantallaBase {
         home.addCaptureListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                listaRanking.clear();
+                if(listaRanking!=null){
+                    listaRanking.clear();
+                }
                 table.reset();
                 game.setScreen(game.pantallaInicio);
             }
         });
     }
-
 
     @Override
     public void show() {
@@ -151,6 +146,7 @@ public class PantallaGameOver extends PantallaBase {
         font.draw(batch, glyphLayout,(Gdx.graphics.getWidth()-glyphLayout.width)/2, 0.95f*Gdx.graphics.getHeight());
         font.setColor(Color.WHITE);
         if(isRankingLoaded) {
+            boolean nuevoRank = false;
             for (int i = 1; i < listaRanking.size(); i++) {
                 labelID = new Label(i+"ª", skin);
                 labelAlias = new Label(listaRanking.get(i).getNombre(), skin);
@@ -158,7 +154,7 @@ public class PantallaGameOver extends PantallaBase {
                 label.setAlignment(Align.right);
                 labelAlias.setAlignment(Align.center);
                 labelID.setAlignment(Align.left);
-                if(partida.getPuntuacion()==listaRanking.get(i).getPuntuacion()){
+                if ((!nuevoRank) && (Partida.partidaAux.getPuntuacion()==listaRanking.get(i).getPuntuacion())){
                     label.setFontScale(8);
                     labelID.setFontScale(9);
                     labelAlias.setFontScale(5);

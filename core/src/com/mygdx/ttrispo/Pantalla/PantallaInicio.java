@@ -21,7 +21,7 @@ public class PantallaInicio extends PantallaBase{
     private TextButton start;
     private TextButton settings;
 
-    public PantallaInicio (final MyGdxGame game, Partida partida) {
+    public PantallaInicio (final MyGdxGame game) {
         super(game);
         //(stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         //stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
