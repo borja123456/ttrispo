@@ -38,6 +38,7 @@ public class PantallaGameOver extends PantallaBase {
 
     private String alias;
     private long pasado;
+    private long futuro;
 
 
     public PantallaGameOver(final MyGdxGame game){
@@ -99,13 +100,12 @@ public class PantallaGameOver extends PantallaBase {
         super.show();
         activo = false;
         listaRanking=null;
-        pasado = System.currentTimeMillis();
+        pasado = 0;
     }
     private void realShow1() {
         firebaseHelper.rellenarArrayDeRanking(new FirebaseCallback() {
             @Override
             public void onCallback(ArrayList<Jugador> lista) {
-                System.out.println("EL PUTO ALIAS DE LOS COJONES 2"+ alias);
                 firebaseHelper.insertarPuntuacionEnRanking(alias, Partida.partidaAux.getPuntuacion());
                 listaRanking = lista;
                 isRankingLoaded = true;
@@ -121,7 +121,7 @@ public class PantallaGameOver extends PantallaBase {
                     alias = alias.substring(0, 8);
                     alias = alias + "...";
                 }
-                System.out.println("EL PUTO ALIAS DE LOS COJONES "+ alias);
+                pasado = System.currentTimeMillis();
                 realShow1();
             }
         });
@@ -171,9 +171,9 @@ public class PantallaGameOver extends PantallaBase {
             }
             isRankingLoaded = false;
         }else if(!isRankingLoaded && listaRanking==null){
-                font.getData().setScale(2.5f);
-            long futuro = System.currentTimeMillis();
-            if(futuro >= pasado+30000) { //30 SEGUNDOS DE ESPERA
+            font.getData().setScale(2.5f);
+            futuro = System.currentTimeMillis();
+            if(futuro >= pasado+20000 && pasado!=0) { //20 SEGUNDOS DE ESPERA
                 glyphLayout.setText(font, "Conectate a internet para");
                 font.draw(batch, glyphLayout, (Gdx.graphics.getWidth()-glyphLayout.width)/2, 0.75f*Gdx.graphics.getHeight());
                 glyphLayout.setText(font, "ver el ranking online");
