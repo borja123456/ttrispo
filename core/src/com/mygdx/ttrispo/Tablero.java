@@ -118,6 +118,7 @@ public class Tablero extends Actor {
         return false;
     }
 
+
     private void eliminarfila(int fila) {
         for(int j = 0; j < 10; j++){
             tablero[j][fila] = 0;
@@ -134,10 +135,10 @@ public class Tablero extends Actor {
     }
 
     /**
-    Se recoge la fila eliminada posicionY desde ahi hasta arriba se copia la fila anterior en la actual.
-    Habria que darle una vuelta en el siguiente sprint porque es un poco chapuza.
+     Se recoge la fila eliminada posicionY desde ahi hasta arriba se copia la fila anterior en la actual.
+     Habria que darle una vuelta en el siguiente sprint porque es un poco chapuza.
 
-    Posible refatorizacion: Si son todpo 0 pues que no baje mas, pero eso ya mas adelante
+     Posible refatorizacion: Si son todpo 0 pues que no baje mas, pero eso ya mas adelante
      */
     private void bajarFilaAnterior(int fila) {
         for(;fila > 0; fila--){
@@ -153,6 +154,7 @@ public class Tablero extends Actor {
     public void setImagenPiezaSiguiente(Texture imagenPiezaSiguiente) {
         this.imagenPiezaSiguiente = imagenPiezaSiguiente;
     }
+
     // Cambia el tipo (color) de todos los bloques que hay en el tablero por la del tipo(color) de la pieza en uso.
     public void setMismoColorPiezas(int tipo)
     {

@@ -34,13 +34,23 @@ public class FirebaseHelper {
     public void insertarPuntuacionEnRanking(String nombre, long puntos) {
         int contador = 1;
         boolean esMayorQueAlguno = false;
-        System.out.println("NOMBRE: " + nombre + " PUNTOS: " + puntos);
+        int posicionJugadorNuevo = 1;
         while(!esMayorQueAlguno && contador<listaRanking.size()){
-            if(listaRanking.get(contador).getPuntuacion()<puntos){
+            if(listaRanking.get(contador).getPuntuacion()<=puntos){
                 Jugador jugador = new Jugador(nombre, puntos);
                 listaRanking.add(jugador);
                 reordenarArray();
                 listaRanking.remove(11);
+                if(nombre!=null) {
+                    for (int i = 1; i < listaRanking.size(); i++) {
+                        if (puntos == listaRanking.get(i).getPuntuacion()) {
+                            break;
+                        } else posicionJugadorNuevo++;
+                    }
+                }else{
+                    nombre="annonymous";
+                }
+                listaRanking.get(posicionJugadorNuevo).setNombre(nombre);
                 esMayorQueAlguno = true;
             }
             contador++;
