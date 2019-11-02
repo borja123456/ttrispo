@@ -56,6 +56,7 @@ public class Partida extends PantallaBase {
         batch.draw(fondoPartida, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();
         cicloDeVida(delta); // Ciclo de vida
+
         stage.draw();  // Pintar los actores
     }
 
@@ -70,6 +71,7 @@ public class Partida extends PantallaBase {
 
             case (GestorEstado.SINPIEZA):
                 estadoGestorSinPieza(); //Selecciona una nueva Pieza y vuelve al modo de Reposo
+                gestorEstado.setVelocity(gestorEstado.getVelocity()-0.01f); //Velocdad
                 break;
 
             case (GestorEstado.IZQUIERDA):

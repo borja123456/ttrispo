@@ -34,4 +34,11 @@ public class GestorEstado {
         this.estado = estado;
     }
 
+    public void setVelocity(float velocity) {
+        this.velocity = velocity;
+    }
+
+    public float getVelocity() {
+        return velocity;
+    }
 }
