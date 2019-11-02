@@ -7,7 +7,6 @@ import com.mygdx.ttrispo.Gestores.GestorPiezas;
 import com.mygdx.ttrispo.Gestores.GestorRecursos;
 import com.mygdx.ttrispo.MyGdxGame;
 import com.mygdx.ttrispo.Pieza.Pieza;
-import com.mygdx.ttrispo.Procesador2;
 import com.mygdx.ttrispo.Tablero;
 import com.mygdx.ttrispo.Procesador;
 
@@ -39,7 +38,7 @@ public class Partida extends PantallaBase {
         stage.addActor(progresoPartida);
 
         gestorRecursos.cargarImagenes();
-        Procesador2 pc = new Procesador2(gestorEstado,stage);
+      
         this.longitudPuntos = 0;
         this.puntuacion = 0;
     }
