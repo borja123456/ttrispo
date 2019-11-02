@@ -38,7 +38,7 @@ public class Partida extends PantallaBase {
         stage.addActor(progresoPartida);
 
         gestorRecursos.cargarImagenes();
-      
+
         this.longitudPuntos = 0;
         this.puntuacion = 0;
     }
@@ -71,7 +71,7 @@ public class Partida extends PantallaBase {
 
             case (GestorEstado.SINPIEZA):
                 estadoGestorSinPieza(); //Selecciona una nueva Pieza y vuelve al modo de Reposo
-                gestorEstado.setVelocity(gestorEstado.getVelocity()+0.1f);
+                gestorEstado.setVelocity(gestorEstado.getVelocity()*0.2f); //Velocdad
                 break;
 
             case (GestorEstado.IZQUIERDA):
