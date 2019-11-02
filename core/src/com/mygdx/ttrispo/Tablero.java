@@ -4,6 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.mygdx.ttrispo.Gestores.GestorPiezas;
 import com.mygdx.ttrispo.Gestores.GestorRecursos;
 import com.mygdx.ttrispo.Pantalla.Partida;
@@ -13,37 +16,52 @@ public class Tablero extends Actor {
     public static int tablero[][];
     private Partida partida;
     private Texture imagenPiezaSiguiente;
-    public  int tamanyoPieza = (int) (51 * MyGdxGame.ratioPixelesHeight); //Tamaño Pieza
-    public  int tableroX = (int) (124 * MyGdxGame.ratioPixelesWidth);;
+    public  int tamanyoPiezaX = (int) (50 * MyGdxGame.ratioPixelesWidth); //Tamaño Pieza
+    public  int tamanyoPiezaY = (int) (51 * MyGdxGame.ratioPixelesHeight);
+    //son cuadradas, pero no va si no lo hacemos de este modo
+    public  int tableroX = (int) (124 * MyGdxGame.ratioPixelesWidth);
     public  int tableroY = (int) (250 * MyGdxGame.ratioPixelesHeight);
+    private Table table;
+    private Skin skin;
+
 
     public Tablero(Partida partida) {
         this.partida = partida;
         this.tablero = new int[10][20];
+        skin = new Skin(Gdx.files.internal("skins/default/skin/uiskin.json"));
+        Container<Table> tableContainer = new Container<>();
+        float sw = Gdx.graphics.getWidth();
+        float sh = Gdx.graphics.getHeight();
+        float cw = sw * 0.2f;
+        float ch = sh * 0.8f;
+        tableContainer.setSize(cw, ch);
+        tableContainer.setPosition((sw-cw)/2.0f, (sh-ch)/1.1f);
+        tableContainer.fillX();
+        table = new Table();
+        table.setSkin(skin);
+        tableContainer.setActor(table);
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        //pintarPieza();
         int posicionX,posicionY,tipo;
-        //setScaleX(50);
         Texture imagenBloque;
 
         for (int i = 0; i < this.tablero.length; i++){
             for (int j = 0; j < this.tablero[i].length; j++){
 
-                posicionX = (tamanyoPieza * i);
-                posicionY = Gdx.graphics.getHeight() - (tamanyoPieza * j);
+                posicionX = (tamanyoPiezaX * i);
+                posicionY = Gdx.graphics.getHeight() - (tamanyoPiezaY * j);
 
                 tipo = this.tablero[i][j];
                 if(tipo >= 1) {
                     imagenBloque = partida.getTexturaPieza(tipo);
-                    //batch.setColor(1, 1, 1, 1f);
-                    batch.draw(imagenBloque, posicionX + tableroX, posicionY - tableroY, 0, 0, tamanyoPieza, tamanyoPieza);
+                    batch.draw(imagenBloque, posicionX + tableroX, posicionY - tableroY, 0, 0, tamanyoPiezaX, tamanyoPiezaY);
                 }
             }
-        }
-        if (imagenPiezaSiguiente != null){
+        } //74x193
+        if (imagenPiezaSiguiente != null){ //hueco = 111 x 111
+            table.add();
             batch.draw(imagenPiezaSiguiente, Gdx.graphics.getWidth() - (imagenPiezaSiguiente.getWidth() - 50), Gdx.graphics.getHeight()- imagenPiezaSiguiente.getHeight());
         }
 

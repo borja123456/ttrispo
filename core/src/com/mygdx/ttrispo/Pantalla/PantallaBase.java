@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.mygdx.ttrispo.Gestores.GestorRecursos;
 import com.mygdx.ttrispo.MyGdxGame;
 
 public class PantallaBase implements Screen {
@@ -35,7 +36,6 @@ public class PantallaBase implements Screen {
     @Override
     public void hide() { // se haría everytime un show, si abandonamos la pantalla = DISPOSE
         Gdx.input.setInputProcessor(null); //para dejar de usar este stage cuando cambiemos de pantalla
-        //stage.dispose(); //usamos dispose porque si cambiamos muchas veces de pantalla
         stage.clear();
     }
 
@@ -46,9 +46,6 @@ public class PantallaBase implements Screen {
 
         stage.act();
         stage.draw();
-        /*batch.begin();
-        batch.draw(backGround, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.end(); */
     }
 
     @Override
@@ -69,8 +66,6 @@ public class PantallaBase implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
-        //skin.dispose();
-        //shapeRenderer.dispose();
     }
 }
 

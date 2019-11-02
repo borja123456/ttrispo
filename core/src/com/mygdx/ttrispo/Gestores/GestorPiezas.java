@@ -116,9 +116,4 @@ public class GestorPiezas {
     public Texture getTexturaBloque(int tipo) {
         return piezas[tipo].getTextura();
     }
-
-
-
-
-
 }

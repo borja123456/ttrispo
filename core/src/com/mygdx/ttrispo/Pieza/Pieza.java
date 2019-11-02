@@ -31,8 +31,6 @@ public class Pieza {
         return this.textura;
     }
 
-
-
     public int[][] getPosicionPieza() {
         int[][] coordenadasPieza = new int[numBlock][2];
         return coordenadasPieza;
@@ -115,6 +113,4 @@ public class Pieza {
     public Texture getImagen() {
         return this.imagen;
     }
-
-
 }

@@ -24,11 +24,16 @@ public class FirebaseHelper {
         config.databaseUrl = "https://ttrispo-40d29.firebaseio.com";
         config.serviceAccount = Gdx.files.absolute("ttrispo-40d29-firebase-adminsdk-duoa1-62d89da538.json");
 
-        //cargar base de datos en tiempo real
-        FirebaseLoader.load(config,
-                FirebaseFeatures.REALTIME_DATABASE,
-                FirebaseFeatures.AUTHENTICATION
-        );
+        try{
+            //cargar base de datos en tiempo real
+            FirebaseLoader.load(config,
+                    FirebaseFeatures.REALTIME_DATABASE,
+                    FirebaseFeatures.AUTHENTICATION
+            );
+        }catch (RuntimeException re){
+            System.out.println("Error, ya esta creado y conectad la base de datos.");
+        }
+
     }
 
     public void insertarPuntuacionEnRanking(String nombre, long puntos) {
@@ -55,11 +60,6 @@ public class FirebaseHelper {
             }
             contador++;
         }
-        for(int i = 1; i<listaRanking.size(); i++){
-            System.out.println(listaRanking.get(i).getPuntuacion());
-        }
-
-        System.out.println("ES " + esMayorQueAlguno);
         if (esMayorQueAlguno){
             databaseReference = GDXFirebase.FirebaseDatabase().getReference("bbdd");
             databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -81,7 +81,6 @@ public class FirebaseHelper {
             });
         }
     }
-
     /** rellena el array del ranking, maximo 10
      **/
     public void rellenarArrayDeRanking(final FirebaseCallback firebaseCallback){
@@ -106,7 +105,6 @@ public class FirebaseHelper {
                         }
                     }
                 }
-                //reordenarArray();
                 firebaseCallback.onCallback(listaRanking);
             }
             @Override

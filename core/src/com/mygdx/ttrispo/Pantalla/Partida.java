@@ -21,6 +21,7 @@ public class Partida extends PantallaBase {
     private Procesador procesador;
     private static long puntuacion;
     public static Partida partidaAux;
+    private int longitudPuntos;
 
     public Partida(MyGdxGame game) {
         super(game);
@@ -38,6 +39,7 @@ public class Partida extends PantallaBase {
 
         gestorRecursos.cargarImagenes();
 
+        this.longitudPuntos = 0;
         this.puntuacion = 0;
     }
 
@@ -55,11 +57,6 @@ public class Partida extends PantallaBase {
         batch.end();
         cicloDeVida(delta); // Ciclo de vida
         stage.draw();  // Pintar los actores
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose();
     }
 
     private void cicloDeVida(float delta) {
@@ -94,6 +91,10 @@ public class Partida extends PantallaBase {
                 break;
         }
     }
+    @Override
+    public void dispose() {
+        super.dispose();
+    }
 
     private void bloquearPieza() {
         // La pieza no puede bajar
@@ -101,7 +102,7 @@ public class Partida extends PantallaBase {
         tablero.insertarBloquesDePieza(currentPieza.getPosicionPieza(), currentPieza.getTipo());
         partidaAux = this;
         if (tablero.comprobarGameOver(currentPieza.getPosicionPieza())) {
-            dispose();
+            this.dispose();
             game.setScreen(game.pantallaGameOver);
         }
         tablero.comprobarLineaCompleta();
@@ -184,12 +185,23 @@ public class Partida extends PantallaBase {
     public Texture getTexturaPieza(int tipo){
         return gestorPiezas.getTexturaBloque(tipo);
     }
-
+    
     public long getPuntuacion(){
         return this.puntuacion;
     }
-
+    
     public void setPuntuacion(int i) {
-        puntuacion+=i;
+        long nuevaPuntuacion = puntuacion + i;
+        if(String.valueOf(puntuacion).length() < (String.valueOf(nuevaPuntuacion).length())){
+            System.out.println("ESTADO TRUE");
+            longitudPuntos++;
+        }else{
+            System.out.println("ESTADO FALSE");
+        }
+        puntuacion = nuevaPuntuacion;
+    }
+
+    public int getLongitudPuntos(){
+        return this.longitudPuntos;
     }
 }

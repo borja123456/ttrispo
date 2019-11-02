@@ -7,6 +7,13 @@ public  class GestorRecursos {
     private static AssetManager manager = new AssetManager();
     private static int contador = 0;
     public static void cargarImagenes() {
+        manager.load("fondoInicio.jpg", Texture.class);
+        manager.load("tetris.png", Texture.class);
+        manager.load("B-start.png", Texture.class);
+        manager.load("B-ajustes.png", Texture.class);
+        manager.load("colorPiezas.png", Texture.class);
+        manager.load("B-atras.png", Texture.class);
+
         manager.load("T.jpg", Texture.class);
         manager.load("S.jpg", Texture.class);
         manager.load("Z.jpg", Texture.class);
@@ -27,6 +34,10 @@ public  class GestorRecursos {
             //System.out.println("Cargando...");
             contador++;
         }
+    }
+
+    public static void limpiarAssets(){
+        manager.clear();
     }
 
     public static Texture get(String s) {

@@ -108,15 +108,14 @@ public class PantallaAjustes extends PantallaBase{
     }
 
     @Override
+    public void dispose() {
+        super.dispose();
+    }
+
+    @Override
     public void render(float delta) {
         super.render(delta);
         Gdx.gl.glClearColor(0.4f,0.5f,0.8f,1f); //azul
 
     }
-
-    @Override
-    public void dispose() {
-        super.dispose();
-    }
-
 }

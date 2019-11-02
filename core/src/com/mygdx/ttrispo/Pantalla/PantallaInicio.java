@@ -1,52 +1,69 @@
 package com.mygdx.ttrispo.Pantalla;
  import com.badlogic.gdx.Gdx;
- import com.badlogic.gdx.graphics.GL20;
+ import com.badlogic.gdx.graphics.OrthographicCamera;
+ import com.badlogic.gdx.graphics.Texture;
+ import com.badlogic.gdx.graphics.g2d.Sprite;
+ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  import com.badlogic.gdx.scenes.scene2d.Actor;
- import com.badlogic.gdx.scenes.scene2d.Stage;
+ import com.badlogic.gdx.scenes.scene2d.ui.Image;
+ import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
  import com.badlogic.gdx.scenes.scene2d.ui.Skin;
- import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
  import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
- import com.badlogic.gdx.utils.viewport.ExtendViewport;
- import com.badlogic.gdx.utils.viewport.FitViewport;
- import com.mygdx.ttrispo.BaseDeDatos.FirebaseCallback;
- import com.mygdx.ttrispo.BaseDeDatos.FirebaseHelper;
- import com.mygdx.ttrispo.BaseDeDatos.Jugador;
+ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+ import com.mygdx.ttrispo.Gestores.GestorRecursos;
  import com.mygdx.ttrispo.MyGdxGame;
 
- import java.util.ArrayList;
-
 public class PantallaInicio extends PantallaBase{
-    private Stage stage;
     private Skin skin;
-    private TextButton start;
-    private TextButton settings;
+    private ImageTextButton start, settings;
+    private Texture fondoInicio;
+    private Sprite paraGirar1, paraGirar2;
+    private long tiempoInicial;
+    private final long switchfps = 10;
+    private boolean cambio;
+    private Image tetris;
 
     public PantallaInicio (final MyGdxGame game) {
         super(game);
-        //(stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
-        //stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
-
+        fondoInicio = GestorRecursos.get("fondoInicio.jpg");
         skin = new Skin(Gdx.files.internal("skins/default/skin/uiskin.json"));
-        start = new TextButton("Start", skin);
-        settings = new TextButton("Settings", skin);
+        paraGirar1 = new Sprite(fondoInicio);
+        paraGirar2 = new Sprite(fondoInicio);
+        tiempoInicial = 0;
+        cambio = false;
 
-        settings.setSize(300, 100);
-        settings.setPosition(Gdx.graphics.getWidth() / 2.65f, Gdx.graphics.getHeight() / 3);
+        //Tetris imagen
 
-        start.setSize(300, 100);
-        start.setPosition(Gdx.graphics.getWidth() / 2.65f, Gdx.graphics.getHeight() / 2);
+        tetris = new Image(new TextureRegion(GestorRecursos.get("tetris.png")));
+        tetris.setSize(0.9f*tetris.getWidth(), 0.9f*tetris.getHeight());
+        tetris.setPosition((Gdx.graphics.getWidth() - tetris.getWidth()) / 2.0f, 0.6f * Gdx.graphics.getHeight());
+        tetris.setName("ttrispo");
+        super.stage.addActor(tetris);
 
-        super.stage.addActor(start); //si no ponemos super falla, yo flipo
+        //Boton start con imagen
+        start = new ImageTextButton("", skin, "start");
+        start.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-start.png")));
+        start.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-start.png")));
+        start.setSize(start.getStyle().imageUp.getMinWidth(), start.getStyle().imageUp.getMinHeight());
+        start.setPosition((Gdx.graphics.getWidth() - start.getStyle().imageUp.getMinWidth()) / 2.0f, 0.3f * Gdx.graphics.getHeight());
+        super.stage.addActor(start);
+
+        //Boton ajustes con imagen
+        settings = new ImageTextButton("", skin, "ajustes");
+        settings.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-ajustes.png")));
+        settings.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-ajustes.png")));
+        settings.setSize(settings.getStyle().imageUp.getMinWidth()/1.5f, settings.getStyle().imageUp.getMinHeight()/1.5f);
+        settings.setPosition((Gdx.graphics.getWidth() - settings.getStyle().imageUp.getMinWidth()/1.5f)/ 2.0f,
+                0.2f * Gdx.graphics.getHeight());
         super.stage.addActor(settings);
 
-
+        //Eventos de ambos
         start.addCaptureListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 game.setScreen(new Partida(game));
             }
         });
-        
         settings.addCaptureListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -54,26 +71,51 @@ public class PantallaInicio extends PantallaBase{
 
             }
         });
-
+        System.out.println("EL BUENO ES: " + stage.getActors().indexOf(start, true));
     }
 
     @Override
     public void show() {
         super.show();
-        //Gdx.input.setInputProcessor(stage);
     }
 
     @Override
     public void hide() { //usamos dispose porque si cambiamos muchas veces de pantalla
-        //super.hide();
-        //esto hay que dejarlo asi o no ira, incluso si borramos el metodo hide, la pantalla inicio se queda en azul, sin botones
     }
 
     @Override
     public void render(float delta) {
         super.render(delta);
-        Gdx.gl.glClearColor(0.4f,0.5f,0.8f,1f); //azul
-
+        Gdx.gl.glClearColor(0f,0f,0f,0f); //azul
+        batch.begin();
+        batch.draw(fondoInicio, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        paraGirar1.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        paraGirar1.rotate((float) 0.1);
+        paraGirar1.draw(batch, 100);
+        paraGirar2.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        paraGirar2.rotate((float) -0.1);
+        paraGirar2.draw(batch, 100);
+        if(cambio){
+            ((OrthographicCamera)stage.getCamera()).zoom-=0.001f;
+            tiempoInicial++;
+            if(tiempoInicial==switchfps){
+                tiempoInicial=0;
+                cambio = false;
+            }
+        }else {
+            ((OrthographicCamera)stage.getCamera()).zoom+=0.001f;
+            tiempoInicial++;
+            if(tiempoInicial==switchfps){
+                tiempoInicial=0;
+                cambio = true;
+            }
+        }
+        batch.end();
+        stage.draw();
+    }
+    @Override
+    public void dispose() {
+        super.dispose();
     }
 
 }

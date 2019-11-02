@@ -202,9 +202,4 @@ public class PantallaGameOver extends PantallaBase {
             }
         }, "Introduce tu alias", "", " _ _ _ _ _ _ _ _");
     }
-
-    @Override
-    public void dispose() {
-        super.dispose();
-    }
 }
