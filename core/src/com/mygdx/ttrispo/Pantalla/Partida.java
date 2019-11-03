@@ -2,6 +2,15 @@ package com.mygdx.ttrispo.Pantalla;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.mygdx.ttrispo.Gestores.GestorEstado;
 import com.mygdx.ttrispo.Gestores.GestorPiezas;
 import com.mygdx.ttrispo.Gestores.GestorRecursos;
@@ -22,6 +31,7 @@ public class Partida extends PantallaBase {
     private static long puntuacion;
     public static Partida partidaAux;
     private int longitudPuntos;
+    private ImageButton derecha, izquierza, giro, abajo;
 
     public Partida(MyGdxGame game) {
         super(game);
@@ -41,6 +51,69 @@ public class Partida extends PantallaBase {
 
         this.longitudPuntos = 0;
         this.puntuacion = 0;
+
+        //Botones
+        Skin skin = new Skin(Gdx.files.internal("skins/default/skin/uiskin.json"));
+
+        //Boton derecha
+        derecha = new ImageButton(skin, "derecha");
+        derecha.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-dere.jpg")));
+        derecha.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-dere.jpg")));
+        derecha.setSize(derecha.getStyle().imageUp.getMinWidth()-30, derecha.getStyle().imageUp.getMinHeight()-30);
+        derecha.setPosition((Gdx.graphics.getWidth() - derecha.getStyle().imageUp.getMinWidth()) / 1.2f, 0.09f*Gdx.graphics.getHeight());
+
+        derecha.addCaptureListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                gestorEstado.setEstado(GestorEstado.DERECHA);
+            }
+        });
+        super.stage.addActor(derecha);
+
+        //Boton abajo
+        abajo = new ImageButton(skin, "abajo");
+        abajo.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-abajo.jpg")));
+        abajo.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-abajo.jpg")));
+        abajo.setSize(derecha.getStyle().imageUp.getMinWidth()-40, derecha.getStyle().imageUp.getMinHeight()-40);
+        abajo.setPosition((Gdx.graphics.getWidth() - derecha.getStyle().imageUp.getMinWidth()) / 2.0f, 0.01f*Gdx.graphics.getHeight());
+
+        abajo.addCaptureListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                gestorEstado.setEstado(GestorEstado.CAER);
+            }
+        });
+        super.stage.addActor(abajo);
+
+        //Boton izquierza
+        izquierza = new ImageButton(skin, "izquierda");
+        izquierza.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-iz.jpg")));
+        izquierza.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-iz.jpg")));
+        izquierza.setSize(derecha.getStyle().imageUp.getMinWidth()-30, derecha.getStyle().imageUp.getMinHeight()-30);
+        izquierza.setPosition((Gdx.graphics.getWidth() - derecha.getStyle().imageUp.getMinWidth()) / 6.0f, 0.09f*Gdx.graphics.getHeight());
+
+        izquierza.addCaptureListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                gestorEstado.setEstado(GestorEstado.IZQUIERDA);
+            }
+        });
+        super.stage.addActor(izquierza);
+
+        //Boton giro
+        giro = new ImageButton(skin, "rotar");
+        giro.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-Rot.jpg")));
+        giro.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-Rot.jpg")));
+        giro.setSize(derecha.getStyle().imageUp.getMinWidth()-40, derecha.getStyle().imageUp.getMinHeight()-40);
+        giro.setPosition((Gdx.graphics.getWidth() - derecha.getStyle().imageUp.getMinWidth()) / 2.0f, 0.13f*Gdx.graphics.getHeight());
+
+        giro.addCaptureListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                gestorEstado.setEstado(GestorEstado.GIRO);
+            }
+        });
+        super.stage.addActor(giro);
     }
 
     @Override
