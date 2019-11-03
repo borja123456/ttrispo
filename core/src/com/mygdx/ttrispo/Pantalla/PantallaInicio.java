@@ -71,7 +71,8 @@ public class PantallaInicio extends PantallaBase{
         settings.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(game.pantallaAjustes);
+
+                game.setScreen(new PantallaAjustes(game));
 
             }
         });

@@ -67,7 +67,7 @@ public class GestorPiezas {
         piezas[Pieza.J] = new PiezaJ(0, 5);
         if(PantallaAjustes.getColoresPersonalizados()){
             for(int i = 1; i<=7; i++){
-                piezas[i].setTextura(PantallaAjustes.getArrayColores().get(i));
+                piezas[i].setTextura(PantallaAjustes.texturaPiezas.get(i));
             }
         }
     }

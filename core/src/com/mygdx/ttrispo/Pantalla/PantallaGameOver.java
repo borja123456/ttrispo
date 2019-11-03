@@ -102,6 +102,7 @@ public class PantallaGameOver extends PantallaBase {
                     listaRanking.clear();
                 }
                 table.reset();
+                PantallaAjustes.texturaPiezas.clear();
                 game.setScreen(game.pantallaInicio);
             }
         });
@@ -111,7 +112,9 @@ public class PantallaGameOver extends PantallaBase {
     public void show() {
         super.show();
         activo = false;
-        listaRanking=null;
+        if(listaRanking != null){
+            listaRanking=null;
+        }
         pasado = 0;
     }
     private void realShow1() {
@@ -120,7 +123,9 @@ public class PantallaGameOver extends PantallaBase {
             public void onCallback(ArrayList<Jugador> lista) {
                 firebaseHelper.insertarPuntuacionEnRanking(alias, Partida.partidaAux.getPuntuacion());
                 listaRanking = lista;
-                isRankingLoaded = true;
+                if(listaRanking!=null){
+                    isRankingLoaded = true;
+                }
             }
         });
     }
@@ -159,27 +164,31 @@ public class PantallaGameOver extends PantallaBase {
         font.setColor(Color.WHITE);
         if(isRankingLoaded) {
             boolean nuevoRank = false;
-            for (int i = 1; i < listaRanking.size(); i++) {
-                labelID = new Label(i+"ª", skin);
-                labelAlias = new Label(listaRanking.get(i).getNombre(), skin);
-                label = new Label(String.valueOf(listaRanking.get(i).getPuntuacion()), skin);
-                label.setAlignment(Align.right);
-                labelAlias.setAlignment(Align.center);
-                labelID.setAlignment(Align.left);
-                if ((!nuevoRank) && (Partida.partidaAux.getPuntuacion()==listaRanking.get(i).getPuntuacion())){
-                    label.setFontScale(8);
-                    labelID.setFontScale(9);
-                    labelAlias.setFontScale(5);
-                    nuevoRank = true;
-                }else{
-                    label.setFontScale(4);
-                    labelID.setFontScale(5);
-                    labelAlias.setFontScale(3);
+            try {
+                for (int i = 1; i < listaRanking.size(); i++) {
+                    labelID = new Label(i + "ª", skin);
+                    labelAlias = new Label(listaRanking.get(i).getNombre(), skin);
+                    label = new Label(String.valueOf(listaRanking.get(i).getPuntuacion()), skin);
+                    label.setAlignment(Align.right);
+                    labelAlias.setAlignment(Align.center);
+                    labelID.setAlignment(Align.left);
+                    if ((!nuevoRank) && (Partida.partidaAux.getPuntuacion() == listaRanking.get(i).getPuntuacion())) {
+                        label.setFontScale(8);
+                        labelID.setFontScale(9);
+                        labelAlias.setFontScale(5);
+                        nuevoRank = true;
+                    } else {
+                        label.setFontScale(4);
+                        labelID.setFontScale(5);
+                        labelAlias.setFontScale(3);
+                    }
+                    table.row();
+                    table.add(labelID).padRight(50);
+                    table.add(labelAlias).padLeft(50);
+                    table.add(label).padLeft(50);
                 }
-                table.row();
-                table.add(labelID).padRight(50);
-                table.add(labelAlias).padLeft(50);
-                table.add(label).padLeft(50);
+            }catch (NullPointerException npe){
+                System.out.println("ERROR: aun no se habia cargado del todo el ranking.");
             }
             isRankingLoaded = false;
         }else if(!isRankingLoaded && listaRanking==null){

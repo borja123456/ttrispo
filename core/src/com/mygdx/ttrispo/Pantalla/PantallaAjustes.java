@@ -34,7 +34,7 @@ public class PantallaAjustes extends PantallaBase{
     private TextureRegion fraseAjustes;
     public int i, j, l, o, s, t, z;
     private static boolean coloresPersonalizados;
-    private static ArrayList<Texture> texturaPiezas = new ArrayList<>();
+    public static ArrayList<Texture> texturaPiezas = new ArrayList<>();
     private Sprite paraGirar1, paraGirar2;
     private final long switchfps = 10;
     private boolean cambio;
@@ -188,12 +188,19 @@ public class PantallaAjustes extends PantallaBase{
                 coloresPersonalizados = true;
                 texturaPiezas.add(null);//posicion 0, siempre es recomendable
                 texturaPiezas.add(getColorNuevoPieza(t)); // T = 1
+                System.out.println("Color pieza T: " + t);
                 texturaPiezas.add(getColorNuevoPieza(s)); // S = 2
+                System.out.println("Color pieza S: " + s);
                 texturaPiezas.add(getColorNuevoPieza(z)); // Z = 3
+                System.out.println("Color pieza Z: " + z);
                 texturaPiezas.add(getColorNuevoPieza(i)); // I = 4
+                System.out.println("Color pieza I: " + i);
                 texturaPiezas.add(getColorNuevoPieza(o)); // O = 5
+                System.out.println("Color pieza O: " + o);
                 texturaPiezas.add(getColorNuevoPieza(l)); // L = 6
+                System.out.println("Color pieza L: " + l);
                 texturaPiezas.add(getColorNuevoPieza(j)); // J = 7
+                System.out.println("Color pieza J: " + j);
 
                 game.setScreen(new Partida(game));
             }
@@ -250,10 +257,6 @@ public class PantallaAjustes extends PantallaBase{
         return textura;
     }
 
-    public static ArrayList<Texture> getArrayColores(){
-        return texturaPiezas;
-    }
-
     @Override
     public void show() {
         super.show();
@@ -261,6 +264,7 @@ public class PantallaAjustes extends PantallaBase{
 
     @Override
     public void hide() {
+        super.hide();
     }
 
     @Override
