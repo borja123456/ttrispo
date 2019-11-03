@@ -28,7 +28,7 @@ public class Procesador extends InputAdapter {
                 if ((screenY>zona0)&&(screenY<zona1)){
                     gestorEstado.setEstado(gestorEstado.GIRO);
                 }else {
-                    gestorEstado.setEstado(gestorEstado.CAER);
+                //   gestorEstado.setEstado(gestorEstado.CAER);
                 }
                 System.out.println("Zona centro");
             }else{
