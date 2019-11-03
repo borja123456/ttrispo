@@ -21,10 +21,6 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle:{
 		tetris: {down: default-round-down, up: default-round, font: default-font, fontColor: white},
 		reiniciar: {down: default-round-down, up: default-round, font: default-font, fontColor: white},
 		inicio: {down: default-round-down, up: default-round, font: default-font, fontColor: white},
-	rotar: {down: white, imageUp: default-round},
-	izquierda: {down: white, imageUp: default-round},
-	derecha: {down: white, imageUp: default-round},
-	abajo: {down: white, imageUp: default-round}
 },
 com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
 		start: {down: white, imageUp: default-round},
@@ -33,10 +29,10 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
 		tetris: {down: white, imageUp: default-round},
 		reiniciar: {down: white, imageUp: default-round},
 		inicio: {down: white, imageUp: default-round},
-		rotar: {down: white, imageUp: default-round},
-		izquierda: {down: white, imageUp: default-round},
-		derecha: {down: white, imageUp: default-round},
-		abajo: {down: white, imageUp: default-round}
+		rotar: {imageDown: white, imageUp: white},
+		izquierda: {imageDown: white, imageUp: white},
+		derecha: {imageDown: white, imageUp: white},
+		abajo: {imageDown: white, imageUp: white}
 },
 com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 	default: { down: default-round-down, up: default-round, font: default-font, fontColor: white },

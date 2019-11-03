@@ -1,28 +1,82 @@
 package com.mygdx.ttrispo.Botones;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.mygdx.ttrispo.Gestores.GestorEstado;
+import com.mygdx.ttrispo.Gestores.GestorRecursos;
 
-public class BotonBase extends ImageButton {
-    private final int POSICION_X;
-    private final int POSICION_Y;
-    private final int ANCHO;
-    private final int ALTO;
-    private final String IMAGEN_ARRIBA;
-    private final String IMAGEN_ABAJO;
+public class BotonBase extends Actor {
+    private ImageButton derecha, izquierza, giro, abajo;
+    public BotonBase(Stage stage, GestorEstado gestorEstado){
+        final GestorEstado gE = gestorEstado;
+        //Botones
+        Skin skin = new Skin(Gdx.files.internal("skins/default/skin/uiskin.json"));
 
-    public BotonBase(int posicion_x, int posicion_y, int ancho, int alto, String imagen_arriba, String imagen_abajo, ChangeListener listener) {
-        super(new Skin(Gdx.files.internal("skins/default/skin/uiskin.json")));
-        POSICION_X = posicion_x;
-        POSICION_Y = posicion_y;
-        ANCHO = ancho;
-        ALTO = alto;
-        IMAGEN_ARRIBA = imagen_arriba;
-        IMAGEN_ABAJO = imagen_abajo;
-        this.addCaptureListener(listener);
+        //Boton derecha
+        derecha = new ImageButton(skin, "derecha");
+        derecha.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-dere.jpg")));
+        derecha.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("BP-dere.jpeg")));
+        derecha.setSize(derecha.getStyle().imageUp.getMinWidth()-30, derecha.getStyle().imageUp.getMinHeight()-30);
+        derecha.setPosition((Gdx.graphics.getWidth() - derecha.getStyle().imageUp.getMinWidth()) / 1.2f, 0.09f*Gdx.graphics.getHeight());
+        stage.addActor(derecha);
+
+        derecha.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                gE.setEstado(GestorEstado.DERECHA);
+            }
+        });
+
+        //Boton abajo
+        abajo = new ImageButton(skin, "abajo");
+        abajo.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-abajo.jpg")));
+        abajo.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("BP-abajo.jpeg")));
+        abajo.setSize(derecha.getStyle().imageUp.getMinWidth()-40, derecha.getStyle().imageUp.getMinHeight()-40);
+        abajo.setPosition((Gdx.graphics.getWidth() - derecha.getStyle().imageUp.getMinWidth()) / 2.0f, 0.01f*Gdx.graphics.getHeight());
+        stage.addActor(abajo);
+
+        abajo.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                gE.setEstado(GestorEstado.CAER);
+            }
+        });
+
+        //Boton izquierza
+        izquierza = new ImageButton(skin, "izquierda");
+        izquierza.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-iz.jpg")));
+        izquierza.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("BP-iz.jpeg")));
+        izquierza.setSize(derecha.getStyle().imageUp.getMinWidth()-30, derecha.getStyle().imageUp.getMinHeight()-30);
+        izquierza.setPosition((Gdx.graphics.getWidth() - derecha.getStyle().imageUp.getMinWidth()) / 6.0f, 0.09f*Gdx.graphics.getHeight());
+        stage.addActor(izquierza);
+
+        izquierza.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                gE.setEstado(GestorEstado.IZQUIERDA);
+            }
+        });
+
+        //Boton giro
+        giro = new ImageButton(skin, "rotar");
+        giro.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-Rot.jpg")));
+        giro.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("BP-Rot.jpeg")));
+        giro.setSize(derecha.getStyle().imageUp.getMinWidth()-40, derecha.getStyle().imageUp.getMinHeight()-40);
+        giro.setPosition((Gdx.graphics.getWidth() - derecha.getStyle().imageUp.getMinWidth()) / 2.0f, 0.13f*Gdx.graphics.getHeight());
+        stage.addActor(giro);
+
+        giro.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                gE.setEstado(GestorEstado.GIRO);
+            }
+        });
     }
 }
-

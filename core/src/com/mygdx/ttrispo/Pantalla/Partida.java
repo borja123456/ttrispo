@@ -3,21 +3,18 @@ package com.mygdx.ttrispo.Pantalla;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.mygdx.ttrispo.Botones.BotonBase;
 import com.mygdx.ttrispo.Gestores.GestorEstado;
 import com.mygdx.ttrispo.Gestores.GestorPiezas;
 import com.mygdx.ttrispo.Gestores.GestorRecursos;
 import com.mygdx.ttrispo.MyGdxGame;
 import com.mygdx.ttrispo.Pieza.Pieza;
 import com.mygdx.ttrispo.Tablero;
-import com.mygdx.ttrispo.Procesador;
 
 public class Partida extends PantallaBase {
     private Texture fondoPartida;
@@ -26,17 +23,17 @@ public class Partida extends PantallaBase {
     private GestorEstado gestorEstado;
     private GestorPiezas gestorPiezas;
     public static float posicionX, posicionY;
-    private Procesador procesador;
     private static long puntuacion;
     public static Partida partidaAux;
     private int longitudPuntos;
-    private ImageButton derecha, izquierza, giro, abajo;
+
 
     public Partida(MyGdxGame game) {
         super(game);
         gestorEstado = new GestorEstado(this);
         gestorPiezas = new GestorPiezas(this);
-        procesador = new Procesador(gestorEstado);
+        BotonBase bb = new BotonBase(stage, gestorEstado);
+        //procesador = new Procesador(gestorEstado);
         fondoPartida = GestorRecursos.get("background.jpeg");
 
         tablero = new Tablero(this);
@@ -47,75 +44,12 @@ public class Partida extends PantallaBase {
         stage.addActor(progresoPartida);
         this.longitudPuntos = 0;
         this.puntuacion = 0;
-
-        //Botones
-        Skin skin = new Skin(Gdx.files.internal("skins/default/skin/uiskin.json"));
-
-        //Boton derecha
-        derecha = new ImageButton(skin, "derecha");
-        derecha.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-dere.jpg")));
-        derecha.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-dere.jpg")));
-        derecha.setSize(derecha.getStyle().imageUp.getMinWidth()-30, derecha.getStyle().imageUp.getMinHeight()-30);
-        derecha.setPosition((Gdx.graphics.getWidth() - derecha.getStyle().imageUp.getMinWidth()) / 1.2f, 0.09f*Gdx.graphics.getHeight());
-
-        derecha.addCaptureListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                gestorEstado.setEstado(GestorEstado.DERECHA);
-            }
-        });
-        super.stage.addActor(derecha);
-
-        //Boton abajo
-        abajo = new ImageButton(skin, "abajo");
-        abajo.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-abajo.jpg")));
-        abajo.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-abajo.jpg")));
-        abajo.setSize(derecha.getStyle().imageUp.getMinWidth()-40, derecha.getStyle().imageUp.getMinHeight()-40);
-        abajo.setPosition((Gdx.graphics.getWidth() - derecha.getStyle().imageUp.getMinWidth()) / 2.0f, 0.01f*Gdx.graphics.getHeight());
-
-        abajo.addCaptureListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                gestorEstado.setEstado(GestorEstado.CAER);
-            }
-        });
-        super.stage.addActor(abajo);
-
-        //Boton izquierza
-        izquierza = new ImageButton(skin, "izquierda");
-        izquierza.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-iz.jpg")));
-        izquierza.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-iz.jpg")));
-        izquierza.setSize(derecha.getStyle().imageUp.getMinWidth()-30, derecha.getStyle().imageUp.getMinHeight()-30);
-        izquierza.setPosition((Gdx.graphics.getWidth() - derecha.getStyle().imageUp.getMinWidth()) / 6.0f, 0.09f*Gdx.graphics.getHeight());
-
-        izquierza.addCaptureListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                gestorEstado.setEstado(GestorEstado.IZQUIERDA);
-            }
-        });
-        super.stage.addActor(izquierza);
-
-        //Boton giro
-        giro = new ImageButton(skin, "rotar");
-        giro.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-Rot.jpg")));
-        giro.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-Rot.jpg")));
-        giro.setSize(derecha.getStyle().imageUp.getMinWidth()-40, derecha.getStyle().imageUp.getMinHeight()-40);
-        giro.setPosition((Gdx.graphics.getWidth() - derecha.getStyle().imageUp.getMinWidth()) / 2.0f, 0.13f*Gdx.graphics.getHeight());
-
-        giro.addCaptureListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                gestorEstado.setEstado(GestorEstado.GIRO);
-            }
-        });
-        super.stage.addActor(giro);
+        stage.addActor(bb);
     }
 
     @Override
     public void show() {
         super.show();
-        Gdx.input.setInputProcessor(procesador);
     }
 
     @Override
@@ -125,7 +59,6 @@ public class Partida extends PantallaBase {
         batch.draw(fondoPartida, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();
         cicloDeVida(delta); // Ciclo de vida
-
         stage.draw();  // Pintar los actores
     }
 
