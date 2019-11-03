@@ -1,6 +1,7 @@
 package com.mygdx.ttrispo.Gestores;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.mygdx.ttrispo.Pantalla.PantallaAjustes;
 import com.mygdx.ttrispo.Pantalla.Partida;
 import com.mygdx.ttrispo.Pieza.Pieza;
 import com.mygdx.ttrispo.Pieza.PiezaI;
@@ -56,6 +57,7 @@ public class GestorPiezas {
     private void addPiezas() {
         this.piezas = new Pieza[8];
         //Las piezas estan numeradas, cada una se coloca en su posicion dentro del array
+        piezas[0]=null;
         piezas[Pieza.T] = new PiezaT(0, 5);
         piezas[Pieza.S] = new PiezaS(0, 5);
         piezas[Pieza.Z] = new PiezaZ(0, 5);
@@ -63,6 +65,11 @@ public class GestorPiezas {
         piezas[Pieza.O] = new PiezaO(0, 5);
         piezas[Pieza.L] = new PiezaL(0, 5);
         piezas[Pieza.J] = new PiezaJ(0, 5);
+        if(PantallaAjustes.getColoresPersonalizados()){
+            for(int i = 1; i<=7; i++){
+                piezas[i].setTextura(PantallaAjustes.getArrayColores().get(i));
+            }
+        }
     }
 
     public GestorPiezas(Partida partida) {

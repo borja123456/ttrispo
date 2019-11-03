@@ -12,7 +12,7 @@ public class GestorEstado {
     public static final int BLOQUEAR = 6; //Valor del Gestor de Estado cuando lo bloqueamos
 
     private final Partida partida;
-    private float velocity = 0.3f;
+    private float velocity = 0.4f;
     private float contador = 0;
     private int estado = SINPIEZA; //Estado inicial del Gestor de Estado
 

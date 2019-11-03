@@ -5,6 +5,7 @@ com.badlogic.gdx.graphics.Color: {
 	white: { a: 1, b: 1, g: 1, r: 1 },
 	red: { a: 1, b: 0, g: 0, r: 1 },
 	black: { a: 1, b: 0, g: 0, r: 0 },
+	transparent: { a: 0, b: 0, g: 0, r: 0 }
 },
 com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
 	dialogDim: { name: white, color: { r: 0, g: 0, b: 0, a: 0.45 } },
@@ -17,7 +18,17 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle:{
 		start: {down: default-round-down, up: default-round, font: default-font, fontColor: white},
 		ajustes: {down: default-round-down, up: default-round, font: default-font, fontColor: white},
 		atras: {down: default-round-down, up: default-round, font: default-font, fontColor: white},
-		tetris: {down: default-round-down, up: default-round, font: default-font, fontColor: white}
+		tetris: {down: default-round-down, up: default-round, font: default-font, fontColor: white},
+		reiniciar: {down: default-round-down, up: default-round, font: default-font, fontColor: white},
+		inicio: {down: default-round-down, up: default-round, font: default-font, fontColor: white}
+},
+com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
+		start: {down: white, imageUp: default-round},
+		ajustes: {down: white, imageUp: default-round},
+		atras: {down: white, imageUp: default-round},
+		tetris: {down: white, imageUp: default-round},
+		reiniciar: {down: white, imageUp: default-round},
+		inicio: {down: white, imageUp: default-round}
 },
 com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 	default: { down: default-round-down, up: default-round, font: default-font, fontColor: white },

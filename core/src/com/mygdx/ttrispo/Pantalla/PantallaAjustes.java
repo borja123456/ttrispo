@@ -1,54 +1,79 @@
 package com.mygdx.ttrispo.Pantalla;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.mygdx.ttrispo.Gestores.GestorRecursos;
 import com.mygdx.ttrispo.MyGdxGame;
+import com.mygdx.ttrispo.Pieza.Pieza;
 import com.mygdx.ttrispo.Pieza.PiezaI;
 
+import java.util.ArrayList;
+
 public class PantallaAjustes extends PantallaBase{
-    private PiezaI piezaI;
     private TextButton BPiezaI, BPiezaJ, BPiezaL, BPiezaO, BPiezaS, BPiezaT, BPiezaZ;
-    private ImageTextButton Home, Play;
+    private ImageButton Home, Play;
     private Skin skin;
-    Color[] colores = {Color.CYAN, Color.RED, Color.YELLOW, Color.GREEN, Color.VIOLET, Color.BLUE, Color.ORANGE};
+    private Color[] colores = {null, Color.YELLOW, Color.VIOLET, Color.ORANGE , Color.CYAN, Color.RED, Color.GREEN, Color.BLUE };
     private Texture fondoAjustes;
-    private int i;
+    private TextureRegion fraseAjustes;
+    public int i, j, l, o, s, t, z;
+    private static boolean coloresPersonalizados;
+    private static ArrayList<Texture> texturaPiezas = new ArrayList<>();
+    private Sprite paraGirar1, paraGirar2;
+    private final long switchfps = 10;
+    private boolean cambio;
+    private long tiempoInicial;
+    //supongamos que se guardan con el siguiente orden, para seguir el patron que tiene GestorPieza en su array de Color[]:
+    //texturaPiezas = [T, S, Z, I, O, L, J], solo guarda la textura.
 
     public PantallaAjustes (final MyGdxGame game) {
         super(game);
         skin = new Skin(Gdx.files.internal("skins/default/skin/uiskin.json"));
         fondoAjustes = GestorRecursos.get("fondoInicio.jpg");
+        fraseAjustes = new TextureRegion(GestorRecursos.get("colorPiezas.png"));
+        coloresPersonalizados = false;
+        cambio = false;
+        tiempoInicial = 0;
+        paraGirar1 = new Sprite(fondoAjustes);
+        paraGirar2 = new Sprite(fondoAjustes);
 
-        BPiezaI = new TextButton("I", skin);
-        BPiezaJ = new TextButton("J", skin);
-        BPiezaL = new TextButton("L", skin);
-        BPiezaO = new TextButton("O", skin);
-        BPiezaS = new TextButton("S", skin);
         BPiezaT = new TextButton("T", skin);
+        BPiezaS = new TextButton("S", skin);
         BPiezaZ = new TextButton("Z", skin);
-        Home = new ImageTextButton("", skin, "atras");
-        Play = new ImageTextButton("", skin, "start");
+        BPiezaI = new TextButton("I", skin);
+        BPiezaO = new TextButton("O", skin);
+        BPiezaL = new TextButton("L", skin);
+        BPiezaJ = new TextButton("J", skin);
+
+        Home = new ImageButton(skin, "atras");
+        Play = new ImageButton(skin, "start");
 
         //color inicial de cada boton
-        BPiezaI.setColor(colores[0]);
-        BPiezaJ.setColor(colores[5]);
-        BPiezaL.setColor(colores[3]);
-        BPiezaO.setColor(colores[1]);
-        BPiezaS.setColor(colores[4]);
-        BPiezaT.setColor(colores[2]);
-        BPiezaZ.setColor(colores[6]);
+        BPiezaT.setColor(colores[1]);
+        BPiezaS.setColor(colores[2]);
+        BPiezaZ.setColor(colores[3]);
+        BPiezaI.setColor(colores[4]);
+        BPiezaO.setColor(colores[5]);
+        BPiezaL.setColor(colores[6]);
+        BPiezaJ.setColor(colores[7]);
+
+        t=1; s=2; z=3; i=4; o=5; l=6; j=7;
 
         //añadir los botones de cada pieza a la tabla
         Table table = new Table();
@@ -83,81 +108,70 @@ public class PantallaAjustes extends PantallaBase{
 
         table.align(Align.center);
         table.setFillParent(true);
-       // table.setDebug(true); //Muestra las líneas
-        EventosBotones();
+       //table.setDebug(true); //Muestra las líneas
         super.stage.addActor(table);
+        EventosBotones();
+    }
+
+    public static void setColoresPersonalizados(boolean b) {
+        coloresPersonalizados = b;
     }
 
 
     private void EventosBotones () {
-        BPiezaI.addCaptureListener(new ChangeListener() {
+        BPiezaI.addListener(new ClickListener(){
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                BPiezaI.setColor(getNextColorC(colores));
-                System.out.println(i);
-                System.out.println("total" + colores.length);
-                i = i + 1;
-                //   setColorNuevoPieza(i); //TAMBIEN PETA
+            public void clicked(InputEvent event, float x, float y) {
+                i = resetContador(i);
+                BPiezaI.setColor(colores[i]);
             }
         });
 
-        BPiezaJ.addCaptureListener(new ChangeListener() {
+        BPiezaJ.addListener(new ClickListener(){
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                BPiezaJ.setColor(getNextColorC(colores));
-                System.out.println(i);
-                System.out.println("total" + colores.length);
-                i = i + 1;
+            public void clicked(InputEvent event, float x, float y) {
+                j = resetContador(j);
+                BPiezaJ.setColor(colores[j]);
             }
         });
 
-        BPiezaL.addCaptureListener(new ChangeListener() {
+        BPiezaL.addListener(new ClickListener(){
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                BPiezaL.setColor(getNextColorC(colores));
-                System.out.println(i);
-                System.out.println("total" + colores.length);
-                i = i + 1;
+            public void clicked(InputEvent event, float x, float y) {
+                l = resetContador(l);
+                BPiezaL.setColor(colores[l]);
             }
         });
 
-        BPiezaO.addCaptureListener(new ChangeListener() {
+        BPiezaO.addListener(new ClickListener(){
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                BPiezaO.setColor(getNextColorC(colores));
-                System.out.println(i);
-                System.out.println("total" + colores.length);
-                i = i + 1;
+            public void clicked(InputEvent event, float x, float y) {
+                o = resetContador(o);
+                BPiezaO.setColor(colores[o]);
             }
         });
 
-        BPiezaS.addCaptureListener(new ChangeListener() {
+        BPiezaS.addListener(new ClickListener(){
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                BPiezaS.setColor(getNextColorC(colores));
-                System.out.println(i);
-                System.out.println("total" + colores.length);
-                i = i + 1;
+            public void clicked(InputEvent event, float x, float y) {
+                s = resetContador(s);
+                BPiezaS.setColor(colores[s]);
             }
         });
 
-        BPiezaT.addCaptureListener(new ChangeListener() {
+        BPiezaT.addListener(new ClickListener(){
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                BPiezaT.setColor(getNextColorC(colores));
-                System.out.println(i);
-                System.out.println("total" + colores.length);
-                i = i + 1;
+            public void clicked(InputEvent event, float x, float y) {
+                t = resetContador(t);
+                BPiezaT.setColor(colores[t]);
             }
         });
 
-        BPiezaZ.addCaptureListener(new ChangeListener() {
+        BPiezaZ.addListener(new ClickListener(){
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                BPiezaZ.setColor(getNextColorC(colores));
-                System.out.println(i);
-                System.out.println("total" + colores.length);
-                i = i + 1;
+            public void clicked(InputEvent event, float x, float y) {
+                z = resetContador(z);
+                BPiezaZ.setColor(colores[z]);
             }
         });
 
@@ -168,69 +182,76 @@ public class PantallaAjustes extends PantallaBase{
             }
         });
 
-        Play.addCaptureListener(new ChangeListener() {
+        Play.addListener(new ClickListener(){
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
+            public void clicked(InputEvent event, float x, float y) {
+                coloresPersonalizados = true;
+                texturaPiezas.add(null);//posicion 0, siempre es recomendable
+                texturaPiezas.add(getColorNuevoPieza(t)); // T = 1
+                texturaPiezas.add(getColorNuevoPieza(s)); // S = 2
+                texturaPiezas.add(getColorNuevoPieza(z)); // Z = 3
+                texturaPiezas.add(getColorNuevoPieza(i)); // I = 4
+                texturaPiezas.add(getColorNuevoPieza(o)); // O = 5
+                texturaPiezas.add(getColorNuevoPieza(l)); // L = 6
+                texturaPiezas.add(getColorNuevoPieza(j)); // J = 7
+
                 game.setScreen(new Partida(game));
             }
         });
 
     }
-
-    private void resetI(int i) {
-        this.i = 0;
+    public static boolean getColoresPersonalizados(){
+        return coloresPersonalizados;
     }
 
-   /*
-   public Color getNextColorC (Color[] listacolores){ //recorre el array de colores para ir cambiando el color del boton
-       for (; i < colores.length; i++) {
-           return colores[i];
-       }
-       resetI(i); //reseteamos i a 0 (primera posicion del array)
-    return listacolores[i];
-    }
-    */
-    /*
-    public Color getNextColorC (Color[] listacolores){ //recorre el array de colores para ir cambiando el color del boton
-        while (i!=listacolores.length) { //OTRA POSIBILIDAD DE RECORRER LA LISTA DE COLORES
-           // setColorNuevoPieza(i); //NO FUNCIONA PETA EVERYTHING
-            return listacolores[i];
+    private int resetContador(int letra) {
+        if(letra == 7){
+            letra = 1;
+        }else{
+            letra+=1;
         }
-
-        resetI(i); //reseteamos i a 0 (primera posicion del array)
-     return listacolores[i];
-    }
-    */
-
-    private Color getNextColorC(Color[] listacolores) {
-        if (this.i != colores.length) {
-            // setColorNuevoPieza(i); NO FUNCIONA PETA EVERYTHING
-            return listacolores[i];
-        } else {
-            resetI(i);
-            return listacolores[i];
-        }
+        return letra;
     }
 
-
-    private void setColorNuevoPieza(int i) {  //en teoría esto debería cambiar la textura de la pieza I
-        switch (i) {
-            case (0):
-               piezaI.setTextura(GestorRecursos.get("I.jpg")); //cyan
-            case (1):
-                piezaI.setTextura(GestorRecursos.get("O.jpg")); //red
-            case (2):
-                piezaI.setTextura(GestorRecursos.get("T.jpg")); //yellow
-            case (3):
-                piezaI.setTextura(GestorRecursos.get("L.jpg")); //green
-            case (4):
-                piezaI.setTextura(GestorRecursos.get("S.jpg")); //violet
-            case(5):
-                piezaI.setTextura(GestorRecursos.get("J.jpg")); //blue
-            case(6):
-                piezaI.setTextura(GestorRecursos.get("Z.jpg")); //orange
+    private Texture getColorNuevoPieza(int letra) {  //en teoría esto debería cambiar la textura de la pieza I
+        Texture textura;
+        switch (letra) {
+            case 1:
+                textura = GestorRecursos.get("T.jpg");
+                 //yellow
+               break;
+            case 2:
+                textura = GestorRecursos.get("S.jpg");
+                 //violet
+                break;
+            case 3:
+                textura = GestorRecursos.get("Z.jpg");
+                 //orange
+                break;
+            case 4:
+                textura = GestorRecursos.get("I.jpg");
+                 //blue
+                break;
+            case 5:
+                textura = GestorRecursos.get("O.jpg");
+                 //red
+                break;
+            case 6:
+                textura = GestorRecursos.get("L.jpg");
+                 //green
+                break;
+            case 7:
+                textura = GestorRecursos.get("J.jpg");
+                //cyan
+                break;
+            default:
+                textura = null;
         }
-        System.out.println("ha seleccionado el caso "+  i);
+        return textura;
+    }
+
+    public static ArrayList<Texture> getArrayColores(){
+        return texturaPiezas;
     }
 
     @Override
@@ -252,8 +273,29 @@ public class PantallaAjustes extends PantallaBase{
         super.render(delta);
         batch.begin();
         batch.draw(fondoAjustes, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        paraGirar1.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        paraGirar1.rotate((float) 0.1);
+        paraGirar1.draw(batch, 100);
+        paraGirar2.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        paraGirar2.rotate((float) -0.1);
+        paraGirar2.draw(batch, 100);
+        batch.draw(fraseAjustes, 0.1f*Gdx.graphics.getWidth(), 0.9f*Gdx.graphics.getHeight(), 0.5f*fraseAjustes.getRegionWidth(), 0.5f*fraseAjustes.getRegionHeight());
+        if(cambio){
+            ((OrthographicCamera)stage.getCamera()).zoom-=0.001f;
+            tiempoInicial++;
+            if(tiempoInicial==switchfps){
+                tiempoInicial=0;
+                cambio = false;
+            }
+        }else {
+            ((OrthographicCamera)stage.getCamera()).zoom+=0.001f;
+            tiempoInicial++;
+            if(tiempoInicial==switchfps){
+                tiempoInicial=0;
+                cambio = true;
+            }
+        }
         batch.end();
-     //   Gdx.gl.glClearColor(0.4f,0.5f,0.8f,1f); //azul
         stage.draw();
     }
 }

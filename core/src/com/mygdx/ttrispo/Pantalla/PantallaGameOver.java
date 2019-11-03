@@ -3,16 +3,22 @@ package com.mygdx.ttrispo.Pantalla;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.mygdx.ttrispo.BaseDeDatos.FirebaseCallback;
 import com.mygdx.ttrispo.BaseDeDatos.Jugador;
@@ -26,8 +32,7 @@ import static com.mygdx.ttrispo.MyGdxGame.firebaseHelper;
 
 public class PantallaGameOver extends PantallaBase {
     private Skin skin;
-    private TextButton retry;
-    private TextButton home;
+    private ImageButton retry, home;
     private Texture fondoGameOver;
     private BitmapFont font;
     private boolean isRankingLoaded, activo;
@@ -45,8 +50,6 @@ public class PantallaGameOver extends PantallaBase {
         super(game);
         fondoGameOver = GestorRecursos.get("GameOver.jpeg");
         skin = new Skin(Gdx.files.internal("skins/default/skin/uiskin.json"));
-        retry = new TextButton("Retry", skin);
-        home = new TextButton("Home", skin);
         font = new BitmapFont();
         isRankingLoaded = false;
         table = new Table();
@@ -62,20 +65,29 @@ public class PantallaGameOver extends PantallaBase {
         tableContainer.fillX();
         table.setSkin(skin);
 
-        retry.setSize(300,100);
-        retry.setPosition(Gdx.graphics.getWidth()/2.65f, Gdx.graphics.getHeight()/6);
+        //Boton start con imagen
+        retry = new ImageButton(skin, "reiniciar");
+        retry.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-retry.png")));
+        retry.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-retry.png")));
+        retry.setSize(retry.getStyle().imageUp.getMinWidth(), retry.getStyle().imageUp.getMinHeight());
+        retry.setPosition((Gdx.graphics.getWidth()/2.0f)-(retry.getStyle().imageUp.getMinWidth()/2.0f), Gdx.graphics.getHeight()/6);
+        super.stage.addActor(retry);
 
-        home.setSize(300,100);
-        home.setPosition(Gdx.graphics.getWidth() / 2.65f, Gdx.graphics.getHeight() / 10);
+        //Boton retry con imagen
+        home = new ImageButton(skin, "inicio");
+        home.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-home.png")));
+        home.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-home.png")));
+        home.setSize(0.2f*home.getStyle().imageUp.getMinWidth(), 0.2f*home.getStyle().imageUp.getMinHeight());
+        home.setPosition((Gdx.graphics.getWidth() / 2.0f) - (0.1f*home.getStyle().imageUp.getMinWidth()), Gdx.graphics.getHeight() / 10);
+        super.stage.addActor(home);
 
+        //Contenedor de la tabla del ranking
         tableContainer.setActor(table);
-        stage.addActor(retry);
-        stage.addActor(home);
-        stage.addActor(tableContainer);
+        super.stage.addActor(tableContainer);
 
-        retry.addCaptureListener(new ChangeListener() {
+        retry.addListener(new ClickListener(){
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
+            public void clicked(InputEvent event, float x, float y) {
                 if(listaRanking!=null){
                     listaRanking.clear();
                 }
@@ -83,9 +95,9 @@ public class PantallaGameOver extends PantallaBase {
                 game.setScreen(new Partida(game));
             }
         });
-        home.addCaptureListener(new ChangeListener() {
+        home.addListener(new ClickListener(){
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
+            public void clicked(InputEvent event, float x, float y) {
                 if(listaRanking!=null){
                     listaRanking.clear();
                 }
@@ -184,7 +196,6 @@ public class PantallaGameOver extends PantallaBase {
             }
         }
         batch.end();
-        Gdx.gl.glClearColor(0.4f,0.2f,0.7f,0.7f); //morada
         stage.draw(); // Pintar los actores los botones por encima del background
     }
     private void recogerAlias(final AliasCallback aliasCallback){

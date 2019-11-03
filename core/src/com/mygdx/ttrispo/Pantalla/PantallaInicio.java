@@ -5,17 +5,22 @@ package com.mygdx.ttrispo.Pantalla;
  import com.badlogic.gdx.graphics.g2d.Sprite;
  import com.badlogic.gdx.graphics.g2d.TextureRegion;
  import com.badlogic.gdx.scenes.scene2d.Actor;
+ import com.badlogic.gdx.scenes.scene2d.InputEvent;
  import com.badlogic.gdx.scenes.scene2d.ui.Image;
+ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
  import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
  import com.badlogic.gdx.scenes.scene2d.ui.Skin;
  import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
  import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
  import com.mygdx.ttrispo.Gestores.GestorRecursos;
  import com.mygdx.ttrispo.MyGdxGame;
 
+ import java.awt.Color;
+
 public class PantallaInicio extends PantallaBase{
     private Skin skin;
-    private ImageTextButton start, settings;
+    private ImageButton start, settings;
     private Texture fondoInicio;
     private Sprite paraGirar1, paraGirar2;
     private long tiempoInicial;
@@ -33,15 +38,13 @@ public class PantallaInicio extends PantallaBase{
         cambio = false;
 
         //Tetris imagen
-
         tetris = new Image(new TextureRegion(GestorRecursos.get("tetris.png")));
         tetris.setSize(0.9f*tetris.getWidth(), 0.9f*tetris.getHeight());
         tetris.setPosition((Gdx.graphics.getWidth() - tetris.getWidth()) / 2.0f, 0.6f * Gdx.graphics.getHeight());
-        tetris.setName("ttrispo");
         super.stage.addActor(tetris);
 
         //Boton start con imagen
-        start = new ImageTextButton("", skin, "start");
+        start = new ImageButton(skin, "start");
         start.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-start.png")));
         start.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-start.png")));
         start.setSize(start.getStyle().imageUp.getMinWidth(), start.getStyle().imageUp.getMinHeight());
@@ -49,7 +52,7 @@ public class PantallaInicio extends PantallaBase{
         super.stage.addActor(start);
 
         //Boton ajustes con imagen
-        settings = new ImageTextButton("", skin, "ajustes");
+        settings = new ImageButton(skin, "ajustes");
         settings.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-ajustes.png")));
         settings.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-ajustes.png")));
         settings.setSize(settings.getStyle().imageUp.getMinWidth()/1.5f, settings.getStyle().imageUp.getMinHeight()/1.5f);
@@ -58,20 +61,20 @@ public class PantallaInicio extends PantallaBase{
         super.stage.addActor(settings);
 
         //Eventos de ambos
-        start.addCaptureListener(new ChangeListener() {
+        start.addListener(new ClickListener(){
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
+            public void clicked(InputEvent event, float x, float y) {
+                PantallaAjustes.setColoresPersonalizados(false);
                 game.setScreen(new Partida(game));
             }
         });
-        settings.addCaptureListener(new ChangeListener() {
+        settings.addListener(new ClickListener(){
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
+            public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(game.pantallaAjustes);
 
             }
         });
-        System.out.println("EL BUENO ES: " + stage.getActors().indexOf(start, true));
     }
 
     @Override
@@ -86,7 +89,6 @@ public class PantallaInicio extends PantallaBase{
     @Override
     public void render(float delta) {
         super.render(delta);
-        Gdx.gl.glClearColor(0f,0f,0f,0f); //azul
         batch.begin();
         batch.draw(fondoInicio, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         paraGirar1.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

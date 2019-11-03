@@ -23,12 +23,11 @@ public class Pieza {
         this.fila = fila;
         this.columna = columna;
         this.numBlock = 4;
-        this.tipo = this.T;
         this.estadoGiro = 1;
     }
 
     public Texture getTextura() {
-        return this.textura;
+        return textura;
     }
 
     public int[][] getPosicionPieza() {
@@ -84,6 +83,10 @@ public class Pieza {
 
     public int getEstadoGiro() {
         return estadoGiro;
+    }
+
+    public void setTextura(Texture textura) {
+        this.textura = textura;
     }
 
     public void girarDer() {
