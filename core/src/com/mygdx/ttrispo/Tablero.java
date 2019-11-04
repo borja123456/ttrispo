@@ -55,7 +55,7 @@ public class Tablero extends Actor {
                 tipo = this.tablero[i][j];
                 if(tipo >= 1) {
                     imagenBloque = partida.getTexturaPieza(tipo);
-                    batch.draw(imagenBloque, posicionX + tableroX, posicionY - tableroY, 0, 0, tamanyoPiezaX, tamanyoPiezaY);
+                    batch.draw(imagenBloque, posicionX + tableroX, posicionY - tableroY, 0, 0, (int)(tamanyoPiezaX-0.5f), (int)(tamanyoPiezaY-0.5f));
                 }
             }
         }

@@ -54,57 +54,68 @@ public class PantallaAjustes extends PantallaBase{
         paraGirar2 = new Sprite(fondoAjustes);
 
         BPiezaT = new TextButton("T", skin);
+        BPiezaT.getLabel().setFontScale(3);
         BPiezaS = new TextButton("S", skin);
+        BPiezaS.getLabel().setFontScale(3);
         BPiezaZ = new TextButton("Z", skin);
+        BPiezaZ.getLabel().setFontScale(3);
         BPiezaI = new TextButton("I", skin);
+        BPiezaI.getLabel().setFontScale(3);
         BPiezaO = new TextButton("O", skin);
+        BPiezaO.getLabel().setFontScale(3);
         BPiezaL = new TextButton("L", skin);
+        BPiezaL.getLabel().setFontScale(3);
         BPiezaJ = new TextButton("J", skin);
+        BPiezaJ.getLabel().setFontScale(3);
 
         Home = new ImageButton(skin, "atras");
         Play = new ImageButton(skin, "start");
 
-        //color inicial de cada boton
-        BPiezaT.setColor(colores[1]);
-        BPiezaS.setColor(colores[2]);
-        BPiezaZ.setColor(colores[3]);
-        BPiezaI.setColor(colores[4]);
-        BPiezaO.setColor(colores[5]);
-        BPiezaL.setColor(colores[6]);
-        BPiezaJ.setColor(colores[7]);
-
         t=1; s=2; z=3; i=4; o=5; l=6; j=7;
+
+        //color inicial de cada boton
+        BPiezaT.setColor(colores[t]);
+        BPiezaS.setColor(colores[s]);
+        BPiezaZ.setColor(colores[z]);
+        BPiezaI.setColor(colores[i]);
+        BPiezaO.setColor(colores[o]);
+        BPiezaL.setColor(colores[l]);
+        BPiezaJ.setColor(colores[j]);
 
         //añadir los botones de cada pieza a la tabla
         Table table = new Table();
-        table.add(new Image(GestorRecursos.get("ICompleta.png"))).size(300,300);
-        table.add(BPiezaI).size(100,100).expandX();
-        table.add(new Image(GestorRecursos.get("SCompleta.png"))).size(300,300);
-        table.add(BPiezaS).size(100,100).expandX();
+        table.padLeft(100);
+        table.add(new Image(GestorRecursos.get("ICompleta.png"))).padBottom(100).left();
+        table.add(BPiezaI).size(100,100).padBottom(100).center();
+        table.add(new Image(GestorRecursos.get("SCompleta.png"))).padBottom(100).left();
+        table.add(BPiezaS).size(100,100).padBottom(100).center();
         table.row();
-        table.add(new Image(GestorRecursos.get("JCompleta.png"))).size(300,300);
-        table.add(BPiezaJ).size(100,100).expandX();
-        table.add(new Image(GestorRecursos.get("TCompleta.png"))).size(300,300);
-        table.add(BPiezaT).size(100,100).expandX();
+        table.add(new Image(GestorRecursos.get("JCompleta.png"))).padBottom(100).left();
+        table.add(BPiezaJ).size(100,100).padBottom(100).center();
+        table.add(new Image(GestorRecursos.get("TCompleta.png"))).padBottom(100).left();
+        table.add(BPiezaT).size(100,100).padBottom(100).center();
         table.row();
-        table.add(new Image(GestorRecursos.get("LCompleta.png"))).size(300,300);
-        table.add(BPiezaL).size(100,100).expandX();
-        table.add(new Image(GestorRecursos.get("ZCompleta.png"))).size(300,300);
-        table.add(BPiezaZ).size(100,100).expandX();
-        table.row();
-        table.add();
-        table.add(new Image(GestorRecursos.get("OCompleta.png"))).size(300,300).align(Align.left);
-        table.add(BPiezaO).size(100,100).expandX().align(Align.left);
+        table.add(new Image(GestorRecursos.get("LCompleta.png"))).padBottom(100).left();
+        table.add(BPiezaL).size(100,100).padBottom(100).center();
+        table.add(new Image(GestorRecursos.get("ZCompleta.png"))).padBottom(100).left();
+        table.add(BPiezaZ).size(100,100).padBottom(100).center();
         table.row();
         table.add();
-     //botón para jugar
-        table.add(Play).size(300,100).left();
+        table.add(new Image(GestorRecursos.get("OCompleta.png"))).padBottom(100).left();
+        table.add(BPiezaO).size(100,100).padBottom(100).center();
+        table.add();
+        table.add();
+        table.row();
+        table.add();
+        //botón para jugar
+        table.add(Play).size(300,100).center();;
         Play.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-start.png")));
         Play.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-start.png")));
-    //boton de ir atrás
-        table.add(Home).size(100,100).left();
+        //boton de ir atrás
+        table.add(Home).size(100,100).center();
         Home.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-atras.png")));
         Home.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-atras.png")));
+        table.add().size(300, 100);
 
         table.align(Align.center);
         table.setFillParent(true);
