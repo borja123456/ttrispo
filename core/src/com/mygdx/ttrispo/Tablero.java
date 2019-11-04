@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.mygdx.ttrispo.Gestores.GestorPiezas;
@@ -21,25 +22,23 @@ public class Tablero extends Actor {
     //son cuadradas, pero no va si no lo hacemos de este modo
     public  int tableroX = (int) (124 * MyGdxGame.ratioPixelesWidth);
     public  int tableroY = (int) (250 * MyGdxGame.ratioPixelesHeight);
-    private Table table;
-    private Skin skin;
+    private Image vPieza;
 
+    private float posicionXcaja = 567*MyGdxGame.ratioPixelesWidth;
+    private float posicionYcaja = 1404*MyGdxGame.ratioPixelesHeight;
+    private float dimensionXcaja = 108*MyGdxGame.ratioPixelesWidth;
+    private float dimensionYcaja = 108*MyGdxGame.ratioPixelesHeight;
+
+    private Table caja;
 
     public Tablero(Partida partida) {
         this.partida = partida;
         this.tablero = new int[10][20];
-        skin = new Skin(Gdx.files.internal("skins/default/skin/uiskin.json"));
-        Container<Table> tableContainer = new Container<>();
-        float sw = Gdx.graphics.getWidth();
-        float sh = Gdx.graphics.getHeight();
-        float cw = sw * 0.2f;
-        float ch = sh * 0.8f;
-        tableContainer.setSize(cw, ch);
-        tableContainer.setPosition((sw-cw)/2.0f, (sh-ch)/1.1f);
-        tableContainer.fillX();
-        table = new Table();
-        table.setSkin(skin);
-        tableContainer.setActor(table);
+        this.caja = new Table();
+        this.caja.setPosition(posicionXcaja, posicionYcaja);
+        this.caja.setSize(dimensionXcaja, dimensionYcaja);
+        this.partida.getEscenario().addActor(caja);
+        this.vPieza = null;
     }
 
     @Override
@@ -59,12 +58,20 @@ public class Tablero extends Actor {
                     batch.draw(imagenBloque, posicionX + tableroX, posicionY - tableroY, 0, 0, tamanyoPiezaX, tamanyoPiezaY);
                 }
             }
-        } //74x193
-        if (imagenPiezaSiguiente != null){ //hueco = 111 x 111
-            table.add();
-            batch.draw(imagenPiezaSiguiente, Gdx.graphics.getWidth() - (imagenPiezaSiguiente.getWidth() - 50), Gdx.graphics.getHeight()- imagenPiezaSiguiente.getHeight());
         }
-
+        if (imagenPiezaSiguiente != null) {
+            if(caja.getChildren().size>0){
+                caja.reset();
+            }
+            vPieza = new Image(imagenPiezaSiguiente);
+            if(imagenPiezaSiguiente.getWidth()>=219){ //Dimensiones pieza T, S, Z, J y L
+                caja.add(vPieza).size(dimensionXcaja, dimensionYcaja/2);
+            }else if(imagenPiezaSiguiente.getWidth()==74){ //Dimensiones pieza I
+                caja.add(vPieza).size(dimensionXcaja/3, dimensionYcaja);
+            }else if(imagenPiezaSiguiente.getWidth()==147){ //Dimensiones pieza O
+                caja.add(vPieza).size(dimensionXcaja/2, dimensionYcaja/2);
+            }
+        }
     }
 
     public void insertarBloquesDePieza(int bloques[][], int tipo) {
@@ -135,7 +142,6 @@ public class Tablero extends Actor {
         }
         return false;
     }
-
 
     private void eliminarfila(int fila) {
         for(int j = 0; j < 10; j++){
