@@ -34,7 +34,7 @@ public class PantallaAjustes extends PantallaBase{
     private TextureRegion fraseAjustes;
     public int i, j, l, o, s, t, z;
     private static boolean coloresPersonalizados;
-    public static ArrayList<Texture> texturaPiezas = new ArrayList<>();
+    public static ArrayList<Texture> texturaPiezas;
     private Sprite paraGirar1, paraGirar2;
     private final long switchfps = 10;
     private boolean cambio;
@@ -52,6 +52,7 @@ public class PantallaAjustes extends PantallaBase{
         tiempoInicial = 0;
         paraGirar1 = new Sprite(fondoAjustes);
         paraGirar2 = new Sprite(fondoAjustes);
+        texturaPiezas = new ArrayList<>();
 
         BPiezaT = new TextButton("T", skin);
         BPiezaT.getLabel().setFontScale(3);
@@ -81,6 +82,13 @@ public class PantallaAjustes extends PantallaBase{
         BPiezaO.setColor(colores[o]);
         BPiezaL.setColor(colores[l]);
         BPiezaJ.setColor(colores[j]);
+        super.stage.addActor(BPiezaT);
+        super.stage.addActor(BPiezaS);
+        super.stage.addActor(BPiezaZ);
+        super.stage.addActor(BPiezaI);
+        super.stage.addActor(BPiezaO);
+        super.stage.addActor(BPiezaL);
+        super.stage.addActor(BPiezaJ);
 
         //añadir los botones de cada pieza a la tabla
         Table table = new Table();
