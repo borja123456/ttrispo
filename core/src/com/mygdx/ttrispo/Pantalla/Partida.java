@@ -117,8 +117,7 @@ public class Partida extends PantallaBase {
             switch (gestorEstado2ndPieza.getEstado(delta)) {
                 case (GestorEstado.REPOSO): //Si el Gestor esta en reposo
                     if (gestorPiezas2ndPieza.getPiezaActual() == null) { //Y no hay pieza siguiente
-                        gestorPiezas2ndPieza.getPiezaActual().setColumna(9);
-                        gestorPiezas2ndPieza.getPiezaActual().setFila(0);
+
                         gestorEstado2ndPieza.setEstado(GestorEstado.SINPIEZA); //Modo Sin Pieza
                     }
                     break;
@@ -126,6 +125,8 @@ public class Partida extends PantallaBase {
                 case (GestorEstado.SINPIEZA):
                     estadoGestorSinPieza(gestorPiezas2ndPieza.getPiezaActual()); //Selecciona una nueva Pieza y vuelve al modo de Reposo
                     gestorEstado2ndPieza.setVelocity(gestorEstado2ndPieza.getVelocity()-0.005f); //Velocdad
+                    gestorPiezas2ndPieza.getPiezaActual().setColumna(9);
+                    gestorPiezas2ndPieza.getPiezaActual().setFila(0);
                     gestorEstado2ndPieza.setEstado(GestorEstado.REPOSO);
                     break;
 
