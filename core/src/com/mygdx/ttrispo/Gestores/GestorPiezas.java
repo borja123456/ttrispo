@@ -20,7 +20,6 @@ public class GestorPiezas {
 
     private Pieza piezas[]; //Array de Tipo Pieza con las piezas
     public static ArrayList<Integer> listaPiezasSiguientes; //Cola de Piezas para el uso en partida
-
     private Pieza piezaActual;
     private Random rand;
 

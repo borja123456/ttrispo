@@ -23,16 +23,25 @@ public class Partida extends PantallaBase {
     private ProgresoPartida progresoPartida;
     private GestorEstado gestorEstado;
     private GestorPiezas gestorPiezas;
+    private GestorEstado gestorEstado2ndPieza;
+    private GestorPiezas gestorPiezas2ndPieza;
     public static float posicionX, posicionY;
     private static long puntuacion;
     public static Partida partidaAux;
     private int longitudPuntos;
+    private boolean segundaPieza;
 
 
     public Partida(MyGdxGame game) {
         super(game);
         gestorEstado = new GestorEstado(this);
         gestorPiezas = new GestorPiezas(this);
+
+        //SEGUNDA PIEZA
+        segundaPieza = false;
+        gestorEstado2ndPieza = new GestorEstado(this);
+        gestorPiezas2ndPieza = new GestorPiezas(this);
+
         BotonBase bb = new BotonBase(stage, gestorEstado);
         //procesador = new Procesador(gestorEstado);
         fondoPartida = GestorRecursos.get("background.jpeg");
@@ -73,27 +82,80 @@ public class Partida extends PantallaBase {
                 break;
 
             case (GestorEstado.SINPIEZA):
-                estadoGestorSinPieza(); //Selecciona una nueva Pieza y vuelve al modo de Reposo
+                estadoGestorSinPieza(gestorPiezas.getPiezaActual()); //Selecciona una nueva Pieza y vuelve al modo de Reposo
                 gestorEstado.setVelocity(gestorEstado.getVelocity()-0.005f); //Velocdad
+                gestorEstado.setEstado(GestorEstado.REPOSO);
                 break;
 
             case (GestorEstado.IZQUIERDA):
-                estadoGestorDesplazarIzq();
+                estadoGestorDesplazarIzq(gestorPiezas.getPiezaActual());
+                gestorEstado.setEstado(gestorEstado.REPOSO);
                 break;
 
             case (GestorEstado.DERECHA):
-                moverDerechaState();
+                moverDerechaState(gestorPiezas.getPiezaActual());
+                gestorEstado.setEstado(gestorEstado.REPOSO);
                 break;
             // La pieza intenta caer
             case (GestorEstado.CAER):
-                caerState();
+                if(caerState(gestorPiezas.getPiezaActual())){
+                    gestorEstado.setEstado(gestorEstado.REPOSO);
+            }else{
+                    gestorEstado.setEstado(gestorEstado.BLOQUEAR);
+            }
                 break;
             case (GestorEstado.GIRO):
-                giroState();
+                giroState(gestorPiezas.getPiezaActual());
+                gestorEstado.setEstado(gestorEstado.REPOSO);
                 break;
             case (GestorEstado.BLOQUEAR):
-                bloquearPieza();
+                bloquearPieza(gestorPiezas.getPiezaActual());
+                gestorEstado.setEstado(GestorEstado.SINPIEZA);
                 break;
+        }
+        if(segundaPieza) {
+            switch (gestorEstado.getEstado(delta)) {
+
+                case (GestorEstado.REPOSO): //Si el Gestor esta en reposo
+                    if (gestorPiezas2ndPieza.getPiezaActual() == null) { //Y no hay pieza siguiente
+                        gestorEstado2ndPieza.setEstado(GestorEstado.SINPIEZA); //Modo Sin Pieza
+                    }
+                    break;
+
+                case (GestorEstado.SINPIEZA):
+                    estadoGestorSinPieza(gestorPiezas2ndPieza.getPiezaActual()); //Selecciona una nueva Pieza y vuelve al modo de Reposo
+                    gestorEstado2ndPieza.setVelocity(gestorEstado2ndPieza.getVelocity()-0.005f); //Velocdad
+                    gestorEstado2ndPieza.setEstado(GestorEstado.REPOSO);
+                    break;
+
+                case (GestorEstado.IZQUIERDA):
+                    estadoGestorDesplazarIzq(gestorPiezas2ndPieza.getPiezaActual());
+                    gestorEstado2ndPieza.setEstado(GestorEstado.REPOSO);
+                    break;
+
+                case (GestorEstado.DERECHA):
+                    moverDerechaState(gestorPiezas2ndPieza.getPiezaActual());
+                    gestorEstado2ndPieza.setEstado(GestorEstado.REPOSO);
+                    break;
+                // La pieza intenta caer
+                case (GestorEstado.CAER):
+                    if(caerState(gestorPiezas2ndPieza.getPiezaActual())){
+                        gestorEstado2ndPieza.setEstado(GestorEstado.REPOSO);
+                    }else{
+                        gestorEstado2ndPieza.setEstado(gestorEstado.BLOQUEAR);
+                    }
+                    break;
+                case (GestorEstado.GIRO):
+                    giroState(gestorPiezas2ndPieza.getPiezaActual());
+                    gestorEstado2ndPieza.setEstado(GestorEstado.REPOSO);
+                    break;
+                case (GestorEstado.BLOQUEAR):
+                    bloquearPieza(gestorPiezas2ndPieza.getPiezaActual());
+                    gestorEstado2ndPieza = new GestorEstado(this);
+                    gestorPiezas2ndPieza = new GestorPiezas(this);
+                    segundaPieza = false;
+                    break;
+            }
         }
     }
     @Override
@@ -101,90 +163,77 @@ public class Partida extends PantallaBase {
         super.dispose();
     }
 
-    private void bloquearPieza() {
-        // La pieza no puede bajar
-        Pieza currentPieza = gestorPiezas.getPiezaActual();
-        tablero.insertarBloquesDePieza(currentPieza.getPosicionPieza(), currentPieza.getTipo());
+    private void bloquearPieza(Pieza pieza) {
+        tablero.insertarBloquesDePieza(pieza.getPosicionPieza(), pieza.getTipo());
         partidaAux = this;
-        if (tablero.comprobarGameOver(currentPieza.getPosicionPieza())) {
+        if (tablero.comprobarGameOver(pieza.getPosicionPieza())) {
             this.dispose();
             game.setScreen(game.pantallaGameOver);
         }
         tablero.comprobarLineaCompleta();
         gestorPiezas.bloquearPieza();
-        gestorEstado.setEstado(GestorEstado.SINPIEZA);
     }
 
-    private void giroState() {
-        Pieza currentPieza;
-        currentPieza = gestorPiezas.getPiezaActual();
-        tablero.insertarBloquesDePieza(currentPieza.getPosicionPieza(), Pieza.VACIA);
-        currentPieza.girarDer();
-        int piezaGirada[][] = currentPieza.getPosicionPieza();
+    private void giroState(Pieza pieza) {
+        tablero.insertarBloquesDePieza(pieza.getPosicionPieza(), Pieza.VACIA);
+        pieza.girarDer();
+        int piezaGirada[][] = pieza.getPosicionPieza();
         if (tablero.seProduceColision(piezaGirada)) {
             // La pieza no puede girar
-            currentPieza.girarIz();
-            tablero.insertarBloquesDePieza(currentPieza.getPosicionPieza(), currentPieza.getTipo());
+            pieza.girarIz();
+            tablero.insertarBloquesDePieza(pieza.getPosicionPieza(), pieza.getTipo());
         } else {
-            tablero.insertarBloquesDePieza(currentPieza.getPosicionPieza(), currentPieza.getTipo());
+            tablero.insertarBloquesDePieza(pieza.getPosicionPieza(), pieza.getTipo());
         }
-        gestorEstado.setEstado(GestorEstado.REPOSO);
+
     }
 
-    private void caerState() {
-        Pieza currentPieza;
-        currentPieza = gestorPiezas.getPiezaActual();
+    private boolean caerState(Pieza pieza) {
 
-        int posicionPiezaAbajo[][] = currentPieza.getPosicionAbajo();
-        tablero.insertarBloquesDePieza(currentPieza.getPosicionPieza(), Pieza.VACIA);
+        int posicionPiezaAbajo[][] = pieza.getPosicionAbajo();
+        tablero.insertarBloquesDePieza(pieza.getPosicionPieza(), Pieza.VACIA);
         if (tablero.seProduceColision(posicionPiezaAbajo)) {
-            gestorEstado.setEstado(GestorEstado.BLOQUEAR);
+            return false;
         } else {
             // La pieza puede baja
-            tablero.insertarBloquesDePieza(posicionPiezaAbajo, currentPieza.getTipo());
-            currentPieza.setFila(currentPieza.getFila() + 1);
-            gestorEstado.setEstado(GestorEstado.REPOSO);
+            tablero.insertarBloquesDePieza(posicionPiezaAbajo, pieza.getTipo());
+            pieza.setFila(pieza.getFila() + 1);
+            return true;
         }
     }
 
-    private void moverDerechaState() {
-        Pieza currentPieza;
-        currentPieza = gestorPiezas.getPiezaActual();
-        int posicionPiezaDerecha[][] = currentPieza.getPosicionDerecha();
-        tablero.insertarBloquesDePieza(currentPieza.getPosicionPieza(), Pieza.VACIA);
+    private void moverDerechaState(Pieza pieza) {
+        int posicionPiezaDerecha[][] = pieza.getPosicionDerecha();
+        tablero.insertarBloquesDePieza(pieza.getPosicionPieza(), Pieza.VACIA);
         if (tablero.seProduceColision(posicionPiezaDerecha)) {
-            tablero.insertarBloquesDePieza(currentPieza.getPosicionPieza(), currentPieza.getTipo());
+            tablero.insertarBloquesDePieza(pieza.getPosicionPieza(), pieza.getTipo());
             //si no puede seguir moviendo a la derecha pues ahi se queda
         } else {
-            tablero.insertarBloquesDePieza(posicionPiezaDerecha, currentPieza.getTipo());
-            currentPieza.setColumna(currentPieza.getColumna() + 1);
+            tablero.insertarBloquesDePieza(posicionPiezaDerecha, pieza.getTipo());
+            pieza.setColumna(pieza.getColumna() + 1);
         }
         //Cambia a reposo. pero esto hay que refactorizarlo por el amor de dios
-        gestorEstado.setEstado(gestorEstado.REPOSO);
+
     }
 
-    private void estadoGestorDesplazarIzq() {
-        Pieza piezaActual = gestorPiezas.getPiezaActual();
-
-        int posicionPiezaIzquierda[][] = piezaActual.getPosicionIzquierda();
-        tablero.insertarBloquesDePieza(piezaActual.getPosicionPieza(), Pieza.VACIA);
+    private void estadoGestorDesplazarIzq(Pieza pieza) {
+        int posicionPiezaIzquierda[][] = pieza.getPosicionIzquierda();
+        tablero.insertarBloquesDePieza(pieza.getPosicionPieza(), Pieza.VACIA);
 
         if (tablero.seProduceColision(posicionPiezaIzquierda)) {
-            tablero.insertarBloquesDePieza(piezaActual.getPosicionPieza(), piezaActual.getTipo());
+            tablero.insertarBloquesDePieza(pieza.getPosicionPieza(), pieza.getTipo());
             //si no puede seguir moviendo a la izquierda pues ahi se queda
         } else {
-            tablero.insertarBloquesDePieza(posicionPiezaIzquierda, piezaActual.getTipo());
-            piezaActual.setColumna(piezaActual.getColumna() - 1);
+            tablero.insertarBloquesDePieza(posicionPiezaIzquierda, pieza.getTipo());
+            pieza.setColumna(pieza.getColumna() - 1);
         }
         //Cambia a reposo. pero esto hay que refactorizarlo por el amor de dios
-        gestorEstado.setEstado(gestorEstado.REPOSO);
-    }
 
-    private void estadoGestorSinPieza() {
-        Pieza pieza = gestorPiezas.getPiezaActual();
+}
+
+    private void estadoGestorSinPieza(Pieza pieza) {
         tablero.insertarBloquesDePieza(pieza.getPosicionPieza(), pieza.getTipo());
         tablero.setImagenPiezaSiguiente(gestorPiezas.getImagenPiezaSiguiente());
-        gestorEstado.setEstado(GestorEstado.REPOSO);
     }
 
     public Texture getTexturaPieza(int tipo){
