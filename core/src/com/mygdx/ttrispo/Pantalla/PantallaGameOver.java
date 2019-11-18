@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
@@ -40,10 +41,8 @@ public class PantallaGameOver extends PantallaBase {
     private Table table;
     private Label label, labelID, labelAlias;
     private GlyphLayout glyphLayout;
-
     private String alias;
-    private long pasado;
-    private long futuro;
+    private long pasado, futuro;
 
 
     public PantallaGameOver(final MyGdxGame game){
@@ -91,8 +90,15 @@ public class PantallaGameOver extends PantallaBase {
                 if(listaRanking!=null){
                     listaRanking.clear();
                 }
+                if (Partida.partidaAux.getPuntuacion()>= 250){
+                    game.setScreen(new Partida(game));
+                    System.out.println("Puntos superados: " + Partida.partidaAux.getPuntuacion());
+                }
+                else if (Partida.partidaAux.getPuntuacion()<= 250){
+                    MensajeAlerta();
+                    System.out.println("Puntos no superados: " + Partida.partidaAux.getPuntuacion());
+                }
                 table.reset();
-                game.setScreen(new Partida(game));
             }
         });
         home.addListener(new ClickListener(){
@@ -106,6 +112,18 @@ public class PantallaGameOver extends PantallaBase {
                 game.setScreen(game.pantallaInicio);
             }
         });
+    }
+
+    private void MensajeAlerta() {
+        Dialog alerta = new Dialog("Error", skin, "dialog") {
+            public void result(Object obj) {
+                System.out.println("result "+obj);
+            }
+        };
+        alerta.text("No has conseguido derrotar al lado oscuro, eres muy débil.");
+        alerta.button("Ok", true);
+        alerta.center();
+        alerta.show(stage);
     }
 
     @Override
