@@ -2,6 +2,7 @@ package com.mygdx.ttrispo.Pantalla;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -19,13 +20,13 @@ public class PantallaBase implements Screen {
     private ShapeRenderer shapeRenderer;
     protected SpriteBatch batch;
     protected MyGdxGame game;
+  //  protected Music music;
 
     public PantallaBase(MyGdxGame game) {
         this.game = game;
         shapeRenderer = new ShapeRenderer();
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         batch = new SpriteBatch();
-
     }
 
     @Override
@@ -66,6 +67,9 @@ public class PantallaBase implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
+     //  music.stop();
+     //   music.dispose();
+
     }
 }
 

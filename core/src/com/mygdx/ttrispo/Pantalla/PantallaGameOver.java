@@ -2,6 +2,7 @@ package com.mygdx.ttrispo.Pantalla;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -43,7 +44,7 @@ public class PantallaGameOver extends PantallaBase {
     private GlyphLayout glyphLayout;
     private String alias;
     private long pasado, futuro;
-
+    private Music musicaGameOver;
 
     public PantallaGameOver(final MyGdxGame game){
         super(game);
@@ -112,6 +113,11 @@ public class PantallaGameOver extends PantallaBase {
                 game.setScreen(game.pantallaInicio);
             }
         });
+
+        //MUSICA GAME OVER
+        musicaGameOver = Gdx.audio.newMusic(Gdx.files.internal("Music/Imperial March.mp3"));
+        musicaGameOver.setLooping(true);
+        musicaGameOver.setVolume(0.5f);
     }
 
     private void MensajeAlerta() {
@@ -134,6 +140,7 @@ public class PantallaGameOver extends PantallaBase {
             listaRanking=null;
         }
         pasado = 0;
+        musicaGameOver.play();
     }
     private void realShow1() {
         firebaseHelper.rellenarArrayDeRanking(new FirebaseCallback() {
@@ -164,6 +171,7 @@ public class PantallaGameOver extends PantallaBase {
 
     @Override
     public void hide() {
+        musicaGameOver.stop();
     }
 
     @Override
@@ -239,5 +247,9 @@ public class PantallaGameOver extends PantallaBase {
                 aliasCallback.onCallback(alias);
             }
         }, "Introduce tu alias", "", " _ _ _ _ _ _ _ _");
+    }
+
+    public void dispose() {
+        musicaGameOver.dispose();
     }
 }

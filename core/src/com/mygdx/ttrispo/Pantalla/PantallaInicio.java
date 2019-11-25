@@ -1,5 +1,6 @@
 package com.mygdx.ttrispo.Pantalla;
  import com.badlogic.gdx.Gdx;
+ import com.badlogic.gdx.audio.Music;
  import com.badlogic.gdx.graphics.OrthographicCamera;
  import com.badlogic.gdx.graphics.Texture;
  import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -27,6 +28,7 @@ public class PantallaInicio extends PantallaBase{
     private final long switchfps = 10;
     private boolean cambio;
     private Image tetris;
+    private Music musicaInicio;
 
     public PantallaInicio (final MyGdxGame game) {
         super(game);
@@ -39,7 +41,7 @@ public class PantallaInicio extends PantallaBase{
 
         //Tetris imagen
         tetris = new Image(new TextureRegion(GestorRecursos.get("tetris.png")));
-        tetris.setSize(0.9f*tetris.getWidth(), 0.9f*tetris.getHeight());
+        tetris.setSize(0.9f * tetris.getWidth(), 0.9f * tetris.getHeight());
         tetris.setPosition((Gdx.graphics.getWidth() - tetris.getWidth()) / 2.0f, 0.6f * Gdx.graphics.getHeight());
         super.stage.addActor(tetris);
 
@@ -55,27 +57,34 @@ public class PantallaInicio extends PantallaBase{
         settings = new ImageButton(skin, "ajustes");
         settings.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-ajustes.png")));
         settings.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-ajustes.png")));
-        settings.setSize(settings.getStyle().imageUp.getMinWidth()/1.5f, settings.getStyle().imageUp.getMinHeight()/1.5f);
-        settings.setPosition((Gdx.graphics.getWidth() - settings.getStyle().imageUp.getMinWidth()/1.5f)/ 2.0f,
+        settings.setSize(settings.getStyle().imageUp.getMinWidth() / 1.5f, settings.getStyle().imageUp.getMinHeight() / 1.5f);
+        settings.setPosition((Gdx.graphics.getWidth() - settings.getStyle().imageUp.getMinWidth() / 1.5f) / 2.0f,
                 0.2f * Gdx.graphics.getHeight());
         super.stage.addActor(settings);
 
         //Eventos de ambos
-        start.addListener(new ClickListener(){
+        start.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 PantallaAjustes.setColoresPersonalizados(false);
                 game.setScreen(new Partida(game));
+                musicaInicio.stop();
             }
         });
-        settings.addListener(new ClickListener(){
+        settings.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-
                 game.setScreen(new PantallaAjustes(game));
-
             }
         });
+
+       // musica de la pantalla inicio
+        // no puedo usar el gestor de recursos
+       // musicaInicio = (Music) GestorRecursos.get("Music/The Force Theme.mp3");
+        musicaInicio = Gdx.audio.newMusic(Gdx.files.internal("Music/The Force Theme.mp3"));
+        musicaInicio.setLooping(true);
+       // musicaInicio.setVolume(0.5f);
+        musicaInicio.play();
     }
 
     @Override
@@ -84,7 +93,7 @@ public class PantallaInicio extends PantallaBase{
     }
 
     @Override
-    public void hide() { //usamos dispose porque si cambiamos muchas veces de pantalla
+    public void hide() {
     }
 
     @Override
@@ -119,6 +128,7 @@ public class PantallaInicio extends PantallaBase{
     @Override
     public void dispose() {
         super.dispose();
+        musicaInicio.dispose();
     }
 
 }
