@@ -1,23 +1,19 @@
 package com.mygdx.ttrispo.Pantalla;
+
  import com.badlogic.gdx.Gdx;
+ import com.badlogic.gdx.audio.Music;
  import com.badlogic.gdx.graphics.OrthographicCamera;
- import com.badlogic.gdx.graphics.Pixmap;
  import com.badlogic.gdx.graphics.Texture;
  import com.badlogic.gdx.graphics.g2d.Sprite;
  import com.badlogic.gdx.graphics.g2d.TextureRegion;
- import com.badlogic.gdx.scenes.scene2d.Actor;
  import com.badlogic.gdx.scenes.scene2d.InputEvent;
- import com.badlogic.gdx.scenes.scene2d.InputListener;
  import com.badlogic.gdx.scenes.scene2d.ui.Image;
  import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
- import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
  import com.badlogic.gdx.scenes.scene2d.ui.Skin;
- import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
  import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
  import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
  import com.mygdx.ttrispo.Gestores.GestorRecursos;
  import com.mygdx.ttrispo.MyGdxGame;
- import com.mygdx.ttrispo.com.mygdx.ttrispo.camara.InterfazCamara;
 
 public class PantallaInicio extends PantallaBase{
     private Skin skin;
@@ -28,6 +24,7 @@ public class PantallaInicio extends PantallaBase{
     private final long switchfps = 10;
     private boolean cambio;
     private Image tetris;
+    private Music musicaInicio;
 
     public PantallaInicio (final MyGdxGame game) {
         super(game);
@@ -67,6 +64,7 @@ public class PantallaInicio extends PantallaBase{
             public void clicked(InputEvent event, float x, float y) {
                 PantallaAjustes.setColoresPersonalizados(false);
                 game.setScreen(new Partida(game));
+                musicaInicio.stop();
             }
         });
 
@@ -76,6 +74,13 @@ public class PantallaInicio extends PantallaBase{
                 game.setScreen(new PantallaAjustes(game));
             }
         });
+        // musica de la pantalla inicio
+        // no puedo usar el gestor de recursos
+        // musicaInicio = (Music) GestorRecursos.get("Music/The Force Theme.mp3");
+        musicaInicio = Gdx.audio.newMusic(Gdx.files.internal("Music/The Force Theme.mp3"));
+        musicaInicio.setLooping(true);
+        // musicaInicio.setVolume(0.5f);
+        musicaInicio.play();
     }
 
     @Override
@@ -120,6 +125,7 @@ public class PantallaInicio extends PantallaBase{
     @Override
     public void dispose() {
         super.dispose();
+        musicaInicio.dispose();
     }
 
 }

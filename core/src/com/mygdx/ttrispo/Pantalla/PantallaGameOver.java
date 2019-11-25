@@ -19,6 +19,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.audio.Music;
+
 import com.mygdx.ttrispo.BaseDeDatos.FirebaseCallback;
 import com.mygdx.ttrispo.BaseDeDatos.Jugador;
 import com.mygdx.ttrispo.Gestores.GestorRecursos;
@@ -44,6 +46,7 @@ public class PantallaGameOver extends PantallaBase {
     private GlyphLayout glyphLayout;
     private String alias;
     private long pasado, futuro;
+    private Music musicaGameOver;
 
     public static Pixmap pmap, pixmap;
     private ImageButton imageButton;
@@ -53,6 +56,7 @@ public class PantallaGameOver extends PantallaBase {
     public static String cadenaImagen;
     private Image vistaImagen;
     public static ByteBuffer nativeData;
+    private byte[] bitesAux;
 
     private int dimensionImagen;
     private ArrayList<File> imgs;
@@ -75,6 +79,7 @@ public class PantallaGameOver extends PantallaBase {
         vistaImagen = null;
         imgs = new ArrayList<>();
         prueba = true;
+        bitesAux = imagen;
 
         dimensionImagen = 100;
 
@@ -161,6 +166,7 @@ public class PantallaGameOver extends PantallaBase {
                 System.out.println("result "+obj);
             }
         };
+        musicaGameOver.play();
         alerta.text("No has conseguido derrotar al lado oscuro, eres muy débil.");
         alerta.button("Ok", true);
         alerta.center();
@@ -169,6 +175,7 @@ public class PantallaGameOver extends PantallaBase {
 
     public void onByteArrayOfCroppedImageReciever(byte[] bytes) {
         try {
+            bitesAux = bytes;
             if(bytes != null){
                 pmap = new Pixmap(bytes, 0, bytes.length);
                 Gdx.app.postRunnable(new Runnable() {
@@ -224,6 +231,12 @@ public class PantallaGameOver extends PantallaBase {
 
     @Override
     public void hide() {
+        musicaGameOver.stop();
+    }
+
+    @Override
+    public void dispose() {
+        musicaGameOver.dispose();
     }
 
     @Override
@@ -268,19 +281,26 @@ public class PantallaGameOver extends PantallaBase {
                         labelID.setFontScale(9);
                         labelAlias.setFontScale(5);
                         nuevoRank = true;
+                        try {
+                            vistaImagen = new Image(conversorBytesAImagen(bitesAux));
+                            bitesAux = null;
+                        }catch (NullPointerException npe){
+                            System.out.println("Aun no estan los bytes cargados del todo");
+                        }
+
                     } else {
                         label.setFontScale(4);
                         dimensionImagen = 120;
                         labelID.setFontScale(5);
                         labelAlias.setFontScale(3);
-                    }
-                    try {
-                        File file = iC.getArrayImagenes().get(i);
-                        byte[] bites = iC.convertirFileAbyte(file);
-                        vistaImagen = new Image(conversorBytesAImagen(bites));
-                    }catch (NullPointerException npe){
-                        System.out.println("error, array no encontrado ");
-                        npe.printStackTrace();
+                        try {
+                            File file = iC.getArrayImagenes().get(i);
+                            byte[] bites = iC.convertirFileAbyte(file);
+                            vistaImagen = new Image(conversorBytesAImagen(bites));
+                        }catch (NullPointerException npe){
+                            System.out.println("error, array no encontrado ");
+                            npe.printStackTrace();
+                        }
                     }
                     table.row();
                     table.add(labelID).padRight(50);
@@ -348,12 +368,22 @@ public class PantallaGameOver extends PantallaBase {
             public void input(String cadena) {
                 alias = cadena;
                 aliasCallback.onCallback(cadena);
+                //MUSICA GAME OVER
+                musicaGameOver = Gdx.audio.newMusic(Gdx.files.internal("Music/game-over-baby.mp3"));
+                musicaGameOver.setLooping(true);
+                musicaGameOver.setVolume(1.0f);
+                musicaGameOver.play();
             }
 
             @Override
             public void canceled() {
                 alias = "annonymous";
                 aliasCallback.onCallback(alias);
+                //MUSICA GAME OVER
+                musicaGameOver = Gdx.audio.newMusic(Gdx.files.internal("Music/game-over-baby.mp3"));
+                musicaGameOver.setLooping(true);
+                musicaGameOver.setVolume(1.0f);
+                musicaGameOver.play();
             }
         }, "Introduce tu alias", "", " _ _ _ _ _ _ _ _");
     }

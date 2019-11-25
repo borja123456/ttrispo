@@ -1,7 +1,10 @@
 package com.mygdx.ttrispo.Gestores;
 
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
+
 import com.mygdx.ttrispo.Pantalla.PantallaGameOver;
 
 import static java.lang.Thread.sleep;
@@ -45,6 +48,25 @@ public  class GestorRecursos {
         manager.load("OCompleta.png", Texture.class);
         manager.load("background.jpeg", Texture.class);
         manager.load("GameOver.jpeg", Texture.class);
+
+        //musica
+        manager.load("Music/The Force Theme.mp3", Music.class); //inicio
+        manager.load("Music/Imperial March.mp3", Music.class); //gameover
+        manager.load("Music/game-over-baby.mp3", Music.class); //gameover
+        manager.load("Music/lightsaber_04.wav", Sound.class);  //partida
+        manager.load("Music/The Force Suite.mp3", Music.class); // inicio
+
+        //aleatorias
+        manager.load("Music/Mustafar.mp3", Music.class);
+        manager.load("Music/Original Tetris Soundtrack.mp3", Music.class);
+        manager.load("Music/Tetris 99 - Main Theme.mp3", Music.class);
+        manager.load("Music/Africa.mp3", Music.class);
+        manager.load("Music/Stayin Alive.mp3", Music.class);
+        manager.load("Music/Take On Me.mp3", Music.class);
+        manager.load("Music/Youre The One That I Want.mp3", Music.class);
+        manager.load("Music/Last Christmas.mp3", Music.class);
+        manager.load("Music/Blame It On the Boogie.mp3", Music.class);
+        manager.load("Music/Girls just wanna have fun.mp3",Music.class);
 
         manager.load("profile.png", Texture.class);
         while (!manager.update()) {
