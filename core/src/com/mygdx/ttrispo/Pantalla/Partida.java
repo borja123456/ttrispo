@@ -30,6 +30,9 @@ public class Partida extends PantallaBase {
     public static Partida partidaAux;
     private int longitudPuntos;
     private boolean segundaPieza;
+    private float tiempoAcortar = 5, contadorAcortar = 0;
+    private int filaAcortar = 0;
+    private boolean flagAcortar = false;
 
 
     public Partida(MyGdxGame game) {
@@ -65,6 +68,7 @@ public class Partida extends PantallaBase {
     @Override
     public void render(float delta) {
         super.render(delta);
+        temporizadorAcortarVentana(delta);
         batch.begin();
         batch.draw(fondoPartida, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();
@@ -72,7 +76,28 @@ public class Partida extends PantallaBase {
         stage.draw();  // Pintar los actores
     }
 
+    private void temporizadorAcortarVentana(float delta) {
+        if (!flagAcortar && contadorAcortar < tiempoAcortar) {
+            contadorAcortar += delta;
+        } else {
+            contadorAcortar = 0;
+            flagAcortar = true;
+        }
+    }
+
     private void cicloDeVida(float delta) {
+        if(flagAcortar){
+            int [][] bloques = new int[10][2];
+            for (int i = 0; i < bloques.length; i++) {
+                bloques[i][0] = filaAcortar;
+                bloques[i][1] = i;
+            }
+            tablero.insertarBloquesDePieza(bloques,-1);
+            if(filaAcortar < 20){
+                flagAcortar = false;
+                filaAcortar++;
+            }
+        }
         switch (gestorEstado.getEstado(delta)) {
 
             case (GestorEstado.REPOSO): //Si el Gestor esta en reposo

@@ -25,6 +25,7 @@ public  class GestorRecursos {
         manager.load("BP-Rot.jpeg", Texture.class);
         manager.load("B-abajo.jpg", Texture.class);
         manager.load("BP-abajo.jpeg", Texture.class);
+        manager.load("bg_tablero.png", Texture.class);
 
         manager.load("T.jpg", Texture.class);
         manager.load("S.jpg", Texture.class);

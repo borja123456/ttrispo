@@ -57,6 +57,12 @@ public class Tablero extends Actor {
                     imagenBloque = partida.getTexturaPieza(tipo);
                     batch.draw(imagenBloque, posicionX + tableroX, posicionY - tableroY, 0, 0, (int)(tamanyoPiezaX-0.5f), (int)(tamanyoPiezaY-0.5f));
                 }
+                // acortamiento de tablero
+                if(tipo < 0) {
+                    imagenBloque = GestorRecursos.get("bg_tablero.png");
+                    batch.draw(imagenBloque, posicionX + tableroX, posicionY - tableroY, 0, 0, (int)(tamanyoPiezaX-0.5f), (int)(tamanyoPiezaY-0.5f));
+                }
+
             }
         }
         if (imagenPiezaSiguiente != null) {
@@ -98,7 +104,7 @@ public class Tablero extends Actor {
                     return true;
                 }
                 // Colisiona con otro bloque
-                if (tablero[bloques[i][1]][bloques[i][0]] != 0) {
+                if (tablero[bloques[i][1]][bloques[i][0]] > 0) {
                     return true;
                 }
             }
@@ -119,7 +125,7 @@ public class Tablero extends Actor {
 
         for(int i = 0; i < 20; i++){
             for(int j = 0; j < 10; j++){
-                if(tablero[j][i]!= 0){
+                if(tablero[j][i] > 0){
                     valorFila++;
                 }
             }
