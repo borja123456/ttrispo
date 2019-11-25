@@ -2,6 +2,9 @@ package com.mygdx.ttrispo.Gestores;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
+import com.mygdx.ttrispo.Pantalla.PantallaGameOver;
+
+import static java.lang.Thread.sleep;
 
 public  class GestorRecursos {
     private static AssetManager manager = new AssetManager();
@@ -42,9 +45,22 @@ public  class GestorRecursos {
         manager.load("OCompleta.png", Texture.class);
         manager.load("background.jpeg", Texture.class);
         manager.load("GameOver.jpeg", Texture.class);
+
+        manager.load("profile.png", Texture.class);
         while (!manager.update()) {
             //System.out.println("Cargando...");
             contador++;
+        }
+    }
+
+    public static void cargarPrevia(PantallaGameOver pantallaGameOver){
+        for(int i = 1; i<=10; i++){
+            pantallaGameOver.dameImagenDescargada(i);
+            try {
+                sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 

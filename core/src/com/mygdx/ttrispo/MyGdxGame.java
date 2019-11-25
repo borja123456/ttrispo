@@ -1,5 +1,6 @@
 package com.mygdx.ttrispo;
 
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
 import com.mygdx.ttrispo.BaseDeDatos.FirebaseHelper;
 import com.badlogic.gdx.Gdx;
@@ -7,14 +8,20 @@ import com.mygdx.ttrispo.Gestores.GestorRecursos;
 import com.mygdx.ttrispo.Pantalla.PantallaAjustes;
 import com.mygdx.ttrispo.Pantalla.PantallaGameOver;
 import com.mygdx.ttrispo.Pantalla.PantallaInicio;
+import com.mygdx.ttrispo.com.mygdx.ttrispo.camara.InterfazCamara;
 
-public class MyGdxGame extends Game {
+public class MyGdxGame extends Game implements ApplicationListener {
     public static float ratioPixelesHeight, ratioPixelesWidth;
 
     public PantallaInicio pantallaInicio;
     public PantallaGameOver pantallaGameOver;
     public PantallaAjustes pantallaAjustes;
     public static FirebaseHelper firebaseHelper;
+    private InterfazCamara interfazCamara;
+
+    public MyGdxGame(InterfazCamara interfazCamara){
+        this.interfazCamara = interfazCamara;
+    }
 
     @Override
     public void create() {
@@ -24,7 +31,8 @@ public class MyGdxGame extends Game {
 
         pantallaInicio = new PantallaInicio(this);
         pantallaAjustes = new PantallaAjustes(this);
-        pantallaGameOver = new PantallaGameOver(this);
+        pantallaGameOver = new PantallaGameOver(this, interfazCamara);
+        GestorRecursos.cargarPrevia(pantallaGameOver);
         firebaseHelper=new FirebaseHelper();
         this.setScreen(pantallaInicio);
     }

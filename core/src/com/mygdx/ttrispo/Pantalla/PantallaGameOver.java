@@ -3,7 +3,7 @@ package com.mygdx.ttrispo.Pantalla;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
@@ -13,11 +13,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
@@ -25,7 +23,10 @@ import com.mygdx.ttrispo.BaseDeDatos.FirebaseCallback;
 import com.mygdx.ttrispo.BaseDeDatos.Jugador;
 import com.mygdx.ttrispo.Gestores.GestorRecursos;
 import com.mygdx.ttrispo.MyGdxGame;
+import com.mygdx.ttrispo.com.mygdx.ttrispo.camara.InterfazCamara;
 
+import java.io.File;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
 import static com.mygdx.ttrispo.MyGdxGame.firebaseHelper;
@@ -44,8 +45,20 @@ public class PantallaGameOver extends PantallaBase {
     private String alias;
     private long pasado, futuro;
 
+    public static Pixmap pmap, pixmap;
+    private ImageButton imageButton;
+    private Texture tex;
+    private InterfazCamara iC;
+    public static byte[] imagen;
+    public static String cadenaImagen;
+    private Image vistaImagen;
+    public static ByteBuffer nativeData;
 
-    public PantallaGameOver(final MyGdxGame game){
+    private int dimensionImagen;
+    private ArrayList<File> imgs;
+    private boolean prueba;
+
+    public PantallaGameOver(final MyGdxGame game, final InterfazCamara interfazCamara){
         super(game);
         fondoGameOver = GestorRecursos.get("GameOver.jpeg");
         skin = new Skin(Gdx.files.internal("skins/default/skin/uiskin.json"));
@@ -53,6 +66,17 @@ public class PantallaGameOver extends PantallaBase {
         isRankingLoaded = false;
         table = new Table();
         glyphLayout = new GlyphLayout();
+        pixmap = new Pixmap(Gdx.files.internal("profile.png"));
+        nativeData = pixmap.getPixels();
+        imagen = new byte[nativeData.remaining()];
+        nativeData.get(imagen);
+        cadenaImagen = new String(imagen);
+        //pixmap.dispose();
+        vistaImagen = null;
+        imgs = new ArrayList<>();
+        prueba = true;
+
+        dimensionImagen = 100;
 
         Container<Table> tableContainer = new Container<>();
         float sw = Gdx.graphics.getWidth();
@@ -63,6 +87,15 @@ public class PantallaGameOver extends PantallaBase {
         tableContainer.setPosition((sw-cw)/2.0f, (sh-ch)/1.1f);
         tableContainer.fillX();
         table.setSkin(skin);
+
+        this.iC=interfazCamara;
+        imageButton = new ImageButton(skin, "foto");
+        imageButton.getStyle().imageUp = new TextureRegionDrawable(GestorRecursos.get("profile.png"));
+        imageButton.setSize(200, 200);
+        imageButton.setPosition(0,0);
+        imageButton.setName("imageButton");
+        super.stage.addActor(imageButton);
+
 
         //Boton start con imagen
         retry = new ImageButton(skin, "reiniciar");
@@ -84,12 +117,20 @@ public class PantallaGameOver extends PantallaBase {
         tableContainer.setActor(table);
         super.stage.addActor(tableContainer);
 
+        imageButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                iC.selectImage();
+            }
+        });
+
         retry.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                /*
                 if(listaRanking!=null){
                     listaRanking.clear();
-                }
+                }*/
                 if (Partida.partidaAux.getPuntuacion()>= 250){
                     game.setScreen(new Partida(game));
                     System.out.println("Puntos superados: " + Partida.partidaAux.getPuntuacion());
@@ -126,6 +167,25 @@ public class PantallaGameOver extends PantallaBase {
         alerta.show(stage);
     }
 
+    public void onByteArrayOfCroppedImageReciever(byte[] bytes) {
+        try {
+            if(bytes != null){
+                pmap = new Pixmap(bytes, 0, bytes.length);
+                Gdx.app.postRunnable(new Runnable() {
+                    @Override
+                    public void run() {
+                        tex = new Texture(pmap);
+                        imageButton.setSize(300,300);
+                        imageButton.getStyle().imageUp = new TextureRegionDrawable(tex);
+                    }
+                });
+            }
+        } catch(Exception e) {
+            Gdx.app.log("KS", e.toString());
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void show() {
         super.show();
@@ -139,7 +199,7 @@ public class PantallaGameOver extends PantallaBase {
         firebaseHelper.rellenarArrayDeRanking(new FirebaseCallback() {
             @Override
             public void onCallback(ArrayList<Jugador> lista) {
-                firebaseHelper.insertarPuntuacionEnRanking(alias, Partida.partidaAux.getPuntuacion());
+                firebaseHelper.insertarPuntuacionEnRanking(alias, Partida.partidaAux.getPuntuacion(), iC);
                 listaRanking = lista;
                 if(listaRanking!=null){
                     isRankingLoaded = true;
@@ -176,6 +236,18 @@ public class PantallaGameOver extends PantallaBase {
             realShow2();
             activo = true;
         }
+        if(iC.getResultado1()){
+            onByteArrayOfCroppedImageReciever(iC.getDatos()); //primero
+            int pos = firebaseHelper.determinarPosicionJugador(Partida.partidaAux.getPuntuacion());
+            if(pos!=0){
+                iC.subirImagen(pos);//segundo
+            }
+            iC.setResultado1(false);
+        }
+        if(iC.getResultado2()){
+            firebaseHelper.insertarPuntuacionEnRanking(alias, Partida.partidaAux.getPuntuacion(), iC);
+            iC.setResultado2(false);
+        }
         font.setColor(Color.YELLOW);
         glyphLayout.setText(font, "TOP 10 MEJORES PUNTUACIONES");
         font.draw(batch, glyphLayout,(Gdx.graphics.getWidth()-glyphLayout.width)/2, 0.95f*Gdx.graphics.getHeight());
@@ -192,19 +264,31 @@ public class PantallaGameOver extends PantallaBase {
                     labelID.setAlignment(Align.left);
                     if ((!nuevoRank) && (Partida.partidaAux.getPuntuacion() == listaRanking.get(i).getPuntuacion())) {
                         label.setFontScale(8);
+                        dimensionImagen = 180;
                         labelID.setFontScale(9);
                         labelAlias.setFontScale(5);
                         nuevoRank = true;
                     } else {
                         label.setFontScale(4);
+                        dimensionImagen = 120;
                         labelID.setFontScale(5);
                         labelAlias.setFontScale(3);
                     }
+                    try {
+                        File file = iC.getArrayImagenes().get(i);
+                        byte[] bites = iC.convertirFileAbyte(file);
+                        vistaImagen = new Image(conversorBytesAImagen(bites));
+                    }catch (NullPointerException npe){
+                        System.out.println("error, array no encontrado ");
+                        npe.printStackTrace();
+                    }
                     table.row();
                     table.add(labelID).padRight(50);
+                    table.add(vistaImagen).size(dimensionImagen,dimensionImagen);
                     table.add(labelAlias).padLeft(50);
                     table.add(label).padLeft(50);
                 }
+
             }catch (NullPointerException npe){
                 System.out.println("ERROR: aun no se habia cargado del todo el ranking.");
             }
@@ -225,6 +309,39 @@ public class PantallaGameOver extends PantallaBase {
         batch.end();
         stage.draw(); // Pintar los actores los botones por encima del background
     }
+
+    public void dameImagenDescargada(int posicion){
+            iC.getImagenConPosicion(posicion);
+    }
+
+    private Texture nuevaTextura;
+    private Image img;
+    private Pixmap pix;
+
+    public Texture conversorBytesAImagen(byte[] bytes) {
+        try {
+            if(bytes != null){
+                pix = new Pixmap(bytes, 0, bytes.length);
+                nuevaTextura = new Texture(pix);
+                /*Gdx.app.postRunnable(new Runnable() {
+                    @Override
+                    public void run() {
+                        nuevaTextura = new Texture(pix);
+//                        img = new Image(nuevaTextura);
+                    }
+                });*/
+            }else{
+                System.out.println("No he recibido na");
+            }
+        } catch(Exception e) {
+            Gdx.app.log("KS", e.toString());
+            e.printStackTrace();
+        }
+        //return img;
+
+        return nuevaTextura;
+    }
+
     private void recogerAlias(final AliasCallback aliasCallback){
         Gdx.input.getTextInput(new Input.TextInputListener() {
             @Override
@@ -235,7 +352,7 @@ public class PantallaGameOver extends PantallaBase {
 
             @Override
             public void canceled() {
-                alias = "\"annonymous\"";
+                alias = "annonymous";
                 aliasCallback.onCallback(alias);
             }
         }, "Introduce tu alias", "", " _ _ _ _ _ _ _ _");

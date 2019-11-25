@@ -1,11 +1,13 @@
 package com.mygdx.ttrispo.Pantalla;
  import com.badlogic.gdx.Gdx;
  import com.badlogic.gdx.graphics.OrthographicCamera;
+ import com.badlogic.gdx.graphics.Pixmap;
  import com.badlogic.gdx.graphics.Texture;
  import com.badlogic.gdx.graphics.g2d.Sprite;
  import com.badlogic.gdx.graphics.g2d.TextureRegion;
  import com.badlogic.gdx.scenes.scene2d.Actor;
  import com.badlogic.gdx.scenes.scene2d.InputEvent;
+ import com.badlogic.gdx.scenes.scene2d.InputListener;
  import com.badlogic.gdx.scenes.scene2d.ui.Image;
  import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
  import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
@@ -15,8 +17,7 @@ package com.mygdx.ttrispo.Pantalla;
  import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
  import com.mygdx.ttrispo.Gestores.GestorRecursos;
  import com.mygdx.ttrispo.MyGdxGame;
-
- import java.awt.Color;
+ import com.mygdx.ttrispo.com.mygdx.ttrispo.camara.InterfazCamara;
 
 public class PantallaInicio extends PantallaBase{
     private Skin skin;
@@ -68,12 +69,11 @@ public class PantallaInicio extends PantallaBase{
                 game.setScreen(new Partida(game));
             }
         });
+
         settings.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-
                 game.setScreen(new PantallaAjustes(game));
-
             }
         });
     }
@@ -96,8 +96,9 @@ public class PantallaInicio extends PantallaBase{
         paraGirar1.rotate((float) 0.1);
         paraGirar1.draw(batch, 100);
         paraGirar2.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        paraGirar2.rotate((float) -0.1);
+        paraGirar2.rotate((float) - 0.1);
         paraGirar2.draw(batch, 100);
+
         if(cambio){
             ((OrthographicCamera)stage.getCamera()).zoom-=0.001f;
             tiempoInicial++;
