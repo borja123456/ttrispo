@@ -41,7 +41,7 @@ public class Partida extends PantallaBase {
     private Random NumAleatorio;
     private float Seconds20 = 20f;
     private float timeSeconds = 0f;
-    
+
 
     public Partida(MyGdxGame game) {
         super(game);
@@ -67,11 +67,7 @@ public class Partida extends PantallaBase {
         this.puntuacion = 0;
         stage.addActor(bb);
 
-        listaCanciones = new ArrayList<>();
-        cargarArray(listaCanciones);
-        cancion80sActual = listaCanciones.get(dameNumAleatorio());
-        cancion80sActual.play();
-        //musicaAleatoria();
+        nextCancion();
     }
 
     private void cargarArray(ArrayList<Music> listaCanciones) {
@@ -97,7 +93,21 @@ public class Partida extends PantallaBase {
     }
 
     private void nextCancion() { //ArrayList<Music> listaCanciones
+        if (cancion80sActual == null) {
+            System.out.println("array vacio");
+            listaCanciones = new ArrayList<>();
+            cargarArray(listaCanciones);
+        }
+        else if (!(cancion80sAnterior == null)) {
+          //  cancion80sAnterior = cancion80sActual;
+            cancion80sAnterior.stop();
+            System.out.println("cancion eliminada " + cancion80sAnterior);
+        }
+        cancion80sActual = listaCanciones.get(dameNumAleatorio());
+        System.out.println("cancion actual " + cancion80sActual);
+        cancion80sActual.play();
         cancion80sAnterior = cancion80sActual;
+
       /*  for (float i = 1; i>0; i -= 0.01) {
             cancion80sAnterior.setVolume(i);
             if (i <= 0) {
@@ -108,12 +118,6 @@ public class Partida extends PantallaBase {
       /*  while (!(cancion80sAnterior.getVolume() == 0)) {
             cancion80sAnterior.setVolume(cancion80sAnterior.getVolume() -= 0.01f);
         }*/
-        cancion80sAnterior.stop();
-        cancion80sAnterior.dispose();
-        System.out.println("cancion eliminada " + cancion80sAnterior);
-        cancion80sActual = listaCanciones.get(dameNumAleatorio());
-        cancion80sActual.play();
-        System.out.println("cancion nueva " + cancion80sActual);
     }
 
     private int dameNumAleatorio() {
@@ -233,6 +237,8 @@ public class Partida extends PantallaBase {
         partidaAux = this;
         if (tablero.comprobarGameOver(pieza.getPosicionPieza())) {
            // this.dispose();
+            this.cancion80sAnterior.stop();
+            this.cancion80sActual.stop();
             game.setScreen(game.pantallaGameOver);
         }
         tablero.comprobarLineaCompleta();
@@ -304,11 +310,11 @@ public class Partida extends PantallaBase {
     public Texture getTexturaPieza(int tipo){
         return gestorPiezas.getTexturaBloque(tipo);
     }
-    
+
     public long getPuntuacion(){
         return this.puntuacion;
     }
-    
+
     public void setPuntuacion(int i) {
         long nuevaPuntuacion = puntuacion + i;
         if(String.valueOf(puntuacion).length() < (String.valueOf(nuevaPuntuacion).length())){
@@ -331,6 +337,7 @@ public class Partida extends PantallaBase {
     @Override
     public void dispose() {
         super.dispose();
+        listaCanciones.clear();
         cancion80sActual.dispose();
         cancion80sAnterior.dispose();
     }
