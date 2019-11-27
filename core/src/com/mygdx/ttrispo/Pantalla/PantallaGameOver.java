@@ -291,7 +291,7 @@ public class PantallaGameOver extends PantallaBase {
                     }
                     table.row();
                     table.add(labelID).padRight(50);
-                    table.add(vistaImagenes.get(0)).size(dimensionImagen,dimensionImagen);
+                    table.add(vistaImagenes.get(i)).size(dimensionImagen,dimensionImagen);
                     table.add(labelAlias).padLeft(50);
                     table.add(label).padLeft(50);
                 }
