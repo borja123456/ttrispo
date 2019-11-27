@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.ttrispo.BaseDeDatos.FirebaseHelper;
 import com.mygdx.ttrispo.Gestores.GestorRecursos;
 import com.mygdx.ttrispo.Pantalla.PantallaAjustes;
@@ -58,7 +59,7 @@ public class SplashScreen implements Screen {
         game.manager.finishLoading();
 
         // Initialize the stage where we will place everything
-        stage = new Stage();
+        stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 
         // Get our textureatlas from the manager
         TextureAtlas atlas = game.manager.get("data/loading.pack", TextureAtlas.class);

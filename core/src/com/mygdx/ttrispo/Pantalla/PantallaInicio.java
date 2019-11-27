@@ -13,6 +13,7 @@ package com.mygdx.ttrispo.Pantalla;
  import com.badlogic.gdx.scenes.scene2d.ui.Skin;
  import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
  import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+ import com.badlogic.gdx.utils.viewport.FitViewport;
  import com.mygdx.ttrispo.Gestores.GestorRecursos;
  import com.mygdx.ttrispo.MyGdxGame;
 
@@ -36,7 +37,7 @@ public class PantallaInicio extends PantallaBase{
         paraGirar2 = new Sprite(fondoInicio);
         tiempoInicial = 0;
         cambio = false;
-        stageHijo = new Stage();
+        stageHijo = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 
         //Tetris imagen
         tetris = new Image(new TextureRegion(GestorRecursos.get("tetris.png")));
@@ -123,8 +124,9 @@ public class PantallaInicio extends PantallaBase{
             }
         }
         batch.end();
-        stageHijo.draw();
+
         stageHijo.act();
+        stageHijo.draw();
     }
     @Override
     public void dispose() {

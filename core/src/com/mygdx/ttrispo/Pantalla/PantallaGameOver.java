@@ -22,6 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.audio.Music;
 
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.ttrispo.BaseDeDatos.FirebaseCallback;
 import com.mygdx.ttrispo.BaseDeDatos.Jugador;
 import com.mygdx.ttrispo.Gestores.GestorRecursos;
@@ -83,7 +84,7 @@ public class PantallaGameOver extends PantallaBase {
         bitesAux = imagen;
         vistaImagenes = new ArrayList<>();
         vistaImagenes.add(null); //posicion 0, no me interesa
-        stageHijo = new Stage();
+        stageHijo = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         dimensionImagen = 100;
 
         Container<Table> tableContainer = new Container<>();
@@ -316,8 +317,9 @@ public class PantallaGameOver extends PantallaBase {
             }
         }
         batch.end();
-        stageHijo.draw(); // Pintar los actores los botones por encima del background
+
         stageHijo.act();
+        stageHijo.draw(); // Pintar los actores los botones por encima del background
     }
 
     public void dameImagenDescargada(int posicion){

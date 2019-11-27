@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.ttrispo.Gestores.GestorRecursos;
 import com.mygdx.ttrispo.MyGdxGame;
 import com.mygdx.ttrispo.Pieza.Pieza;
@@ -55,7 +56,7 @@ public class PantallaAjustes extends PantallaBase{
         paraGirar1 = new Sprite(fondoAjustes);
         paraGirar2 = new Sprite(fondoAjustes);
         texturaPiezas = new ArrayList<>();
-        stageHijo = new Stage();
+        stageHijo = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 
         BPiezaT = new TextButton("T", skin);
         BPiezaT.getLabel().setFontScale(3);
@@ -322,7 +323,8 @@ public class PantallaAjustes extends PantallaBase{
             }
         }
         batch.end();
-        stageHijo.draw();
+
         stageHijo.act();
+        stageHijo.draw();
     }
 }
