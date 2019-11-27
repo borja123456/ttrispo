@@ -114,7 +114,7 @@ public class SplashScreen implements Screen {
         // Show the loading screen
         stage.act();
 
-        if(percent >= 0.95f){
+        if(percent >= 0.9998f){
             game.setScreen(game.pantallaInicio);
         }
     }

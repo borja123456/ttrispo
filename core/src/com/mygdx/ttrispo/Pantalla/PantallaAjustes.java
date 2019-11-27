@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
@@ -19,7 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.ttrispo.Gestores.GestorRecursos;
 import com.mygdx.ttrispo.MyGdxGame;
 import com.mygdx.ttrispo.Pieza.Pieza;
@@ -41,7 +39,6 @@ public class PantallaAjustes extends PantallaBase{
     private final long switchfps = 10;
     private boolean cambio;
     private long tiempoInicial;
-    private Stage stageHijo;
     //supongamos que se guardan con el siguiente orden, para seguir el patron que tiene GestorPieza en su array de Color[]:
     //texturaPiezas = [T, S, Z, I, O, L, J], solo guarda la textura.
 
@@ -56,7 +53,6 @@ public class PantallaAjustes extends PantallaBase{
         paraGirar1 = new Sprite(fondoAjustes);
         paraGirar2 = new Sprite(fondoAjustes);
         texturaPiezas = new ArrayList<>();
-        stageHijo = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 
         BPiezaT = new TextButton("T", skin);
         BPiezaT.getLabel().setFontScale(3);
@@ -86,13 +82,13 @@ public class PantallaAjustes extends PantallaBase{
         BPiezaO.setColor(colores[o]);
         BPiezaL.setColor(colores[l]);
         BPiezaJ.setColor(colores[j]);
-        stageHijo.addActor(BPiezaT);
-        stageHijo.addActor(BPiezaS);
-        stageHijo.addActor(BPiezaZ);
-        stageHijo.addActor(BPiezaI);
-        stageHijo.addActor(BPiezaO);
-        stageHijo.addActor(BPiezaL);
-        stageHijo.addActor(BPiezaJ);
+        super.stage.addActor(BPiezaT);
+        super.stage.addActor(BPiezaS);
+        super.stage.addActor(BPiezaZ);
+        super.stage.addActor(BPiezaI);
+        super.stage.addActor(BPiezaO);
+        super.stage.addActor(BPiezaL);
+        super.stage.addActor(BPiezaJ);
 
         //añadir los botones de cada pieza a la tabla
         Table table = new Table();
@@ -132,7 +128,7 @@ public class PantallaAjustes extends PantallaBase{
         table.align(Align.center);
         table.setFillParent(true);
        //table.setDebug(true); //Muestra las líneas
-        stageHijo.addActor(table);
+        super.stage.addActor(table);
         EventosBotones();
     }
 
@@ -308,14 +304,14 @@ public class PantallaAjustes extends PantallaBase{
         paraGirar2.draw(batch, 100);
         batch.draw(fraseAjustes, 0.1f*Gdx.graphics.getWidth(), 0.9f*Gdx.graphics.getHeight(), 0.5f*fraseAjustes.getRegionWidth(), 0.5f*fraseAjustes.getRegionHeight());
         if(cambio){
-            ((OrthographicCamera)stageHijo.getCamera()).zoom-=0.001f;
+            ((OrthographicCamera)stage.getCamera()).zoom-=0.001f;
             tiempoInicial++;
             if(tiempoInicial==switchfps){
                 tiempoInicial=0;
                 cambio = false;
             }
         }else {
-            ((OrthographicCamera)stageHijo.getCamera()).zoom+=0.001f;
+            ((OrthographicCamera)stage.getCamera()).zoom+=0.001f;
             tiempoInicial++;
             if(tiempoInicial==switchfps){
                 tiempoInicial=0;
@@ -323,8 +319,6 @@ public class PantallaAjustes extends PantallaBase{
             }
         }
         batch.end();
-
-        stageHijo.act();
-        stageHijo.draw();
+        stage.draw();
     }
 }

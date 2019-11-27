@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -22,7 +21,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.audio.Music;
 
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.ttrispo.BaseDeDatos.FirebaseCallback;
 import com.mygdx.ttrispo.BaseDeDatos.Jugador;
 import com.mygdx.ttrispo.Gestores.GestorRecursos;
@@ -58,7 +56,6 @@ public class PantallaGameOver extends PantallaBase {
     private Image vistaImagen;
     public static ByteBuffer nativeData;
     private byte[] bitesAux;
-    private Stage stageHijo;
 
     private int dimensionImagen;
     private ArrayList<File> imgs;
@@ -84,7 +81,7 @@ public class PantallaGameOver extends PantallaBase {
         bitesAux = imagen;
         vistaImagenes = new ArrayList<>();
         vistaImagenes.add(null); //posicion 0, no me interesa
-        stageHijo = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+
         dimensionImagen = 100;
 
         Container<Table> tableContainer = new Container<>();
@@ -103,7 +100,7 @@ public class PantallaGameOver extends PantallaBase {
         imageButton.setSize(200, 200);
         imageButton.setPosition(0,0);
         imageButton.setName("imageButton");
-        stageHijo.addActor(imageButton);
+        super.stage.addActor(imageButton);
 
 
         //Boton start con imagen
@@ -112,7 +109,7 @@ public class PantallaGameOver extends PantallaBase {
         retry.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-retry.png")));
         retry.setSize(retry.getStyle().imageUp.getMinWidth(), retry.getStyle().imageUp.getMinHeight());
         retry.setPosition((Gdx.graphics.getWidth()/2.0f)-(retry.getStyle().imageUp.getMinWidth()/2.0f), Gdx.graphics.getHeight()/6);
-        stageHijo.addActor(retry);
+        super.stage.addActor(retry);
 
         //Boton retry con imagen
         home = new ImageButton(skin, "inicio");
@@ -120,11 +117,11 @@ public class PantallaGameOver extends PantallaBase {
         home.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-home.png")));
         home.setSize(0.2f*home.getStyle().imageUp.getMinWidth(), 0.2f*home.getStyle().imageUp.getMinHeight());
         home.setPosition((Gdx.graphics.getWidth() / 2.0f) - (0.1f*home.getStyle().imageUp.getMinWidth()), Gdx.graphics.getHeight() / 10);
-        stageHijo.addActor(home);
+        super.stage.addActor(home);
 
         //Contenedor de la tabla del ranking
         tableContainer.setActor(table);
-        stageHijo.addActor(tableContainer);
+        super.stage.addActor(tableContainer);
 
         imageButton.addListener(new ClickListener() {
             @Override
@@ -174,7 +171,7 @@ public class PantallaGameOver extends PantallaBase {
         alerta.text("No has conseguido derrotar al lado oscuro, eres muy débil.");
         alerta.button("Ok", true);
         alerta.center();
-        alerta.show(stageHijo);
+        alerta.show(stage);
     }
 
     public void onByteArrayOfCroppedImageReciever(byte[] bytes) {
@@ -317,9 +314,7 @@ public class PantallaGameOver extends PantallaBase {
             }
         }
         batch.end();
-
-        stageHijo.act();
-        stageHijo.draw(); // Pintar los actores los botones por encima del background
+        stage.draw(); // Pintar los actores los botones por encima del background
     }
 
     public void dameImagenDescargada(int posicion){

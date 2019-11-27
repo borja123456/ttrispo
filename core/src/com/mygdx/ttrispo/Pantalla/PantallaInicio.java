@@ -7,13 +7,11 @@ package com.mygdx.ttrispo.Pantalla;
  import com.badlogic.gdx.graphics.g2d.Sprite;
  import com.badlogic.gdx.graphics.g2d.TextureRegion;
  import com.badlogic.gdx.scenes.scene2d.InputEvent;
- import com.badlogic.gdx.scenes.scene2d.Stage;
  import com.badlogic.gdx.scenes.scene2d.ui.Image;
  import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
  import com.badlogic.gdx.scenes.scene2d.ui.Skin;
  import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
  import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
- import com.badlogic.gdx.utils.viewport.FitViewport;
  import com.mygdx.ttrispo.Gestores.GestorRecursos;
  import com.mygdx.ttrispo.MyGdxGame;
 
@@ -27,7 +25,6 @@ public class PantallaInicio extends PantallaBase{
     private boolean cambio;
     private Image tetris;
     private Music musicaInicio;
-    private Stage stageHijo;
 
     public PantallaInicio (final MyGdxGame game) {
         super(game);
@@ -37,13 +34,12 @@ public class PantallaInicio extends PantallaBase{
         paraGirar2 = new Sprite(fondoInicio);
         tiempoInicial = 0;
         cambio = false;
-        stageHijo = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 
         //Tetris imagen
         tetris = new Image(new TextureRegion(GestorRecursos.get("tetris.png")));
         tetris.setSize(0.9f*tetris.getWidth(), 0.9f*tetris.getHeight());
         tetris.setPosition((Gdx.graphics.getWidth() - tetris.getWidth()) / 2.0f, 0.6f * Gdx.graphics.getHeight());
-        stageHijo.addActor(tetris);
+        super.stage.addActor(tetris);
 
         //Boton start con imagen
         start = new ImageButton(skin, "start");
@@ -51,7 +47,7 @@ public class PantallaInicio extends PantallaBase{
         start.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-start.png")));
         start.setSize(start.getStyle().imageUp.getMinWidth(), start.getStyle().imageUp.getMinHeight());
         start.setPosition((Gdx.graphics.getWidth() - start.getStyle().imageUp.getMinWidth()) / 2.0f, 0.3f * Gdx.graphics.getHeight());
-        stageHijo.addActor(start);
+        super.stage.addActor(start);
 
         //Boton ajustes con imagen
         settings = new ImageButton(skin, "ajustes");
@@ -60,7 +56,7 @@ public class PantallaInicio extends PantallaBase{
         settings.setSize(settings.getStyle().imageUp.getMinWidth()/1.5f, settings.getStyle().imageUp.getMinHeight()/1.5f);
         settings.setPosition((Gdx.graphics.getWidth() - settings.getStyle().imageUp.getMinWidth()/1.5f)/ 2.0f,
                 0.2f * Gdx.graphics.getHeight());
-        stageHijo.addActor(settings);
+        super.stage.addActor(settings);
 
         //Eventos de ambos
         start.addListener(new ClickListener(){
@@ -109,14 +105,14 @@ public class PantallaInicio extends PantallaBase{
         paraGirar2.draw(batch, 100);
 
         if(cambio){
-            ((OrthographicCamera)stageHijo.getCamera()).zoom-=0.001f;
+            ((OrthographicCamera)stage.getCamera()).zoom-=0.001f;
             tiempoInicial++;
             if(tiempoInicial==switchfps){
                 tiempoInicial=0;
                 cambio = false;
             }
         }else {
-            ((OrthographicCamera)stageHijo.getCamera()).zoom+=0.001f;
+            ((OrthographicCamera)stage.getCamera()).zoom+=0.001f;
             tiempoInicial++;
             if(tiempoInicial==switchfps){
                 tiempoInicial=0;
@@ -124,9 +120,7 @@ public class PantallaInicio extends PantallaBase{
             }
         }
         batch.end();
-
-        stageHijo.act();
-        stageHijo.draw();
+        stage.draw();
     }
     @Override
     public void dispose() {
