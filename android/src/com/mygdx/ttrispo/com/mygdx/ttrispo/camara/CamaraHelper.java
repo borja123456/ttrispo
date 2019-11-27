@@ -31,23 +31,26 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.mygdx.ttrispo.AndroidLauncher;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static java.lang.Thread.sleep;
+
 
 public class CamaraHelper implements InterfazCamara {
 
     private String path, url;
-    private int posicion;
+    private int posicion, numero;
+    private long tamanioTotalImagen, tamanioDescargadoImagen;
     private byte[] bitMapAux;
     private boolean resultado1,resultado2;
     private final AndroidLauncher androidLauncher;
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = { Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
     private StorageReference mStorageRef;
-    private int numero;
     private ArrayList<File> imagenes;
 
     public CamaraHelper(AndroidLauncher androidLauncher){
@@ -126,48 +129,6 @@ public class CamaraHelper implements InterfazCamara {
         return true;
     }
 
-    //GETTERS
-    public byte[] getDatos(){
-        return bitMapAux;
-    }
-    public boolean getResultado1(){
-        return resultado1;
-    }
-    public boolean getResultado2(){
-        return resultado2;
-    }
-    public String getUrl(){
-        return this.url;
-    }
-    public int getPosicion(){
-        return this.posicion;
-    }
-
-    private String getPath(){
-        return this.path;
-    }
-
-    //SETTERS
-    public void setDatos(byte[] bitMap){
-        bitMapAux = bitMap;
-    }
-    public void setResultado1(boolean r1){
-        resultado1 = r1;
-    }
-    public void setResultado2(boolean r2){
-        resultado2 = r2;
-    }
-    public void setPath(String p){
-        this.path = p;
-    }
-    public void setPosicion(int pos){
-        this.posicion = pos;
-    }
-
-    private void setUrl(String u){
-        this.url = u;
-    }
-
     private void metodoDefinitivoParaEnviarLaImagenConSuIDCorrespondienteDeLosCojones(String url){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("bbdd").child(String.valueOf(getPosicion())).child("Imagen");
@@ -184,9 +145,6 @@ public class CamaraHelper implements InterfazCamara {
             e.printStackTrace();
         }
         StorageReference riversRef = mStorageRef.child("images/" + i + ".jpeg");
-
-
-
         riversRef.getFile(localFile)
                 .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                     @Override
@@ -194,6 +152,8 @@ public class CamaraHelper implements InterfazCamara {
                         System.out.println("Imagen " + numero + " : " + taskSnapshot.getBytesTransferred() + " / " + taskSnapshot.getTotalByteCount());
                         if(taskSnapshot.getTotalByteCount() == taskSnapshot.getBytesTransferred()){
                             cbImagenes(numero, localFile);
+                            setTamanioTotalImagen(taskSnapshot.getTotalByteCount());
+                            setTamanioDescargadoImagen(taskSnapshot.getBytesTransferred());
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -202,7 +162,6 @@ public class CamaraHelper implements InterfazCamara {
                 System.out.println("ERROR EN LA IMAGEN DESCARGADA");
             }
         });
-        //System.out.println("ARCHIVO: " + localFile.getAbsolutePath());
     }
 
     public void cbImagenes(int n, File lf){
@@ -211,68 +170,33 @@ public class CamaraHelper implements InterfazCamara {
         System.out.println("cont imgs: " + getNumeroDeImagenes());
         imagenes.add(lf);
     }
-
-    private void setNumeroDeImagenes(){
-        numero++;
-    }
-    public int getNumeroDeImagenes(){
-        return numero;
-    }
-
-    public ArrayList<File> getArrayImagenes(){
-        return imagenes;
-    }
+    private float contadorBytesArray;
+    private float contadorBytesArchivo;
 
     public byte[] convertirFileAbyte(File lf){
         byte[] byteArray = null;
             try{
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                Bitmap bitmap = BitmapFactory.decodeFile(lf.getAbsolutePath());
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-
-                byteArray = stream.toByteArray();
-
-                //bitmap = BitmapFactory.decodeFile(lf.getAbsolutePath(), bitmapOptions);
-/*
-                ExifInterface ei = new ExifInterface(lf.getAbsolutePath());
-                int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
-                        ExifInterface.ORIENTATION_UNDEFINED);
-                Bitmap rotatedBitmap = null;
-                switch(orientation) {
-                    case ExifInterface.ORIENTATION_ROTATE_90:
-                        rotatedBitmap = rotateImage(bitmap, 90);
-                        break;
-                    case ExifInterface.ORIENTATION_ROTATE_180:
-                        rotatedBitmap = rotateImage(bitmap, 180);
-                        break;
-                    case ExifInterface.ORIENTATION_ROTATE_270:
-                        rotatedBitmap = rotateImage(bitmap, 270);
-                        break;
-                    case ExifInterface.ORIENTATION_NORMAL:
-                    default:
-                        rotatedBitmap = bitmap;
-                }
+                Bitmap bitmap;
+                BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+                bitmap = getCropBitmap(BitmapFactory.decodeFile(lf.getAbsolutePath(), bitmapOptions));
+                bitmap = getCircularBitmap(bitmap);
 
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 1, stream);
                 byteArray = stream.toByteArray();
- */
+                Bitmap decoded = BitmapFactory.decodeStream(new ByteArrayInputStream(stream.toByteArray()));
 
+                contadorBytesArray = decoded.getByteCount();
+                contadorBytesArchivo = bitmap.getByteCount();
+
+                System.out.println("Archivo a Bytes: " + contadorBytesArray + " / " + contadorBytesArchivo);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         return byteArray;
     }
-/*
+
     //OPCIONES DE IMAGEN
-    //rotar imagen bien
-    public static Bitmap rotateImage(Bitmap source, float angle) {
-        Matrix matrix = new Matrix();
-        matrix.postRotate(angle);
-        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
-                matrix, true);
-    }
     //imagenes redondas
     public static Bitmap getCircularBitmap(Bitmap bitmap) {
         Bitmap output;
@@ -324,5 +248,84 @@ public class CamaraHelper implements InterfazCamara {
         }
         return dstBmp;
     }
- */
+
+    /****************************************** GETTERS Y SETTERS ******************************************/
+
+    //GETTERS
+    public byte[] getDatos(){
+        return bitMapAux;
+    }
+    public boolean getResultado1(){
+        return resultado1;
+    }
+    public boolean getResultado2(){
+        return resultado2;
+    }
+    public String getUrl(){
+        return this.url;
+    }
+    public int getPosicion(){
+        return this.posicion;
+    }
+    public int getNumeroDeImagenes(){
+        return numero;
+    }
+    public ArrayList<File> getArrayImagenes(){
+        return imagenes;
+    }
+    public long getTamanioTotalImagen(){
+        return tamanioTotalImagen;
+    }
+    public long getTamanioDescargadoImagen(){
+        return tamanioDescargadoImagen;
+    }
+
+    private String getPath(){
+        return this.path;
+    }
+
+    //SETTERS
+    public void setDatos(byte[] bitMap){
+        bitMapAux = bitMap;
+    }
+    public void setResultado1(boolean r1){
+        resultado1 = r1;
+    }
+    public void setResultado2(boolean r2){
+        resultado2 = r2;
+    }
+    public void setPath(String p){
+        this.path = p;
+    }
+    public void setPosicion(int pos){
+        this.posicion = pos;
+    }
+    private void setUrl(String u){
+        this.url = u;
+    }
+    private void setNumeroDeImagenes(){
+        numero++;
+    }
+    public void setTamanioTotalImagen(long tamanioTotalImagen){
+        this.tamanioTotalImagen = tamanioTotalImagen;
+    }
+    public void setTamanioDescargadoImagen(long tamanioDescargadoImagen){
+        this.tamanioDescargadoImagen = tamanioDescargadoImagen;
+    }
+
+    public float getContadorBytesArray() {
+        return contadorBytesArray;
+    }
+
+    public void setContadorBytesArray(float contadorBytesArray) {
+        this.contadorBytesArray = contadorBytesArray;
+    }
+
+    public float getContadorBytesArchivo() {
+        return contadorBytesArchivo;
+    }
+
+    public void setContadorBytesArchivo(float contadorBytesArchivo) {
+        this.contadorBytesArchivo = contadorBytesArchivo;
+    }
 }

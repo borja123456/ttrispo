@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -33,7 +34,6 @@ import java.util.ArrayList;
 
 import static com.mygdx.ttrispo.MyGdxGame.firebaseHelper;
 
-
 public class PantallaGameOver extends PantallaBase {
     private Skin skin;
     private ImageButton retry, home;
@@ -57,6 +57,7 @@ public class PantallaGameOver extends PantallaBase {
     private Image vistaImagen;
     public static ByteBuffer nativeData;
     private byte[] bitesAux;
+    private Stage stageHijo;
 
     private int dimensionImagen;
     private ArrayList<File> imgs;
@@ -80,7 +81,9 @@ public class PantallaGameOver extends PantallaBase {
         imgs = new ArrayList<>();
         prueba = true;
         bitesAux = imagen;
-
+        vistaImagenes = new ArrayList<>();
+        vistaImagenes.add(null); //posicion 0, no me interesa
+        stageHijo = new Stage();
         dimensionImagen = 100;
 
         Container<Table> tableContainer = new Container<>();
@@ -99,7 +102,7 @@ public class PantallaGameOver extends PantallaBase {
         imageButton.setSize(200, 200);
         imageButton.setPosition(0,0);
         imageButton.setName("imageButton");
-        super.stage.addActor(imageButton);
+        stageHijo.addActor(imageButton);
 
 
         //Boton start con imagen
@@ -108,7 +111,7 @@ public class PantallaGameOver extends PantallaBase {
         retry.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-retry.png")));
         retry.setSize(retry.getStyle().imageUp.getMinWidth(), retry.getStyle().imageUp.getMinHeight());
         retry.setPosition((Gdx.graphics.getWidth()/2.0f)-(retry.getStyle().imageUp.getMinWidth()/2.0f), Gdx.graphics.getHeight()/6);
-        super.stage.addActor(retry);
+        stageHijo.addActor(retry);
 
         //Boton retry con imagen
         home = new ImageButton(skin, "inicio");
@@ -116,11 +119,11 @@ public class PantallaGameOver extends PantallaBase {
         home.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(GestorRecursos.get("B-home.png")));
         home.setSize(0.2f*home.getStyle().imageUp.getMinWidth(), 0.2f*home.getStyle().imageUp.getMinHeight());
         home.setPosition((Gdx.graphics.getWidth() / 2.0f) - (0.1f*home.getStyle().imageUp.getMinWidth()), Gdx.graphics.getHeight() / 10);
-        super.stage.addActor(home);
+        stageHijo.addActor(home);
 
         //Contenedor de la tabla del ranking
         tableContainer.setActor(table);
-        super.stage.addActor(tableContainer);
+        stageHijo.addActor(tableContainer);
 
         imageButton.addListener(new ClickListener() {
             @Override
@@ -170,7 +173,7 @@ public class PantallaGameOver extends PantallaBase {
         alerta.text("No has conseguido derrotar al lado oscuro, eres muy débil.");
         alerta.button("Ok", true);
         alerta.center();
-        alerta.show(stage);
+        alerta.show(stageHijo);
     }
 
     public void onByteArrayOfCroppedImageReciever(byte[] bytes) {
@@ -239,6 +242,7 @@ public class PantallaGameOver extends PantallaBase {
         musicaGameOver.dispose();
     }
 
+    private ArrayList<Image> vistaImagenes;
     @Override
     public void render(float delta) {
         super.render(delta);
@@ -281,30 +285,15 @@ public class PantallaGameOver extends PantallaBase {
                         labelID.setFontScale(9);
                         labelAlias.setFontScale(5);
                         nuevoRank = true;
-                        try {
-                            vistaImagen = new Image(conversorBytesAImagen(bitesAux));
-                            bitesAux = null;
-                        }catch (NullPointerException npe){
-                            System.out.println("Aun no estan los bytes cargados del todo");
-                        }
-
                     } else {
                         label.setFontScale(4);
                         dimensionImagen = 120;
                         labelID.setFontScale(5);
                         labelAlias.setFontScale(3);
-                        try {
-                            File file = iC.getArrayImagenes().get(i);
-                            byte[] bites = iC.convertirFileAbyte(file);
-                            vistaImagen = new Image(conversorBytesAImagen(bites));
-                        }catch (NullPointerException npe){
-                            System.out.println("error, array no encontrado ");
-                            npe.printStackTrace();
-                        }
                     }
                     table.row();
                     table.add(labelID).padRight(50);
-                    table.add(vistaImagen).size(dimensionImagen,dimensionImagen);
+                    table.add(vistaImagenes.get(0)).size(dimensionImagen,dimensionImagen);
                     table.add(labelAlias).padLeft(50);
                     table.add(label).padLeft(50);
                 }
@@ -327,15 +316,34 @@ public class PantallaGameOver extends PantallaBase {
             }
         }
         batch.end();
-        stage.draw(); // Pintar los actores los botones por encima del background
+        stageHijo.draw(); // Pintar los actores los botones por encima del background
+        stageHijo.act();
     }
 
     public void dameImagenDescargada(int posicion){
             iC.getImagenConPosicion(posicion);
     }
 
+    public void pasameImagenAbytes(int posicion){
+            try {
+                File file = iC.getArrayImagenes().get(posicion);
+                byte[] bites = iC.convertirFileAbyte(file);
+
+                while (iC.getContadorBytesArchivo() != iC.getContadorBytesArray());
+
+                if(iC.getContadorBytesArchivo() == iC.getContadorBytesArray()){
+                    System.out.println("imagen convertida a bytes " + posicion);
+                    game.VARIABLE_GLOBAL_PROGRESO+=0.05f;
+                    vistaImagen = new Image(conversorBytesAImagen(bites));
+                    vistaImagenes.add(vistaImagen);
+                }
+            }catch (NullPointerException npe){
+                System.out.println("error, array no encontrado ");
+                npe.printStackTrace();
+            }
+    }
+
     private Texture nuevaTextura;
-    private Image img;
     private Pixmap pix;
 
     public Texture conversorBytesAImagen(byte[] bytes) {
@@ -343,13 +351,6 @@ public class PantallaGameOver extends PantallaBase {
             if(bytes != null){
                 pix = new Pixmap(bytes, 0, bytes.length);
                 nuevaTextura = new Texture(pix);
-                /*Gdx.app.postRunnable(new Runnable() {
-                    @Override
-                    public void run() {
-                        nuevaTextura = new Texture(pix);
-//                        img = new Image(nuevaTextura);
-                    }
-                });*/
             }else{
                 System.out.println("No he recibido na");
             }

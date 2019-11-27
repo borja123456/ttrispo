@@ -5,13 +5,16 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 
+import com.mygdx.ttrispo.MyGdxGame;
 import com.mygdx.ttrispo.Pantalla.PantallaGameOver;
+import com.mygdx.ttrispo.com.mygdx.ttrispo.camara.InterfazCamara;
 
 import static java.lang.Thread.sleep;
 
 public  class GestorRecursos {
     private static AssetManager manager = new AssetManager();
     private static int contador = 0;
+
     public static void cargarImagenes() {
         manager.load("fondoInicio.jpg", Texture.class);
         manager.load("tetris.png", Texture.class);
@@ -75,15 +78,29 @@ public  class GestorRecursos {
         }
     }
 
-    public static void cargarPrevia(PantallaGameOver pantallaGameOver){
+    public static void cargarPrevia(PantallaGameOver pantallaGameOver, InterfazCamara interfazCamara){
         for(int i = 1; i<=10; i++){
             pantallaGameOver.dameImagenDescargada(i);
-            try {
-                sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            while(interfazCamara.getTamanioDescargadoImagen() != interfazCamara.getTamanioTotalImagen()){
+                //System.out.println("Descargando imagen: " + i);
+            }
+            if(interfazCamara.getTamanioDescargadoImagen() == interfazCamara.getTamanioTotalImagen()){
+                System.out.println("Descarga completada imagen " + i);
+                MyGdxGame.VARIABLE_GLOBAL_PROGRESO+=0.05f;
+                interfazCamara.setTamanioDescargadoImagen(0);
+                interfazCamara.setTamanioTotalImagen(1);
             }
         }
+    }
+
+    public void conversor(PantallaGameOver pantallaGameOver){
+        for(int i = 1; i<=10; i++){
+            pantallaGameOver.pasameImagenAbytes(i);
+        }
+    }
+
+    public static AssetManager dameManager(){
+        return manager;
     }
 
     public static void limpiarAssets(){

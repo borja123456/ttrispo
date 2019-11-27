@@ -23,4 +23,15 @@ public interface InterfazCamara{
 
     byte[] convertirFileAbyte(File f);
 
+    long getTamanioTotalImagen();
+    long getTamanioDescargadoImagen();
+    void setTamanioTotalImagen(long tamanioTotalImagen);
+    void setTamanioDescargadoImagen(long tamanioDescargadoImagen);
+
+    float getContadorBytesArray();
+    void setContadorBytesArray(float contadorBytesArray);
+    float getContadorBytesArchivo();
+    void setContadorBytesArchivo(float contadorBytesArchivo);
+
+
 }
