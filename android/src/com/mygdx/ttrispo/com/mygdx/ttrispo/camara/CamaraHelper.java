@@ -62,6 +62,8 @@ public class CamaraHelper implements InterfazCamara {
         imagenes = new ArrayList<>();
         imagenes.add(null); //posicion 0
         mStorageRef = FirebaseStorage.getInstance().getReference();
+        tamanioDescargadoImagen = 1;
+        tamanioTotalImagen = 0;
     }
 
     //SUBIR IMAGEN A LA BASE DE DATOS FIREBASE: NO TOCAR SI NO ERES EXPERTO
@@ -182,7 +184,8 @@ public class CamaraHelper implements InterfazCamara {
                 bitmap = getCircularBitmap(bitmap);
 
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 1, stream);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream);
+                bitmap.recycle();
                 byteArray = stream.toByteArray();
                 Bitmap decoded = BitmapFactory.decodeStream(new ByteArrayInputStream(stream.toByteArray()));
 

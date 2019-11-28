@@ -77,7 +77,7 @@ public class AndroidLauncher extends AndroidApplication {
 					}
 
 					ByteArrayOutputStream stream = new ByteArrayOutputStream();
-					rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 1, stream);
+					rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream);
 					byte[] byteArray = stream.toByteArray();
 					interfazCamara.setDatos(byteArray);
 
@@ -104,7 +104,7 @@ public class AndroidLauncher extends AndroidApplication {
 
 				//Bitmap bmp = getIntent().getExtras().get("data");
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                thumbnail.compress(Bitmap.CompressFormat.JPEG, 1, stream);
+                thumbnail.compress(Bitmap.CompressFormat.JPEG, 50, stream);
                 byte[] byteArray = stream.toByteArray();
                 interfazCamara.setDatos(byteArray);
 

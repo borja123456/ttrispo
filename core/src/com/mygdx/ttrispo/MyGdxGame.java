@@ -11,16 +11,19 @@ import com.mygdx.ttrispo.Pantalla.PantallaGameOver;
 import com.mygdx.ttrispo.Pantalla.PantallaInicio;
 import com.mygdx.ttrispo.com.mygdx.ttrispo.camara.InterfazCamara;
 
+import java.util.concurrent.CountDownLatch;
+
 public class MyGdxGame extends Game implements ApplicationListener {
     public static float ratioPixelesHeight, ratioPixelesWidth;
     public static float VARIABLE_GLOBAL_PROGRESO = 0;
 
     public PantallaInicio pantallaInicio;
-    public PantallaGameOver pantallaGameOver;
+    public volatile PantallaGameOver pantallaGameOver;
     public PantallaAjustes pantallaAjustes;
     public static FirebaseHelper firebaseHelper;
     private InterfazCamara interfazCamara;
     private MyGdxGame myGdxGame;
+    private final GestorRecursos gestorRecursos = new GestorRecursos();
 
     public MyGdxGame(InterfazCamara interfazCamara){
         this.interfazCamara = interfazCamara;
@@ -38,8 +41,16 @@ public class MyGdxGame extends Game implements ApplicationListener {
         pantallaAjustes = new PantallaAjustes(myGdxGame);
         firebaseHelper = new FirebaseHelper();
         pantallaGameOver = new PantallaGameOver(myGdxGame, interfazCamara);
-        SplashScreen splashScreen = new SplashScreen(this, interfazCamara);
-        setScreen(splashScreen);
+        setScreen(new SplashScreen(this));
+        //mientras esta cargando cargan las imagenes
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //PREPARA TO MIENTRAS ESTA EN EL SPLASH SCREEN
+                gestorRecursos.cargarPrevia(pantallaGameOver, interfazCamara);
+                gestorRecursos.conversor(pantallaGameOver);
+            }
+        }).start();
     }
 
     @Override

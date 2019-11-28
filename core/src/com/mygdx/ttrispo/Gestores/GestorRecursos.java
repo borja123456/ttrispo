@@ -78,12 +78,10 @@ public  class GestorRecursos {
         }
     }
 
-    public static void cargarPrevia(PantallaGameOver pantallaGameOver, InterfazCamara interfazCamara){
+    public static void cargarPrevia(final PantallaGameOver pantallaGameOver, final InterfazCamara interfazCamara){
         for(int i = 1; i<=10; i++){
             pantallaGameOver.dameImagenDescargada(i);
-            while(interfazCamara.getTamanioDescargadoImagen() != interfazCamara.getTamanioTotalImagen()){
-                //System.out.println("Descargando imagen: " + i);
-            }
+            while(interfazCamara.getTamanioDescargadoImagen() != interfazCamara.getTamanioTotalImagen());
             if(interfazCamara.getTamanioDescargadoImagen() == interfazCamara.getTamanioTotalImagen()){
                 System.out.println("Descarga completada imagen " + i);
                 MyGdxGame.VARIABLE_GLOBAL_PROGRESO+=0.05f;
@@ -93,7 +91,7 @@ public  class GestorRecursos {
         }
     }
 
-    public void conversor(PantallaGameOver pantallaGameOver){
+    public void conversor(final PantallaGameOver pantallaGameOver){
         for(int i = 1; i<=10; i++){
             pantallaGameOver.pasameImagenAbytes(i);
         }

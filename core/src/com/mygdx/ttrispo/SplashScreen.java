@@ -26,7 +26,7 @@ import com.mygdx.ttrispo.com.mygdx.ttrispo.camara.InterfazCamara;
 public class SplashScreen implements Screen {
     private SpriteBatch batch;
     private Texture ttrSplash;
-    private TextureRegionDrawable bordeLogo, logo;
+    private TextureRegionDrawable logo;
 
     private Stage stage;
 
@@ -37,84 +37,71 @@ public class SplashScreen implements Screen {
     private float startX, endX;
     private float percent;
 
+    private long pasado, futuro;
+
     private Actor loadingBar;
     private MyGdxGame game;
 
-    private InterfazCamara interfazCamara;
-
-    public SplashScreen(MyGdxGame game, InterfazCamara interfazCamara) {
-        this.interfazCamara = interfazCamara;
+    public SplashScreen(MyGdxGame game) {
         batch = new SpriteBatch();
         this.game = game;
-        bordeLogo = new TextureRegionDrawable(new Texture("borde-carga-logo.png"));
         logo = new TextureRegionDrawable(new Texture("logo.png"));
-        ttrSplash = new Texture("splash-bg.jpg");
+        ttrSplash = new Texture("splash-bg.png");
+
+
     }
 
     @Override
     public void show() {
-        // Tell the manager to load assets for the loading screen
         game.manager.load("data/loading.pack", TextureAtlas.class);
-        // Wait until they are finished loading
         game.manager.finishLoading();
-
-        // Initialize the stage where we will place everything
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
-
+        pasado = System.currentTimeMillis();
         // Get our textureatlas from the manager
         TextureAtlas atlas = game.manager.get("data/loading.pack", TextureAtlas.class);
 
-        // Grab the regions from the atlas and create some images
+        // Recogida de atlas del pack
         loadingFrame = new Image(atlas.findRegion("loading-frame"));
         loadingBarHidden = new Image(atlas.findRegion("loading-bar-hidden"));
         loadingBg = new Image(atlas.findRegion("loading-frame-bg"));
 
-
-        // Add the loading bar animation
+        // Barra animada de carga
         Animation<TextureRegion> anim = new Animation(0.05f, atlas.findRegions("loading-bar-anim") );
         anim.setPlayMode(Animation.PlayMode.LOOP_REVERSED);
         loadingBar = new LoadingBar(anim);
-        loadingBar.setSize(bordeLogo.getMinWidth(), bordeLogo.getMinHeight());
-        // Or if you only need a static bar, you can do
-        //loadingBar = new Image(atlas.findRegion("loading-bar1"));
+        loadingBar.setSize(logo.getMinWidth() + 30, logo.getMinHeight()+ 30);
 
         // Add all the actors to the stage
         stage.addActor(loadingBar);
         stage.addActor(loadingBg);
-        stage.addActor(loadingBarHidden);
-        stage.addActor(loadingFrame);
 
-        //PREPARA TO MIENTRAS ESTA EN EL SPLASH SCREEN
-        GestorRecursos gestorRecursos = new GestorRecursos();
-        gestorRecursos.cargarPrevia(game.pantallaGameOver, interfazCamara);
-        gestorRecursos.conversor(game.pantallaGameOver);
+        //estos no hacen falta
+        //stage.addActor(loadingBarHidden);
+        //stage.addActor(loadingFrame);
     }
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batch.begin();
-        batch.draw(ttrSplash, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        bordeLogo.draw(batch, 340*(Gdx.graphics.getWidth()/ttrSplash.getWidth()), 760*(Gdx.graphics.getHeight()/ttrSplash.getHeight()),
-                bordeLogo.getMinWidth(), bordeLogo.getMinHeight());
-        logo.draw(batch, 346*(Gdx.graphics.getWidth()/ttrSplash.getWidth()), 776*(Gdx.graphics.getHeight()/ttrSplash.getHeight()), logo.getMinWidth(), logo.getMinHeight());
-        batch.end();
-        // Interpolate the percentage to make it more smooth
+        futuro = System.currentTimeMillis();
+        // Interpolar el porcentaje para hacerlo lineal
         percent = Interpolation.linear.apply(percent, game.VARIABLE_GLOBAL_PROGRESO, 0.1f);
         System.out.println("PERCENT: " + percent);
-        //        System.out.println("HOLA ME PINTAS? PERCENT: " + percent + " gestor recursos: " + GestorRecursos.dameManager().getProgress() + " Var: "+ game.VARIABLE_GLOBAL_PROGRESO);
-        // Update positions (and size) to match the percentage
+        // Actualizar las posiciones
         loadingBarHidden.setX(startX + endX * percent);
-        loadingBg.setX(loadingBarHidden.getX() + 30);
-        loadingBg.setWidth(450 - 450 * percent);
+        loadingBg.setX(loadingBarHidden.getX());
+        loadingBg.setWidth(logo.getMinWidth() + 30 - (logo.getMinWidth()+ 30) * percent);
         loadingBg.invalidate();
         stage.draw();
-
-        // Show the loading screen
         stage.act();
-
-        if(percent >= 0.9998f){
+        batch.begin();
+        //que se dibuje por delante del actor de la barra
+        batch.draw(ttrSplash, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        logo.draw(batch, (Gdx.graphics.getWidth()-logo.getMinWidth())/2, (Gdx.graphics.getHeight()-logo.getMinHeight())/2,
+                logo.getMinWidth(), logo.getMinHeight());
+        batch.end();
+        if((percent >= 0.9998f) || (futuro >= pasado + 20000)){
             game.setScreen(game.pantallaInicio);
         }
     }
@@ -130,24 +117,20 @@ public class SplashScreen implements Screen {
         // Place the loading frame in the middle of the screen
         loadingFrame.setX((stage.getWidth() - loadingFrame.getWidth()) / 2);
         loadingFrame.setY((stage.getHeight() - loadingFrame.getHeight()) / 2);
+        loadingFrame.setSize(logo.getMinWidth() + 30, logo.getMinHeight() + 30);
 
-        loadingBar.setSize(bordeLogo.getMinWidth(), bordeLogo.getMinHeight());
-        // Place the loading bar at the same spot as the frame, adjusted a few px
-        loadingBar.setX(loadingFrame.getX() + 15);
-        loadingBar.setY(loadingFrame.getY() + 5);
+        loadingBar.setX(loadingFrame.getX());
+        loadingBar.setY(loadingFrame.getY());
+        loadingBar.setHeight(logo.getMinHeight() + 30);
 
-
-        // Place the image that will hide the bar on top of the bar, adjusted a few px
-        loadingBarHidden.setX(loadingBar.getX() + 35);
-        loadingBarHidden.setY(loadingBar.getY() - 3);
-        // The start position and how far to move the hidden loading bar
+        loadingBarHidden.setX(loadingBar.getX());
+        loadingBarHidden.setY(loadingBar.getY());
+        loadingBarHidden.setHeight(logo.getMinHeight() + 30);
         startX = loadingBarHidden.getX();
-        endX = 440;
-        loadingBg.setSize(bordeLogo.getMinWidth(), bordeLogo.getMinHeight());
-        // The rest of the hidden bar
-        loadingBg.setSize(450, 50);
-        loadingBg.setX(loadingBarHidden.getX() + 30);
-        loadingBg.setY(loadingBarHidden.getY() + 3);
+        endX =logo.getMinWidth() + 30;
+        loadingBg.setHeight(logo.getMinHeight() + 30);
+        loadingBg.setX(loadingBarHidden.getX());
+        loadingBg.setY(loadingBarHidden.getY());
     }
 
     @Override
