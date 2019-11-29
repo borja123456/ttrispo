@@ -78,9 +78,9 @@ public  class GestorRecursos {
         }
     }
 
-    public static void cargarPrevia(final PantallaGameOver pantallaGameOver, final InterfazCamara interfazCamara){
+    public static void cargarPrevia(final InterfazCamara interfazCamara){
         for(int i = 1; i<=10; i++){
-            pantallaGameOver.dameImagenDescargada(i);
+            interfazCamara.getImagenConPosicion(i);
             while(interfazCamara.getTamanioDescargadoImagen() != interfazCamara.getTamanioTotalImagen());
             if(interfazCamara.getTamanioDescargadoImagen() == interfazCamara.getTamanioTotalImagen()){
                 System.out.println("Descarga completada imagen " + i);
