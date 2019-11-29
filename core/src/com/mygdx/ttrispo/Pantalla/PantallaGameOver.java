@@ -310,10 +310,6 @@ public class PantallaGameOver extends PantallaBase {
         stage.draw(); // Pintar los actores los botones por encima del background
     }
 
-    public void dameImagenDescargada(int posicion){
-            iC.getImagenConPosicion(posicion);
-    }
-
     public void pasameImagenAbytes(int posicion){
             try {
                 File file = iC.getArrayImagenes().get(posicion);
