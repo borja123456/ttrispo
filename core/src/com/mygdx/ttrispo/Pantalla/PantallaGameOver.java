@@ -2,13 +2,13 @@ package com.mygdx.ttrispo.Pantalla;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
@@ -46,6 +46,7 @@ public class PantallaGameOver extends PantallaBase {
     private String alias;
     private long pasado, futuro;
     private Music musicaGameOver;
+    private Sound R2D2Triste;
 
     public static Pixmap pmap;
     private ImageButton imageButton;
@@ -142,15 +143,19 @@ public class PantallaGameOver extends PantallaBase {
                 game.setScreen(game.pantallaInicio);
             }
         });
+        //MUSICA GAME OVER
+        R2D2Triste = Gdx.audio.newSound(Gdx.files.internal("Music/Sad R2D2.mp3"));
+        musicaGameOver = Gdx.audio.newMusic(Gdx.files.internal("Music/Imperial March.mp3"));
+        musicaGameOver.setLooping(true);
     }
 
     private void MensajeAlerta() {
+        R2D2Triste.play(0.4f);
         Dialog alerta = new Dialog("Error", skin, "dialog") {
             public void result(Object obj) {
                 System.out.println("result "+obj);
             }
         };
-        musicaGameOver.play();
         alerta.text("No has conseguido derrotar al lado oscuro, eres muy débil.");
         alerta.button("Ok", true);
         alerta.setSize(stage.getWidth()/2, stage.getHeight()/4);
@@ -219,10 +224,6 @@ public class PantallaGameOver extends PantallaBase {
         musicaGameOver.stop();
     }
 
-    @Override
-    public void dispose() {
-        musicaGameOver.dispose();
-    }
 
     private final ArrayList<Image> vistaImagenes;
     @Override
@@ -375,5 +376,9 @@ public class PantallaGameOver extends PantallaBase {
                 musicaGameOver.play();
             }
         }, "Introduce tu alias", "", " _ _ _ _ _ _ _ _");
+    }
+
+    public void dispose () {
+        musicaGameOver.dispose();
     }
 }

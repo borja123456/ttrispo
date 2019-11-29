@@ -144,7 +144,7 @@ public class Tablero extends Actor {
     private void eliminarfila(int fila) {
         for(int j = 0; j < 10; j++){
             tablero[j][fila] = 0;
-            long id = sonidoFila.play(0.5f);
+            long id = sonidoFila.play(0.3f);
             sonidoFila.setPitch(id, 4);
         }
     }

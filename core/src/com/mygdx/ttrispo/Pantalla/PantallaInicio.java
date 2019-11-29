@@ -2,6 +2,7 @@ package com.mygdx.ttrispo.Pantalla;
 
  import com.badlogic.gdx.Gdx;
  import com.badlogic.gdx.audio.Music;
+ import com.badlogic.gdx.audio.Sound;
  import com.badlogic.gdx.graphics.OrthographicCamera;
  import com.badlogic.gdx.graphics.Texture;
  import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -25,6 +26,7 @@ public class PantallaInicio extends PantallaBase{
     private boolean cambio;
     private Image tetris;
     private Music musicaInicio;
+    private Sound sonidoOptions, sonidoJugar;
 
     public PantallaInicio (final MyGdxGame game) {
         super(game);
@@ -62,6 +64,7 @@ public class PantallaInicio extends PantallaBase{
         start.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                sonidoJugar.play(0.4f);
                 PantallaAjustes.setColoresPersonalizados(false);
                 game.setScreen(new Partida(game));
                 musicaInicio.stop();
@@ -71,16 +74,21 @@ public class PantallaInicio extends PantallaBase{
         settings.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                sonidoOptions.play(0.4f);
                 game.setScreen(new PantallaAjustes(game));
             }
         });
         // musica de la pantalla inicio
         // no puedo usar el gestor de recursos
         // musicaInicio = (Music) GestorRecursos.get("Music/The Force Theme.mp3");
+
+        sonidoJugar = Gdx.audio.newSound(Gdx.files.internal("Music/Playful R2D2.mp3"));
+        sonidoOptions = Gdx.audio.newSound(Gdx.files.internal("Music/Another beep.mp3"));
         musicaInicio = Gdx.audio.newMusic(Gdx.files.internal("Music/The Force Theme.mp3"));
         musicaInicio.setLooping(true);
         // musicaInicio.setVolume(0.5f);
         musicaInicio.play();
+
     }
 
     @Override
