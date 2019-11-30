@@ -59,7 +59,6 @@ public class Partida extends PantallaBase {
         this.longitudPuntos = 0;
         this.puntuacion = 0;
         stage.addActor(bb);
-
         nextCancion();
     }
 
@@ -110,6 +109,7 @@ public class Partida extends PantallaBase {
     @Override
     public void show() {
         super.show();
+        nextCancion();
     }
 
     @Override
@@ -309,6 +309,11 @@ public class Partida extends PantallaBase {
 
     public Stage getEscenario() {
         return stage;
+    }
+
+    public void hide() {
+        cancion80sAnterior.stop();
+        cancion80sActual.stop();
     }
 
     @Override

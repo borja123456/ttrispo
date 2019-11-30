@@ -75,25 +75,24 @@ public class PantallaInicio extends PantallaBase{
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 sonidoOptions.play(0.4f);
+
+                musicaInicio.stop();
                 game.setScreen(new PantallaAjustes(game));
             }
         });
         // musica de la pantalla inicio
         // no puedo usar el gestor de recursos
         // musicaInicio = (Music) GestorRecursos.get("Music/The Force Theme.mp3");
-
         sonidoJugar = Gdx.audio.newSound(Gdx.files.internal("Music/Playful R2D2.mp3"));
         sonidoOptions = Gdx.audio.newSound(Gdx.files.internal("Music/Another beep.mp3"));
         musicaInicio = Gdx.audio.newMusic(Gdx.files.internal("Music/The Force Theme.mp3"));
         musicaInicio.setLooping(true);
-        // musicaInicio.setVolume(0.5f);
-        musicaInicio.play();
-
     }
 
     @Override
     public void show() {
         super.show();
+        musicaInicio.play();
     }
 
     @Override
