@@ -113,14 +113,14 @@ public class AndroidLauncher extends AndroidApplication {
 		}
 	}
 	//rotar imagen bien
-	public static Bitmap rotateImage(Bitmap source, float angle) {
+	public Bitmap rotateImage(Bitmap source, float angle) {
 		Matrix matrix = new Matrix();
 		matrix.postRotate(angle);
 		return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
 				matrix, true);
 	}
 	//imagenes redondas
-    public static Bitmap getCircularBitmap(Bitmap bitmap) {
+    public Bitmap getCircularBitmap(Bitmap bitmap) {
         Bitmap output;
         if (bitmap.getWidth() > bitmap.getHeight()) {
             output = Bitmap.createBitmap(bitmap.getHeight(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
@@ -146,7 +146,7 @@ public class AndroidLauncher extends AndroidApplication {
         return output;
     }
     //imagenes cuadradas y centradas
-    public static Bitmap getCropBitmap(Bitmap srcBmp){
+    public Bitmap getCropBitmap(Bitmap srcBmp){
         Bitmap dstBmp;
 	    if (srcBmp.getWidth() >= srcBmp.getHeight()){
 

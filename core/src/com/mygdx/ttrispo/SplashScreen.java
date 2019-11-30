@@ -26,7 +26,7 @@ import com.mygdx.ttrispo.com.mygdx.ttrispo.camara.InterfazCamara;
 public class SplashScreen implements Screen {
     private SpriteBatch batch;
     private Texture ttrSplash;
-    private TextureRegionDrawable logo;
+    private final TextureRegionDrawable logo = new TextureRegionDrawable(new Texture("logo.png"));
 
     private Stage stage;
 
@@ -45,7 +45,7 @@ public class SplashScreen implements Screen {
     public SplashScreen(MyGdxGame game) {
         batch = new SpriteBatch();
         this.game = game;
-        logo = new TextureRegionDrawable(new Texture("logo.png"));
+
         ttrSplash = new Texture("splash-bg.png");
 
 
@@ -87,7 +87,6 @@ public class SplashScreen implements Screen {
         futuro = System.currentTimeMillis();
         // Interpolar el porcentaje para hacerlo lineal
         percent = Interpolation.linear.apply(percent, game.VARIABLE_GLOBAL_PROGRESO, 0.1f);
-        System.out.println("PERCENT: " + percent);
         // Actualizar las posiciones
         loadingBarHidden.setX(startX + endX * percent);
         loadingBg.setX(loadingBarHidden.getX());
@@ -101,8 +100,9 @@ public class SplashScreen implements Screen {
         logo.draw(batch, (Gdx.graphics.getWidth()-logo.getMinWidth())/2, (Gdx.graphics.getHeight()-logo.getMinHeight())/2,
                 logo.getMinWidth(), logo.getMinHeight());
         batch.end();
-        if((percent >= 0.9998f) || (futuro >= pasado + 20000)){
+        if((percent >= 0.9998f) /*|| (futuro >= pasado + 20000)*/){
             game.setScreen(game.pantallaInicio);
+            dispose();
         }
     }
 

@@ -1,5 +1,6 @@
 package com.mygdx.ttrispo;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
@@ -33,6 +34,7 @@ public class MyGdxGame extends Game implements ApplicationListener {
 
     @Override
     public void create() {
+        Gdx.app.setLogLevel(Application.LOG_DEBUG);
         GestorRecursos.cargarImagenes();
         myGdxGame = this;
         ratioPixelesHeight = (float) Gdx.graphics.getHeight()/GestorRecursos.get("background.jpeg").getHeight();
@@ -46,9 +48,13 @@ public class MyGdxGame extends Game implements ApplicationListener {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                //PREPARA TO MIENTRAS ESTA EN EL SPLASH SCREEN
-                gestorRecursos.cargarPrevia(pantallaGameOver, interfazCamara);
-                gestorRecursos.conversor(pantallaGameOver);
+                gestorRecursos.cargarPrevia(interfazCamara);
+                Gdx.app.postRunnable(new Runnable() {
+                    @Override
+                    public void run() {
+                        gestorRecursos.conversor(pantallaGameOver);
+                    }
+                });
             }
         }).start();
     }

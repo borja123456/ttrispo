@@ -58,7 +58,7 @@ public class CamaraHelper implements InterfazCamara {
         resultado1 = false;
         resultado2 = false;
         path = null;
-        numero = 0;
+        numero = 1;
         imagenes = new ArrayList<>();
         imagenes.add(null); //posicion 0
         mStorageRef = FirebaseStorage.getInstance().getReference();
@@ -178,19 +178,21 @@ public class CamaraHelper implements InterfazCamara {
     public byte[] convertirFileAbyte(File lf){
         byte[] byteArray = null;
             try{
-                Bitmap bitmap;
+                Bitmap bitmap=null;
                 BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
                 bitmap = getCropBitmap(BitmapFactory.decodeFile(lf.getAbsolutePath(), bitmapOptions));
                 bitmap = getCircularBitmap(bitmap);
 
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream);
-                bitmap.recycle();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 1, stream);
                 byteArray = stream.toByteArray();
+
                 Bitmap decoded = BitmapFactory.decodeStream(new ByteArrayInputStream(stream.toByteArray()));
 
                 contadorBytesArray = decoded.getByteCount();
                 contadorBytesArchivo = bitmap.getByteCount();
+
+                bitmap.recycle();
 
                 System.out.println("Archivo a Bytes: " + contadorBytesArray + " / " + contadorBytesArchivo);
             } catch (Exception e) {
@@ -201,7 +203,7 @@ public class CamaraHelper implements InterfazCamara {
 
     //OPCIONES DE IMAGEN
     //imagenes redondas
-    public static Bitmap getCircularBitmap(Bitmap bitmap) {
+    public Bitmap getCircularBitmap(Bitmap bitmap) {
         Bitmap output;
         if (bitmap.getWidth() > bitmap.getHeight()) {
             output = Bitmap.createBitmap(bitmap.getHeight(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
@@ -227,7 +229,7 @@ public class CamaraHelper implements InterfazCamara {
         return output;
     }
     //imagenes cuadradas y centradas
-    public static Bitmap getCropBitmap(Bitmap srcBmp){
+    public Bitmap getCropBitmap(Bitmap srcBmp){
         Bitmap dstBmp;
         if (srcBmp.getWidth() >= srcBmp.getHeight()){
 
@@ -282,9 +284,14 @@ public class CamaraHelper implements InterfazCamara {
     public long getTamanioDescargadoImagen(){
         return tamanioDescargadoImagen;
     }
-
     private String getPath(){
         return this.path;
+    }
+    public float getContadorBytesArray() {
+        return contadorBytesArray;
+    }
+    public float getContadorBytesArchivo() {
+        return contadorBytesArchivo;
     }
 
     //SETTERS
@@ -315,19 +322,9 @@ public class CamaraHelper implements InterfazCamara {
     public void setTamanioDescargadoImagen(long tamanioDescargadoImagen){
         this.tamanioDescargadoImagen = tamanioDescargadoImagen;
     }
-
-    public float getContadorBytesArray() {
-        return contadorBytesArray;
-    }
-
     public void setContadorBytesArray(float contadorBytesArray) {
         this.contadorBytesArray = contadorBytesArray;
     }
-
-    public float getContadorBytesArchivo() {
-        return contadorBytesArchivo;
-    }
-
     public void setContadorBytesArchivo(float contadorBytesArchivo) {
         this.contadorBytesArchivo = contadorBytesArchivo;
     }
