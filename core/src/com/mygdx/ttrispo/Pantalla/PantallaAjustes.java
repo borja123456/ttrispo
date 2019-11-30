@@ -2,6 +2,7 @@ package com.mygdx.ttrispo.Pantalla;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -37,7 +38,7 @@ public class PantallaAjustes extends PantallaBase {
     private final long switchfps = 10;
     private boolean cambio;
     private long tiempoInicial;
-    private Music musicaAjustes;
+    private Sound sonidoJugar, sonidoHome;
 
     //supongamos que se guardan con el siguiente orden, para seguir el patron que tiene GestorPieza en su array de Color[]:
     //texturaPiezas = [T, S, Z, I, O, L, J], solo guarda la textura.
@@ -129,6 +130,9 @@ public class PantallaAjustes extends PantallaBase {
         table.setFillParent(true);
         super.stage.addActor(table);
         EventosBotones();
+
+        sonidoJugar = Gdx.audio.newSound(Gdx.files.internal("Music/Playful R2D2.mp3"));
+        sonidoHome =  Gdx.audio.newSound(Gdx.files.internal("Music/Another beep.mp3"));
     }
 
     public static void setColoresPersonalizados(boolean b) {
@@ -196,7 +200,7 @@ public class PantallaAjustes extends PantallaBase {
         Home.addCaptureListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                //musicaAjustes.stop();
+                sonidoHome.play();
                 game.setScreen(game.pantallaInicio);
             }
         });
@@ -220,7 +224,7 @@ public class PantallaAjustes extends PantallaBase {
                 System.out.println("Color pieza L: " + l);
                 texturaPiezas.add(getColorNuevoPieza(j)); // J = 7
                 System.out.println("Color pieza J: " + j);
-                //musicaAjustes.stop();
+                sonidoJugar.play();
                 game.setScreen(new Partida(game));
             }
         });
