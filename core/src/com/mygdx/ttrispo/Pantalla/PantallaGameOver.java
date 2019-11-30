@@ -132,6 +132,7 @@ public class PantallaGameOver extends PantallaBase {
                     System.out.println("Puntos no superados: " + Partida.partidaAux.getPuntuacion());
                 }
                 table.reset();
+                musicaGameOver.stop();
                 game.setScreen(new Partida(game));
             }
         });
@@ -143,6 +144,7 @@ public class PantallaGameOver extends PantallaBase {
                 }
                 table.reset();
                 PantallaAjustes.texturaPiezas.clear();
+                musicaGameOver.stop();
                 game.setScreen(game.pantallaInicio);
             }
         });
@@ -193,6 +195,7 @@ public class PantallaGameOver extends PantallaBase {
             listaRanking=null;
         }
         pasado = 0;
+        musicaGameOver.play();
     }
     private void realShow1() {
         game.firebaseHelper.rellenarArrayDeRanking(new FirebaseCallback() {
@@ -348,22 +351,13 @@ public class PantallaGameOver extends PantallaBase {
             public void input(String cadena) {
                 alias = cadena;
                 aliasCallback.onCallback(cadena);
-                //MUSICA GAME OVER
-                musicaGameOver = Gdx.audio.newMusic(Gdx.files.internal("Music/game-over-baby.mp3"));
-                musicaGameOver.setLooping(true);
-                musicaGameOver.setVolume(1.0f);
-                musicaGameOver.play();
+
             }
 
             @Override
             public void canceled() {
                 alias = "annonymous";
                 aliasCallback.onCallback(alias);
-                //MUSICA GAME OVER
-                musicaGameOver = Gdx.audio.newMusic(Gdx.files.internal("Music/game-over-baby.mp3"));
-                musicaGameOver.setLooping(true);
-                musicaGameOver.setVolume(1.0f);
-                musicaGameOver.play();
             }
         }, "Introduce tu alias", "", " _ _ _ _ _ _ _ _");
     }

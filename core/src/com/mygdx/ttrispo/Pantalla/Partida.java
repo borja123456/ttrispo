@@ -50,7 +50,6 @@ public class Partida extends PantallaBase {
         gestorPiezas2ndPieza = new GestorPiezas(this);
 
         BotonBase bb = new BotonBase(stage, gestorEstado);
-        //procesador = new Procesador(gestorEstado);
         fondoPartida = GestorRecursos.get("background.jpeg");
 
         tablero = new Tablero(this);
@@ -62,8 +61,6 @@ public class Partida extends PantallaBase {
         this.longitudPuntos = 0;
         this.puntuacion = 0;
         stage.addActor(bb);
-
-        nextCancion();
     }
 
     private void cargarArray(ArrayList<Music> listaCanciones) {
@@ -94,14 +91,13 @@ public class Partida extends PantallaBase {
             listaCanciones = new ArrayList<>();
             cargarArray(listaCanciones);
         }
-        else if (!(cancion80sAnterior == null)) {
-            //  cancion80sAnterior = cancion80sActual;
+        if (!(cancion80sAnterior == null)) {
             cancion80sAnterior.stop();
             System.out.println("cancion eliminada " + cancion80sAnterior);
         }
         cancion80sActual = listaCanciones.get(dameNumAleatorio());
-        System.out.println("cancion actual " + cancion80sActual);
         cancion80sActual.play();
+        System.out.println("cancion actual " + cancion80sActual);
         cancion80sAnterior = cancion80sActual;
     }
 
@@ -113,6 +109,7 @@ public class Partida extends PantallaBase {
     @Override
     public void show() {
         super.show();
+        nextCancion();
     }
 
     @Override
@@ -150,7 +147,6 @@ public class Partida extends PantallaBase {
             }
         }
         switch (gestorEstado.getEstado(delta)) {
-
             case (GestorEstado.REPOSO): //Si el Gestor esta en reposo
                 if (gestorPiezas.getPiezaActual() == null) { //Y no hay pieza siguiente
                     gestorEstado.setEstado(GestorEstado.SINPIEZA); //Modo Sin Pieza
@@ -336,17 +332,21 @@ public class Partida extends PantallaBase {
         return stage;
     }
 
+    public void hide() {
+        cancion80sAnterior.stop();
+        cancion80sActual.stop();
+    }
+
     @Override
     public void dispose() {
         super.dispose();
          try {
             cancion80sActual.stop();
+            cancion80sAnterior.stop();
         }catch (NullPointerException npe){
            cancion80sActual.dispose();
+           cancion80sAnterior.dispose();
         }
         listaCanciones.clear();
-        /*cancion80sActual.dispose();
-        cancion80sAnterior.dispose();*/
-
     }
 }
