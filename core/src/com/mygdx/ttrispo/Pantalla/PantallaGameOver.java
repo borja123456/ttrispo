@@ -2,8 +2,9 @@ package com.mygdx.ttrispo.Pantalla;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
@@ -13,39 +14,47 @@ import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.audio.Music;
+
 import com.mygdx.ttrispo.BaseDeDatos.FirebaseCallback;
 import com.mygdx.ttrispo.BaseDeDatos.Jugador;
 import com.mygdx.ttrispo.Gestores.GestorRecursos;
 import com.mygdx.ttrispo.MyGdxGame;
+import com.mygdx.ttrispo.com.mygdx.ttrispo.camara.InterfazCamara;
 
+import java.io.File;
 import java.util.ArrayList;
-
-import static com.mygdx.ttrispo.MyGdxGame.firebaseHelper;
-
 
 public class PantallaGameOver extends PantallaBase {
     private Skin skin;
     private ImageButton retry, home;
     private Texture fondoGameOver;
     private BitmapFont font;
-    private boolean isRankingLoaded, activo;
+    private boolean isRankingLoaded, activo, posNuevoJug;
     private ArrayList<Jugador> listaRanking;
     private Table table;
     private Label label, labelID, labelAlias;
     private GlyphLayout glyphLayout;
     private String alias;
     private long pasado, futuro;
+    private Music musicaGameOver;
+    private Sound R2D2Triste;
 
+    public static Pixmap pmap;
+    private ImageButton imageButton, ibaux;
+    private Texture tex;
+    private final InterfazCamara iC;
+    private Image vistaImagen, imagenActual;
 
-    public PantallaGameOver(final MyGdxGame game){
+    private int dimensionImagen;
+
+    public PantallaGameOver(final MyGdxGame game, final InterfazCamara interfazCamara){
         super(game);
         fondoGameOver = GestorRecursos.get("GameOver.jpeg");
         skin = new Skin(Gdx.files.internal("skins/default/skin/uiskin.json"));
@@ -53,6 +62,11 @@ public class PantallaGameOver extends PantallaBase {
         isRankingLoaded = false;
         table = new Table();
         glyphLayout = new GlyphLayout();
+        vistaImagen = null;
+        vistaImagenes = new ArrayList<>();
+        vistaImagenes.add(null); //posicion 0, no me interesa
+        posNuevoJug = false;
+        dimensionImagen = 100;
 
         Container<Table> tableContainer = new Container<>();
         float sw = Gdx.graphics.getWidth();
@@ -63,6 +77,21 @@ public class PantallaGameOver extends PantallaBase {
         tableContainer.setPosition((sw-cw)/2.0f, (sh-ch)/1.1f);
         tableContainer.fillX();
         table.setSkin(skin);
+
+        imagenActual = new Image(GestorRecursos.get("profile.png"));
+
+        this.iC=interfazCamara;
+        imageButton = new ImageButton(skin, "foto");
+        imageButton.getStyle().imageUp = new TextureRegionDrawable(GestorRecursos.get("profile.png"));
+        imageButton.setSize(200, 200);
+        imageButton.setPosition(0,0);
+        imageButton.setName("imageButton");
+        super.stage.addActor(imageButton);
+
+        ibaux = new ImageButton(skin, "foto");
+        ibaux.getStyle().imageUp = new TextureRegionDrawable(GestorRecursos.get("profile.png"));
+        ibaux.setSize(200, 200);
+        ibaux.setPosition(0,0);
 
         //Boton start con imagen
         retry = new ImageButton(skin, "reiniciar");
@@ -84,12 +113,16 @@ public class PantallaGameOver extends PantallaBase {
         tableContainer.setActor(table);
         super.stage.addActor(tableContainer);
 
+        imageButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                iC.selectImage();
+            }
+        });
+
         retry.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(listaRanking!=null){
-                    listaRanking.clear();
-                }
                 if (Partida.partidaAux.getPuntuacion()>= 250){
                     game.setScreen(new Partida(game));
                     System.out.println("Puntos superados: " + Partida.partidaAux.getPuntuacion());
@@ -99,6 +132,7 @@ public class PantallaGameOver extends PantallaBase {
                     System.out.println("Puntos no superados: " + Partida.partidaAux.getPuntuacion());
                 }
                 table.reset();
+                game.setScreen(new Partida(game));
             }
         });
         home.addListener(new ClickListener(){
@@ -112,9 +146,14 @@ public class PantallaGameOver extends PantallaBase {
                 game.setScreen(game.pantallaInicio);
             }
         });
+        //MUSICA GAME OVER
+        R2D2Triste = Gdx.audio.newSound(Gdx.files.internal("Music/Sad R2D2.mp3"));
+        musicaGameOver = Gdx.audio.newMusic(Gdx.files.internal("Music/Imperial March.mp3"));
+        musicaGameOver.setLooping(true);
     }
 
     private void MensajeAlerta() {
+        R2D2Triste.play(0.4f);
         Dialog alerta = new Dialog("Error", skin, "dialog") {
             public void result(Object obj) {
                 System.out.println("result "+obj);
@@ -122,8 +161,28 @@ public class PantallaGameOver extends PantallaBase {
         };
         alerta.text("No has conseguido derrotar al lado oscuro, eres muy débil.");
         alerta.button("Ok", true);
+        alerta.setSize(stage.getWidth()/2, stage.getHeight()/4);
         alerta.center();
         alerta.show(stage);
+    }
+
+    public void onByteArrayOfCroppedImageReciever(byte[] bytes) {
+        try {
+            if(bytes != null){
+                pmap = new Pixmap(bytes, 0, bytes.length);
+                Gdx.app.postRunnable(new Runnable() {
+                    @Override
+                    public void run() {
+                        tex = new Texture(pmap);
+                        imageButton.setSize(300,300);
+                        imageButton.getStyle().imageUp = new TextureRegionDrawable(tex);
+                        imagenActual = new Image(tex);
+                    }
+                });
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -136,10 +195,10 @@ public class PantallaGameOver extends PantallaBase {
         pasado = 0;
     }
     private void realShow1() {
-        firebaseHelper.rellenarArrayDeRanking(new FirebaseCallback() {
+        game.firebaseHelper.rellenarArrayDeRanking(new FirebaseCallback() {
             @Override
             public void onCallback(ArrayList<Jugador> lista) {
-                firebaseHelper.insertarPuntuacionEnRanking(alias, Partida.partidaAux.getPuntuacion());
+                game.firebaseHelper.insertarPuntuacionEnRanking(alias, Partida.partidaAux.getPuntuacion(), iC);
                 listaRanking = lista;
                 if(listaRanking!=null){
                     isRankingLoaded = true;
@@ -164,80 +223,152 @@ public class PantallaGameOver extends PantallaBase {
 
     @Override
     public void hide() {
+        musicaGameOver.stop();
     }
 
+
+    private static ArrayList<Image> vistaImagenes;
     @Override
     public void render(float delta) {
         super.render(delta);
-        batch.begin();
-        batch.draw(fondoGameOver, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        font.getData().setScale(3);
-        if(!activo) {
-            realShow2();
-            activo = true;
-        }
-        font.setColor(Color.YELLOW);
-        glyphLayout.setText(font, "TOP 10 MEJORES PUNTUACIONES");
-        font.draw(batch, glyphLayout,(Gdx.graphics.getWidth()-glyphLayout.width)/2, 0.95f*Gdx.graphics.getHeight());
-        font.setColor(Color.WHITE);
-        if(isRankingLoaded) {
-            boolean nuevoRank = false;
-            try {
-                for (int i = 1; i < listaRanking.size(); i++) {
-                    labelID = new Label(i + "ª", skin);
-                    labelAlias = new Label(listaRanking.get(i).getNombre(), skin);
-                    label = new Label(String.valueOf(listaRanking.get(i).getPuntuacion()), skin);
-                    label.setAlignment(Align.right);
-                    labelAlias.setAlignment(Align.center);
-                    labelID.setAlignment(Align.left);
-                    if ((!nuevoRank) && (Partida.partidaAux.getPuntuacion() == listaRanking.get(i).getPuntuacion())) {
-                        label.setFontScale(8);
-                        labelID.setFontScale(9);
-                        labelAlias.setFontScale(5);
-                        nuevoRank = true;
-                    } else {
-                        label.setFontScale(4);
-                        labelID.setFontScale(5);
-                        labelAlias.setFontScale(3);
-                    }
-                    table.row();
-                    table.add(labelID).padRight(50);
-                    table.add(labelAlias).padLeft(50);
-                    table.add(label).padLeft(50);
+        synchronized (vistaImagenes) {
+            batch.begin();
+            batch.draw(fondoGameOver, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            font.getData().setScale(3);
+            if (!activo) {
+                realShow2();
+                activo = true;
+            }
+            if (iC.getResultado1()) {
+                onByteArrayOfCroppedImageReciever(iC.getDatos()); //primero
+                int pos = game.firebaseHelper.determinarPosicionJugador(Partida.partidaAux.getPuntuacion());
+                if (pos != 0) {
+                    iC.subirImagen(pos);//segundo
                 }
-            }catch (NullPointerException npe){
-                System.out.println("ERROR: aun no se habia cargado del todo el ranking.");
+                iC.setResultado1(false);
             }
-            isRankingLoaded = false;
-        }else if(!isRankingLoaded && listaRanking==null){
-            font.getData().setScale(2.5f);
-            futuro = System.currentTimeMillis();
-            if(futuro >= pasado+20000 && pasado!=0) { //20 SEGUNDOS DE ESPERA
-                glyphLayout.setText(font, "Conectate a internet para");
-                font.draw(batch, glyphLayout, (Gdx.graphics.getWidth()-glyphLayout.width)/2, 0.75f*Gdx.graphics.getHeight());
-                glyphLayout.setText(font, "ver el ranking online");
-                font.draw(batch, glyphLayout, (Gdx.graphics.getWidth()-glyphLayout.width)/2, 0.7f*Gdx.graphics.getHeight());
-            }else{
-                glyphLayout.setText(font, "cargando ranking...");
-                font.draw(batch, glyphLayout, (Gdx.graphics.getWidth()-glyphLayout.width)/2, 0.75f*Gdx.graphics.getHeight());
+            if (iC.getResultado2()) {
+                game.firebaseHelper.insertarPuntuacionEnRanking(alias, Partida.partidaAux.getPuntuacion(), iC);
+                iC.setResultado2(false);
+            }
+            font.setColor(Color.YELLOW);
+            glyphLayout.setText(font, "TOP 10 MEJORES PUNTUACIONES");
+            font.draw(batch, glyphLayout, (Gdx.graphics.getWidth() - glyphLayout.width) / 2, 0.95f * Gdx.graphics.getHeight());
+            font.setColor(Color.WHITE);
+            if (isRankingLoaded) {
+                boolean nuevoRank = false;
+                try {
+                    for (int i = 1; i < listaRanking.size(); i++) {
+                        labelID = new Label(i + "ª", skin);
+                        labelAlias = new Label(listaRanking.get(i).getNombre(), skin);
+                        label = new Label(String.valueOf(listaRanking.get(i).getPuntuacion()), skin);
+                        label.setAlignment(Align.right);
+                        labelAlias.setAlignment(Align.center);
+                        labelID.setAlignment(Align.left);
+                        if ((!nuevoRank) && (Partida.partidaAux.getPuntuacion() == listaRanking.get(i).getPuntuacion())) {
+                            label.setFontScale(8);
+                            dimensionImagen = 180;
+                            labelID.setFontScale(9);
+                            labelAlias.setFontScale(5);
+                            nuevoRank = true;
+                            posNuevoJug = true;
+                            for (int j = vistaImagenes.size()-1; j > i; j--) { //desplazar los elementos
+                                vistaImagenes.set(j, vistaImagenes.get(j - 1)); //a cada elemento se le asigna el anterior
+                            }
+                            vistaImagenes.set(i, imagenActual);
+                        } else {
+                            label.setFontScale(4);
+                            dimensionImagen = 120;
+                            labelID.setFontScale(5);
+                            labelAlias.setFontScale(3);
+                        }
+                        table.row();
+                        table.add(labelID).padRight(50);
+                        vistaImagen = vistaImagenes.get(i);
+                        if(posNuevoJug){
+                            table.add(ibaux).size(dimensionImagen, dimensionImagen);
+                            posNuevoJug = false;
+                        }else{
+                            table.add(vistaImagen).size(dimensionImagen, dimensionImagen);
+                        }
+                        table.add(labelAlias).padLeft(50);
+                        table.add(label).padLeft(50);
+                    }
+
+                } catch (NullPointerException npe) {
+                    System.out.println("ERROR: aun no se habia cargado del todo el ranking.");
+                }
+                isRankingLoaded = false;
+            } else if (!isRankingLoaded && listaRanking == null) {
+                font.getData().setScale(2.5f);
+                futuro = System.currentTimeMillis();
+                if (futuro >= pasado + 20000 && pasado != 0) { //20 SEGUNDOS DE ESPERA
+                    glyphLayout.setText(font, "Conectate a internet para");
+                    font.draw(batch, glyphLayout, (Gdx.graphics.getWidth() - glyphLayout.width) / 2, 0.75f * Gdx.graphics.getHeight());
+                    glyphLayout.setText(font, "ver el ranking online");
+                    font.draw(batch, glyphLayout, (Gdx.graphics.getWidth() - glyphLayout.width) / 2, 0.7f * Gdx.graphics.getHeight());
+                } else {
+                    glyphLayout.setText(font, "cargando ranking...");
+                    font.draw(batch, glyphLayout, (Gdx.graphics.getWidth() - glyphLayout.width) / 2, 0.75f * Gdx.graphics.getHeight());
+                }
+            }
+            batch.end();
+            stage.draw(); // Pintar los actores los botones por encima del background
+        }
+    }
+    public void pasameImagenAbytes(int posicion){
+        File file = iC.getArrayImagenes().get(posicion);
+        byte[] bites = iC.convertirFileAbyte(file);
+        while (iC.getContadorBytesArchivo() != iC.getContadorBytesArray());
+        if(iC.getContadorBytesArchivo() == iC.getContadorBytesArray()){
+            game.VARIABLE_GLOBAL_PROGRESO+=0.05f;
+            vistaImagen = new Image(conversorBytesAImagen(bites));
+            synchronized (vistaImagenes){
+                vistaImagenes.add(vistaImagen);
             }
         }
-        batch.end();
-        stage.draw(); // Pintar los actores los botones por encima del background
     }
+
+    private Texture nuevaTextura;
+    private Pixmap pix;
+
+    public Texture conversorBytesAImagen(byte[] bytes) {
+        if(bytes != null){
+            pix = new Pixmap(bytes, 0, bytes.length);
+            nuevaTextura = new Texture(pix);
+        }else{
+            System.out.println("No he recibido na");
+        }
+        return nuevaTextura;
+    }
+
     private void recogerAlias(final AliasCallback aliasCallback){
         Gdx.input.getTextInput(new Input.TextInputListener() {
             @Override
             public void input(String cadena) {
                 alias = cadena;
                 aliasCallback.onCallback(cadena);
+                //MUSICA GAME OVER
+                musicaGameOver = Gdx.audio.newMusic(Gdx.files.internal("Music/game-over-baby.mp3"));
+                musicaGameOver.setLooping(true);
+                musicaGameOver.setVolume(1.0f);
+                musicaGameOver.play();
             }
 
             @Override
             public void canceled() {
-                alias = "\"annonymous\"";
+                alias = "annonymous";
                 aliasCallback.onCallback(alias);
+                //MUSICA GAME OVER
+                musicaGameOver = Gdx.audio.newMusic(Gdx.files.internal("Music/game-over-baby.mp3"));
+                musicaGameOver.setLooping(true);
+                musicaGameOver.setVolume(1.0f);
+                musicaGameOver.play();
             }
         }, "Introduce tu alias", "", " _ _ _ _ _ _ _ _");
+    }
+
+    public void dispose () {
+        musicaGameOver.dispose();
     }
 }

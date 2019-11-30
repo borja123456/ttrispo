@@ -1,11 +1,20 @@
 package com.mygdx.ttrispo.Gestores;
 
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
+
+import com.mygdx.ttrispo.MyGdxGame;
+import com.mygdx.ttrispo.Pantalla.PantallaGameOver;
+import com.mygdx.ttrispo.com.mygdx.ttrispo.camara.InterfazCamara;
+
+import static java.lang.Thread.sleep;
 
 public  class GestorRecursos {
     private static AssetManager manager = new AssetManager();
     private static int contador = 0;
+
     public static void cargarImagenes() {
         manager.load("fondoInicio.jpg", Texture.class);
         manager.load("tetris.png", Texture.class);
@@ -43,10 +52,55 @@ public  class GestorRecursos {
         manager.load("OCompleta.png", Texture.class);
         manager.load("background.jpeg", Texture.class);
         manager.load("GameOver.jpeg", Texture.class);
+
+        //musica
+        manager.load("Music/The Force Theme.mp3", Music.class); //inicio
+        manager.load("Music/Imperial March.mp3", Music.class); //gameover
+        manager.load("Music/lightsaber_04.wav", Sound.class);  //partida
+        manager.load("Music/The Force Suite.mp3", Music.class); // inicio sustituti
+
+        //aleatorias
+        manager.load("Music/Africa.mp3", Music.class);
+        manager.load("Music/Blame It On the Boogie.mp3", Music.class);
+        manager.load("Music/Girls just wanna have fun.mp3",Music.class);
+        manager.load("Music/Last Christmas.mp3", Music.class);
+        manager.load("Music/Mustafar.mp3", Music.class);
+        manager.load("Music/Never Gonna Give You Up.mp3", Music.class);
+        manager.load("Music/Original Tetris Soundtrack.mp3", Music.class);
+        manager.load("Music/Stayin Alive.mp3", Music.class);
+        manager.load("Music/Take On Me.mp3", Music.class);
+        manager.load("Music/Tetris 99 - Main Theme.mp3", Music.class);
+        manager.load("Music/Youre The One That I Want.mp3", Music.class);
+
+
+        manager.load("profile.png", Texture.class);
         while (!manager.update()) {
             //System.out.println("Cargando...");
             contador++;
         }
+    }
+
+    public static void cargarPrevia(final InterfazCamara interfazCamara){
+        for(int i = 1; i<=10; i++){
+            interfazCamara.getImagenConPosicion(i);
+            while(interfazCamara.getTamanioDescargadoImagen() != interfazCamara.getTamanioTotalImagen());
+            if(interfazCamara.getTamanioDescargadoImagen() == interfazCamara.getTamanioTotalImagen()){
+                System.out.println("Descarga completada imagen " + i);
+                MyGdxGame.VARIABLE_GLOBAL_PROGRESO+=0.05f;
+                interfazCamara.setTamanioDescargadoImagen(0);
+                interfazCamara.setTamanioTotalImagen(1);
+            }
+        }
+    }
+
+    public void conversor(final PantallaGameOver pantallaGameOver){
+        for(int i = 1; i<=10; i++){
+            pantallaGameOver.pasameImagenAbytes(i);
+        }
+    }
+
+    public static AssetManager dameManager(){
+        return manager;
     }
 
     public static void limpiarAssets(){

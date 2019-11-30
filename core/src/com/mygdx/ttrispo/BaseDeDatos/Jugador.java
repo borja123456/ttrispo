@@ -3,10 +3,12 @@ package com.mygdx.ttrispo.BaseDeDatos;
 public class Jugador {
     private String nombre;
     private long puntuacion;
+    private String imagen;
 
-    public Jugador(String nombre, long puntuacion) {
+    public Jugador(String nombre, long puntuacion, String imagen) {
         this.nombre = nombre;
         this.puntuacion = puntuacion;
+        this.imagen = imagen;
     }
 
     public String getNombre() {
@@ -23,5 +25,13 @@ public class Jugador {
 
     public void setPuntuacion(long puntuacion) {
         this.puntuacion = puntuacion;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
 }

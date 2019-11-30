@@ -1,14 +1,9 @@
 package com.mygdx.ttrispo.Pantalla;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.mygdx.ttrispo.Botones.BotonBase;
 import com.mygdx.ttrispo.Gestores.GestorEstado;
 import com.mygdx.ttrispo.Gestores.GestorPiezas;
@@ -16,6 +11,9 @@ import com.mygdx.ttrispo.Gestores.GestorRecursos;
 import com.mygdx.ttrispo.MyGdxGame;
 import com.mygdx.ttrispo.Pieza.Pieza;
 import com.mygdx.ttrispo.Tablero;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 public class Partida extends PantallaBase {
     private Texture fondoPartida;
@@ -34,6 +32,12 @@ public class Partida extends PantallaBase {
     private int filaAcortar = 0;
     private boolean flagAcortar = false;
 
+    private ArrayList<Music> listaCanciones; //lista de canciones de los 80s
+    private Music cancion80sActual, cancion80sAnterior;
+    private Random NumAleatorio;
+    private float Seconds20 = 20f;
+    private float timeSeconds = 0f;
+    private int numCanciones = 9;
 
     public Partida(MyGdxGame game) {
         super(game);
@@ -58,6 +62,52 @@ public class Partida extends PantallaBase {
         this.longitudPuntos = 0;
         this.puntuacion = 0;
         stage.addActor(bb);
+
+        nextCancion();
+    }
+
+    private void cargarArray(ArrayList<Music> listaCanciones) {
+        listaCanciones.add(Gdx.audio.newMusic(Gdx.files.internal("Music/Original Tetris Soundtrack.mp3")));
+        listaCanciones.add(Gdx.audio.newMusic(Gdx.files.internal("Music/Tetris 99 - Main Theme.mp3")));
+        listaCanciones.add(Gdx.audio.newMusic(Gdx.files.internal("Music/Africa.mp3")));
+        listaCanciones.add(Gdx.audio.newMusic(Gdx.files.internal("Music/Stayin Alive.mp3")));
+        listaCanciones.add(Gdx.audio.newMusic(Gdx.files.internal("Music/Take On Me.mp3")));
+        listaCanciones.add(Gdx.audio.newMusic(Gdx.files.internal("Music/Youre The One That I Want.mp3")));
+        listaCanciones.add(Gdx.audio.newMusic(Gdx.files.internal("Music/Last Christmas.mp3")));
+        listaCanciones.add(Gdx.audio.newMusic(Gdx.files.internal("Music/Blame It On the Boogie.mp3")));
+        listaCanciones.add(Gdx.audio.newMusic(Gdx.files.internal("Music/Girls just wanna have fun.mp3")));
+        listaCanciones.add(Gdx.audio.newMusic(Gdx.files.internal("Music/Mustafar.mp3")));
+    }
+
+    private void veinteSegundos(float delta) {
+        timeSeconds += Gdx.graphics.getDeltaTime();
+        if(timeSeconds >= Seconds20){
+            nextCancion();
+            System.out.println("tiempo" + timeSeconds);
+            timeSeconds -= Seconds20;
+        }
+    }
+
+    private void nextCancion() { //ArrayList<Music> listaCanciones
+        if (cancion80sActual == null) {
+            System.out.println("array vacio");
+            listaCanciones = new ArrayList<>();
+            cargarArray(listaCanciones);
+        }
+        else if (!(cancion80sAnterior == null)) {
+            //  cancion80sAnterior = cancion80sActual;
+            cancion80sAnterior.stop();
+            System.out.println("cancion eliminada " + cancion80sAnterior);
+        }
+        cancion80sActual = listaCanciones.get(dameNumAleatorio());
+        System.out.println("cancion actual " + cancion80sActual);
+        cancion80sActual.play();
+        cancion80sAnterior = cancion80sActual;
+    }
+
+    private int dameNumAleatorio() {
+        this.NumAleatorio = new Random();
+        return NumAleatorio.nextInt(numCanciones) + 1;
     }
 
     @Override
@@ -86,6 +136,7 @@ public class Partida extends PantallaBase {
     }
 
     private void cicloDeVida(float delta) {
+        veinteSegundos(delta);
         if(flagAcortar){
             int [][] bloques = new int[10][2];
             for (int i = 0; i < bloques.length; i++) {
@@ -185,10 +236,6 @@ public class Partida extends PantallaBase {
             }
         }
     }
-    @Override
-    public void dispose() {
-        super.dispose();
-    }
 
     private void bloquearPieza(Pieza pieza) {
         tablero.insertarBloquesDePieza(pieza.getPosicionPieza(), pieza.getTipo());
@@ -255,7 +302,6 @@ public class Partida extends PantallaBase {
             pieza.setColumna(pieza.getColumna() - 1);
         }
         //Cambia a reposo. pero esto hay que refactorizarlo por el amor de dios
-
 }
 
     private void estadoGestorSinPieza(Pieza pieza) {
@@ -288,5 +334,19 @@ public class Partida extends PantallaBase {
 
     public Stage getEscenario() {
         return stage;
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+         try {
+            cancion80sActual.stop();
+        }catch (NullPointerException npe){
+           cancion80sActual.dispose();
+        }
+        listaCanciones.clear();
+        /*cancion80sActual.dispose();
+        cancion80sAnterior.dispose();*/
+
     }
 }

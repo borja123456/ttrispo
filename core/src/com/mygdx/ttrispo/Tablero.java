@@ -1,17 +1,13 @@
 package com.mygdx.ttrispo;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.mygdx.ttrispo.Gestores.GestorPiezas;
-import com.mygdx.ttrispo.Gestores.GestorRecursos;
 import com.mygdx.ttrispo.Pantalla.Partida;
-import com.mygdx.ttrispo.Pieza.Pieza;
 
 public class Tablero extends Actor {
     public static int tablero[][];
@@ -30,6 +26,7 @@ public class Tablero extends Actor {
     private float dimensionYcaja = 108*MyGdxGame.ratioPixelesHeight;
 
     private Table caja;
+    private Sound sonidoFila;
 
     public Tablero(Partida partida) {
         this.partida = partida;
@@ -39,6 +36,7 @@ public class Tablero extends Actor {
         this.caja.setSize(dimensionXcaja, dimensionYcaja);
         this.partida.getEscenario().addActor(caja);
         this.vPieza = null;
+        this.sonidoFila = Gdx.audio.newSound(Gdx.files.internal("Music/lightsaber_04.wav"));
     }
 
     @Override
@@ -152,6 +150,8 @@ public class Tablero extends Actor {
     private void eliminarfila(int fila) {
         for(int j = 0; j < 10; j++){
             tablero[j][fila] = 0;
+            long id = sonidoFila.play(0.3f);
+            sonidoFila.setPitch(id, 4);
         }
     }
 
