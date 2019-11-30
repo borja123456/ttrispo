@@ -100,9 +100,9 @@ public class SplashScreen implements Screen {
         logo.draw(batch, (Gdx.graphics.getWidth()-logo.getMinWidth())/2, (Gdx.graphics.getHeight()-logo.getMinHeight())/2,
                 logo.getMinWidth(), logo.getMinHeight());
         batch.end();
-        if((percent >= 0.9998f) /*|| (futuro >= pasado + 20000)*/){
+        if((percent >= 0.9998f) || (futuro >= pasado + 20000)){
             game.setScreen(game.pantallaInicio);
-            dispose();
+            this.dispose();
         }
     }
 
