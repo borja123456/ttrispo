@@ -22,6 +22,13 @@ public class GestorPiezas {
     public static ArrayList<Integer> listaPiezasSiguientes; //Cola de Piezas para el uso en partida
     private Pieza piezaActual;
     private Random rand;
+    private int filaInicio = 0;
+
+    public void setColumnaInicio(int columnaInicio) {
+        this.columnaInicio = columnaInicio;
+    }
+
+    private int columnaInicio = 5;
 
     /**
      * Constructor de las clase {@link GestorPiezas}
@@ -53,17 +60,17 @@ public class GestorPiezas {
      * Inicializacion de 7 piezas con la fila 0 posicionY la columna 5.
      */
 
-    private void addPiezas() {
+    public void addPiezas() {
         this.piezas = new Pieza[8];
         //Las piezas estan numeradas, cada una se coloca en su posicion dentro del array
         piezas[0]=null;
-        piezas[Pieza.T] = new PiezaT(0, 5);
-        piezas[Pieza.S] = new PiezaS(0, 5);
-        piezas[Pieza.Z] = new PiezaZ(0, 5);
-        piezas[Pieza.I] = new PiezaI(0, 5);
-        piezas[Pieza.O] = new PiezaO(0, 5);
-        piezas[Pieza.L] = new PiezaL(0, 5);
-        piezas[Pieza.J] = new PiezaJ(0, 5);
+        piezas[Pieza.T] = new PiezaT(filaInicio, columnaInicio);
+        piezas[Pieza.S] = new PiezaS(filaInicio, columnaInicio);
+        piezas[Pieza.Z] = new PiezaZ(filaInicio, columnaInicio);
+        piezas[Pieza.I] = new PiezaI(filaInicio, columnaInicio);
+        piezas[Pieza.O] = new PiezaO(filaInicio, columnaInicio);
+        piezas[Pieza.L] = new PiezaL(filaInicio, columnaInicio);
+        piezas[Pieza.J] = new PiezaJ(filaInicio, columnaInicio);
         if(PantallaAjustes.getColoresPersonalizados()){
             for(int i = 1; i<=7; i++){
                 piezas[i].setTextura(PantallaAjustes.texturaPiezas.get(i));
@@ -76,8 +83,12 @@ public class GestorPiezas {
         listaPiezasSiguientes = new ArrayList<>(); //Lista con las siguientes Piezas a entrar al tablero
         this.partida = partida;
 
-        this.addPiezas(); //Rellenamos el ArrayList con los tipos de pieza
+        //this.addPiezas(); //Rellenamos el ArrayList con los tipos de pieza
         rellenarListaPiezasSiguientes();
+    }
+
+    public void setFilaInicio(int filaInicio) {
+        this.filaInicio = filaInicio;
     }
 
     /**
@@ -90,6 +101,7 @@ public class GestorPiezas {
         if (piezaActual == null) { //Si no tenemos pieza actual
             piezaActual = piezas[listaPiezasSiguientes.remove(0)]; //Cogemos la primera de la lista
             rellenarListaPiezasSiguientes(); //Y rellenamos la lista de nuevo
+            this.piezaActual.setFila(this.filaInicio);
         }
         return piezaActual;
     }
@@ -101,6 +113,7 @@ public class GestorPiezas {
 
     public void bloquearPieza() {
         piezaActual.bloquear(); //Bloqueamos pieza
+        piezaActual.setColumna(this.columnaInicio);
         piezaActual = null; //No tenemos pieza actual
     }
 

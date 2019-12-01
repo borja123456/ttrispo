@@ -43,12 +43,14 @@ public class Partida extends PantallaBase {
         super(game);
         gestorEstado = new GestorEstado(this);
         gestorPiezas = new GestorPiezas(this);
+        gestorPiezas.addPiezas();
 
         //SEGUNDA PIEZA
         segundaPieza = false;
         gestorEstado2ndPieza = new GestorEstado(this);
         gestorPiezas2ndPieza = new GestorPiezas(this);
-
+        gestorPiezas2ndPieza.setColumnaInicio(1);
+        gestorPiezas2ndPieza.addPiezas();
         BotonBase bb = new BotonBase(stage, gestorEstado);
         fondoPartida = GestorRecursos.get("background.jpeg");
 
@@ -140,11 +142,13 @@ public class Partida extends PantallaBase {
                 bloques[i][0] = filaAcortar;
                 bloques[i][1] = i;
             }
-            tablero.insertarBloquesDePieza(bloques,-1);
-            if(filaAcortar < 20){
+            tablero.insertarBloquesDePieza(bloques, -1);
+            if (filaAcortar < 20) {
                 flagAcortar = false;
                 filaAcortar++;
             }
+            gestorPiezas.setFilaInicio(this.filaAcortar);
+            gestorPiezas2ndPieza.setFilaInicio(this.filaAcortar);
         }
         switch (gestorEstado.getEstado(delta)) {
             case (GestorEstado.REPOSO): //Si el Gestor esta en reposo
@@ -155,7 +159,7 @@ public class Partida extends PantallaBase {
 
             case (GestorEstado.SINPIEZA):
                 estadoGestorSinPieza(gestorPiezas.getPiezaActual()); //Selecciona una nueva Pieza y vuelve al modo de Reposo
-                gestorEstado.setVelocity(gestorEstado.getVelocity()-0.005f); //Velocdad
+                gestorEstado.setVelocity(gestorEstado.getVelocity() - 0.005f); //Velocdad
                 gestorEstado.setEstado(GestorEstado.REPOSO);
                 break;
 
@@ -170,11 +174,11 @@ public class Partida extends PantallaBase {
                 break;
             // La pieza intenta caer
             case (GestorEstado.CAER):
-                if(caerState(gestorPiezas.getPiezaActual())){
+                if (caerState(gestorPiezas.getPiezaActual())) {
                     gestorEstado.setEstado(gestorEstado.REPOSO);
-            }else{
+                } else {
                     gestorEstado.setEstado(gestorEstado.BLOQUEAR);
-            }
+                }
                 break;
             case (GestorEstado.GIRO):
                 giroState(gestorPiezas.getPiezaActual());
@@ -185,7 +189,7 @@ public class Partida extends PantallaBase {
                 gestorEstado.setEstado(GestorEstado.SINPIEZA);
                 break;
         }
-        if(segundaPieza) {
+        if (segundaPieza) {
             switch (gestorEstado2ndPieza.getEstado(delta)) {
                 case (GestorEstado.REPOSO): //Si el Gestor esta en reposo
                     if (gestorPiezas2ndPieza.getPiezaActual() == null) { //Y no hay pieza siguiente
@@ -196,7 +200,7 @@ public class Partida extends PantallaBase {
 
                 case (GestorEstado.SINPIEZA):
                     estadoGestorSinPieza(gestorPiezas2ndPieza.getPiezaActual()); //Selecciona una nueva Pieza y vuelve al modo de Reposo
-                    gestorEstado2ndPieza.setVelocity(gestorEstado2ndPieza.getVelocity()-0.005f); //Velocdad
+                    gestorEstado2ndPieza.setVelocity(gestorEstado2ndPieza.getVelocity() - 0.005f); //Velocdad
                     gestorPiezas2ndPieza.getPiezaActual().setColumna(9);
                     gestorPiezas2ndPieza.getPiezaActual().setFila(0);
                     gestorEstado2ndPieza.setEstado(GestorEstado.REPOSO);
@@ -213,9 +217,9 @@ public class Partida extends PantallaBase {
                     break;
                 // La pieza intenta caer
                 case (GestorEstado.CAER):
-                    if(caerState(gestorPiezas2ndPieza.getPiezaActual())){
+                    if (caerState(gestorPiezas2ndPieza.getPiezaActual())) {
                         gestorEstado2ndPieza.setEstado(GestorEstado.REPOSO);
-                    }else{
+                    } else {
                         gestorEstado2ndPieza.setEstado(gestorEstado.BLOQUEAR);
                     }
                     break;
@@ -231,6 +235,11 @@ public class Partida extends PantallaBase {
                     break;
             }
         }
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
     }
 
     private void bloquearPieza(Pieza pieza) {
@@ -298,48 +307,41 @@ public class Partida extends PantallaBase {
             pieza.setColumna(pieza.getColumna() - 1);
         }
         //Cambia a reposo. pero esto hay que refactorizarlo por el amor de dios
-}
+
+    }
 
     private void estadoGestorSinPieza(Pieza pieza) {
         tablero.insertarBloquesDePieza(pieza.getPosicionPieza(), pieza.getTipo());
         tablero.setImagenPiezaSiguiente(gestorPiezas.getImagenPiezaSiguiente());
     }
 
-    public Texture getTexturaPieza(int tipo){
+    public Texture getTexturaPieza(int tipo) {
         return gestorPiezas.getTexturaBloque(tipo);
     }
-    
-    public long getPuntuacion(){
+
+    public long getPuntuacion() {
         return this.puntuacion;
     }
-    
+
     public void setPuntuacion(int i) {
         long nuevaPuntuacion = puntuacion + i;
-        if(String.valueOf(puntuacion).length() < (String.valueOf(nuevaPuntuacion).length())){
+        if (String.valueOf(puntuacion).length() < (String.valueOf(nuevaPuntuacion).length())) {
             System.out.println("ESTADO TRUE");
             longitudPuntos++;
-        }else{
+        } else {
             System.out.println("ESTADO FALSE");
         }
         puntuacion = nuevaPuntuacion;
     }
 
-    public int getLongitudPuntos(){
+    public int getLongitudPuntos() {
         return this.longitudPuntos;
     }
 
     public Stage getEscenario() {
         return stage;
     }
-
     public void hide() {
-        cancion80sAnterior.stop();
-        cancion80sActual.stop();
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose();
          try {
             cancion80sActual.stop();
             cancion80sAnterior.stop();
