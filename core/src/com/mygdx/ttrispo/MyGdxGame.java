@@ -1,45 +1,73 @@
 package com.mygdx.ttrispo;
 
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
-import com.mygdx.ttrispo.Pantalla.Partida;
+import com.badlogic.gdx.assets.AssetManager;
+import com.mygdx.ttrispo.BaseDeDatos.FirebaseHelper;
+import com.badlogic.gdx.Gdx;
+import com.mygdx.ttrispo.Gestores.GestorRecursos;
+import com.mygdx.ttrispo.Pantalla.PantallaAjustes;
+import com.mygdx.ttrispo.Pantalla.PantallaGameOver;
+import com.mygdx.ttrispo.Pantalla.PantallaInicio;
+import com.mygdx.ttrispo.com.mygdx.ttrispo.camara.InterfazCamara;
 
-public class MyGdxGame extends Game {
-//    SpriteBatch batch;
-//    Texture img;
-//    float vx = 0, vy = 0, x = 0, y = 0, ax = 0f, ay = -4;
-//    int width, height;
-    private Partida partida;
+import java.util.concurrent.CountDownLatch;
+
+public class MyGdxGame extends Game implements ApplicationListener {
+    public static float ratioPixelesHeight, ratioPixelesWidth;
+    public static float VARIABLE_GLOBAL_PROGRESO = 0;
+
+    public PantallaInicio pantallaInicio;
+    public volatile PantallaGameOver pantallaGameOver;
+    public PantallaAjustes pantallaAjustes;
+    public static FirebaseHelper firebaseHelper;
+    private InterfazCamara interfazCamara;
+    private MyGdxGame myGdxGame;
+    private final GestorRecursos gestorRecursos = new GestorRecursos();
+
+    public MyGdxGame(InterfazCamara interfazCamara){
+        this.interfazCamara = interfazCamara;
+    }
+
+    public static AssetManager manager = new AssetManager();
 
     @Override
     public void create() {
-
-        partida = new Partida();
-//        batch = new SpriteBatch();
-//        img = new Texture("badlogic.jpg");
-//        height = img.getHeight();
-//        width = img.getWidth();
-//        x = Gdx.graphics.getWidth() / 2 - (width / 2);
-//        y = Gdx.graphics.getHeight() - height / 2 ;
-
-        this.setScreen(partida);
+        Gdx.app.setLogLevel(Application.LOG_DEBUG);
+        GestorRecursos.cargarImagenes();
+        myGdxGame = this;
+        ratioPixelesHeight = (float) Gdx.graphics.getHeight()/GestorRecursos.get("background.jpeg").getHeight();
+        ratioPixelesWidth = (float) Gdx.graphics.getWidth()/GestorRecursos.get("background.jpeg").getWidth();    //pixeles = pantallaMovil/background
+        pantallaInicio = new PantallaInicio(myGdxGame);
+        pantallaAjustes = new PantallaAjustes(myGdxGame);
+        firebaseHelper = new FirebaseHelper();
+        pantallaGameOver = new PantallaGameOver(myGdxGame, interfazCamara);
+        setScreen(new SplashScreen(this));
+        //mientras esta cargando cargan las imagenes
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                gestorRecursos.cargarPrevia(interfazCamara);
+                Gdx.app.postRunnable(new Runnable() {
+                    @Override
+                    public void run() {
+                        gestorRecursos.conversor(pantallaGameOver);
+                    }
+                });
+            }
+        }).start();
     }
-
-//    @Override
-//    public void render() {
-//        Gdx.gl.glClearColor(1, 0, 0, 1);
-//        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-////        batch.begin();
-////        batch.draw(img,0,0);
-////        batch.end();
-//    }
 
     @Override
     public void dispose() {
-//        batch.dispose();
-//        img.dispose();
+        GestorRecursos.limpiarAssets();
+        getScreen().dispose();
+        Gdx.app.exit();
     }
 
-
-
-
+    @Override
+    public void render() {
+        super.render();
+    }
 }
