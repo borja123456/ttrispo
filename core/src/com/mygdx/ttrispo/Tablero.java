@@ -27,6 +27,10 @@ public class Tablero extends Actor {
 
     private Table caja;
     private Sound sonidoFila;
+    private Texture bgTab;
+
+    private boolean pintarAvance;
+    private float cuantasFilas;
 
     public Tablero(Partida partida) {
         this.partida = partida;
@@ -37,12 +41,19 @@ public class Tablero extends Actor {
         this.partida.getEscenario().addActor(caja);
         this.vPieza = null;
         this.sonidoFila = Gdx.audio.newSound(Gdx.files.internal("Music/lightsaber_04.wav"));
+        this.bgTab = new Texture(Gdx.files.internal("bg_tablero.png"));
+        pintarAvance = false;
+        cuantasFilas = 0f;
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
         int posicionX,posicionY,tipo;
         Texture imagenBloque;
+
+        if(pintarAvance){
+            ponerBackgroundFilas(batch);
+        }
 
         for (int i = 0; i < this.tablero.length; i++){
             for (int j = 0; j < this.tablero[i].length; j++){
@@ -70,6 +81,27 @@ public class Tablero extends Actor {
                 caja.add(vPieza).size(dimensionXcaja/2, dimensionYcaja/2);
             }
         }
+    }
+
+    public void ponerBackgroundFilas(Batch batch) {
+        int cF = (int) getCuantasFilas();
+        int posicionX,posicionY;
+        for(int i=0; i < this.tablero.length; i++){ //columnas
+            for(int j=0; j < cF; j++){              //filas
+                tablero[i][j] = 0;
+                posicionX = (tamanyoPiezaX * i);
+                posicionY = Gdx.graphics.getHeight() - (tamanyoPiezaY * j);
+                batch.draw(bgTab, posicionX + tableroX, posicionY - tableroY, 0, 0, (int)(tamanyoPiezaX-0.5f), (int)(tamanyoPiezaY-0.5f));
+            }
+        }
+    }
+
+    public float getCuantasFilas(){
+        return this.cuantasFilas;
+    }
+    public void setCuantasFilas(float cuantasFilas){
+        this.pintarAvance = true;
+        this.cuantasFilas = cuantasFilas;
     }
 
     public void insertarBloquesDePieza(int bloques[][], int tipo) {
@@ -151,7 +183,7 @@ public class Tablero extends Actor {
 
     public boolean comprobarGameOver(int bloques[][]){
         for (int i = 0; i < bloques.length; i++) {
-            if (bloques[i][0] == 0){
+            if (bloques[i][0] == 0 || bloques[i][0] == Partida.filaGenera){
                 return true;
             }
         }

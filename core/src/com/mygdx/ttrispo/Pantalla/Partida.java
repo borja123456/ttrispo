@@ -27,19 +27,23 @@ public class Partida extends PantallaBase {
     private static long puntuacion;
     public static Partida partidaAux;
     private int longitudPuntos;
-    private boolean segundaPieza;
+    public static int filaGenera;
+    private boolean segundaPieza, cambiarFila;;
 
     private ArrayList<Music> listaCanciones; //lista de canciones de los 80s
     private Music cancion80sActual, cancion80sAnterior;
     private Random NumAleatorio;
     private float Seconds20 = 20f;
-    private float timeSeconds = 0f;
+    private float Fifty50 = 50f;
+    private float timeSeconds, fiftySeconds = 0f;
     private int numCanciones = 9;
 
     public Partida(MyGdxGame game) {
         super(game);
         gestorEstado = new GestorEstado(this);
         gestorPiezas = new GestorPiezas(this);
+        filaGenera = 0;
+        cambiarFila = false;
 
         //SEGUNDA PIEZA
         segundaPieza = false;
@@ -79,6 +83,16 @@ public class Partida extends PantallaBase {
             nextCancion();
             System.out.println("tiempo" + timeSeconds);
             timeSeconds -= Seconds20;
+        }
+    }
+    private void cincuentaSegundos(float delta) {
+
+        fiftySeconds += Gdx.graphics.getDeltaTime();
+        if(fiftySeconds >= Fifty50){
+            fiftySeconds -= Fifty50;
+            filaGenera+=2;
+            cambiarFila = true;
+            tablero.setCuantasFilas(filaGenera);
         }
     }
 
@@ -157,6 +171,12 @@ public class Partida extends PantallaBase {
                 break;
             case (GestorEstado.BLOQUEAR):
                 bloquearPieza(gestorPiezas.getPiezaActual());
+                if(cambiarFila){
+                    for(int i=0; i<gestorPiezas.listaPiezasSiguientes.size(); i++){
+                        gestorPiezas.getPiezas()[gestorPiezas.listaPiezasSiguientes.get(i)].setFila(filaGenera);
+                    }
+                    cambiarFila = false;
+                }
                 gestorEstado.setEstado(GestorEstado.SINPIEZA);
                 break;
         }
@@ -206,6 +226,7 @@ public class Partida extends PantallaBase {
                     break;
             }
         }
+        cincuentaSegundos(delta);
     }
 
     private void bloquearPieza(Pieza pieza) {
