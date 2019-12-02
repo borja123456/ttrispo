@@ -47,6 +47,12 @@ public class GestorPiezas {
         this.rand = new Random();
         return rand.nextInt(7) + 1;
     }
+    /**
+     * Para acortar la pantalla, es mas facil si editamos la fila de la pieza que vaya a salir.
+     */
+    public Pieza[] getPiezas() {
+        return piezas;
+    }
 
     /**
      * Inicializa posicionY rellena el array de piezas.

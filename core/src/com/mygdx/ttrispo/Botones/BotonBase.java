@@ -10,12 +10,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.mygdx.ttrispo.Gestores.GestorEstado;
+import com.mygdx.ttrispo.Gestores.GestorPiezas;
 import com.mygdx.ttrispo.Gestores.GestorRecursos;
 
 public class BotonBase extends Actor {
+
+    private GestorEstado gE2;
+
     private ImageButton derecha, izquierza, giro, abajo;
-    public BotonBase(Stage stage, GestorEstado gestorEstado){
+    public BotonBase(Stage stage, GestorEstado gestorEstado, GestorEstado gestorEstado2){
         final GestorEstado gE = gestorEstado;
+        gE2 = gestorEstado2; //este se actualiza en el ciclo de vida de la otra pieza, el gE de arriba no
         //Botones
         Skin skin = new Skin(Gdx.files.internal("skins/default/skin/uiskin.json"));
 
@@ -31,6 +36,7 @@ public class BotonBase extends Actor {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 gE.setEstado(GestorEstado.DERECHA);
+                gE2.setEstado2(GestorEstado.DERECHA2);
             }
         });
 
@@ -46,6 +52,7 @@ public class BotonBase extends Actor {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 gE.setEstado(GestorEstado.CAER);
+                gE2.setEstado2(GestorEstado.CAER2);
             }
         });
 
@@ -61,6 +68,7 @@ public class BotonBase extends Actor {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 gE.setEstado(GestorEstado.IZQUIERDA);
+                gE2.setEstado2(GestorEstado.IZQUIERDA2);
             }
         });
 
@@ -76,7 +84,12 @@ public class BotonBase extends Actor {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 gE.setEstado(GestorEstado.GIRO);
+                gE2.setEstado2(GestorEstado.GIRO2);
             }
         });
+    }
+
+    public void setNewGestorPara2(GestorEstado gestorEstado2) {
+        this.gE2 = gestorEstado2;
     }
 }
